@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Gauge,
   Activity,
@@ -42,6 +42,34 @@ export default function RiskMeterSection({ activeVerificationResult, onGoToScann
     return Math.min(100, total);
   }, [simulatorFactors, useLiveScanScore, activeVerificationResult]);
 
+  // Smoothly animated score for dial and digital readout
+  const [displayedScore, setDisplayedScore] = useState(simulatedScore);
+
+  useEffect(() => {
+    let start = displayedScore;
+    let end = simulatedScore;
+    if (start === end) return;
+
+    let startTime = null;
+    const duration = 400; // ms
+    let animationFrame;
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+      const val = Math.round(start + (end - start) * ease);
+      setDisplayedScore(val);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(step);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [simulatedScore]);
+
   // Determine category and styling
   const scoreCategory = useMemo(() => {
     if (simulatedScore <= 25) {
@@ -71,8 +99,33 @@ export default function RiskMeterSection({ activeVerificationResult, onGoToScann
     }
   }, [simulatedScore, t]);
 
-  // Speedometer Needle Angle (-90 deg at 0 to +90 deg at 100)
-  const needleAngle = -90 + (simulatedScore / 100) * 180;
+  // Mathematically anchored needle geometry in SVG coordinates
+  // At 0 score: angle is 180 deg (points left to 0 SAFE)
+  // At 50 score: angle is 90 deg (points straight up to 50 CAUTION)
+  // At 100 score: angle is 0 deg (points right to 100 HIGH RISK)
+  const needleGeom = useMemo(() => {
+    const cx = 160;
+    const cy = 145;
+    const needleLength = 78;
+    const angleDeg = 180 - (displayedScore / 100) * 180;
+    const rad = (angleDeg * Math.PI) / 180;
+
+    const tipX = cx + needleLength * Math.cos(rad);
+    const tipY = cy - needleLength * Math.sin(rad);
+
+    const baseWidth = 5.5;
+    const leftBaseX = cx + baseWidth * Math.sin(rad);
+    const leftBaseY = cy + baseWidth * Math.cos(rad);
+    const rightBaseX = cx - baseWidth * Math.sin(rad);
+    const rightBaseY = cy - baseWidth * Math.cos(rad);
+
+    const tailX = cx - 14 * Math.cos(rad);
+    const tailY = cy + 14 * Math.sin(rad);
+
+    const points = `${tipX.toFixed(1)},${tipY.toFixed(1)} ${rightBaseX.toFixed(1)},${rightBaseY.toFixed(1)} ${tailX.toFixed(1)},${tailY.toFixed(1)} ${leftBaseX.toFixed(1)},${leftBaseY.toFixed(1)}`;
+
+    return { cx, cy, points };
+  }, [displayedScore]);
 
   const handleToggle = (key) => {
     setUseLiveScanScore(false);
@@ -143,70 +196,98 @@ export default function RiskMeterSection({ activeVerificationResult, onGoToScann
                 {scoreCategory.label}
               </span>
               <span className="mv-score-pill-value" style={{ color: scoreCategory.color }}>
-                {simulatedScore} / 100
+                {displayedScore} / 100
               </span>
             </div>
 
             {/* Speedometer Gauge Visualizer */}
             <div className="mv-speedometer-wrapper">
-              <svg viewBox="0 0 300 180" className="mv-speedometer-svg">
+              <svg viewBox="0 0 320 185" className="mv-speedometer-svg">
                 <defs>
                   {/* Gauge Arc Gradient */}
                   <linearGradient id="speedometerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor="#10B981" />
-                    <stop offset="45%" stopColor="#F59E0B" />
+                    <stop offset="28%" stopColor="#10B981" />
+                    <stop offset="48%" stopColor="#F59E0B" />
+                    <stop offset="68%" stopColor="#F59E0B" />
+                    <stop offset="85%" stopColor="#EF4444" />
                     <stop offset="100%" stopColor="#EF4444" />
                   </linearGradient>
 
                   {/* Subtle Glow Filter */}
                   <filter id="gaugeGlow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor={scoreCategory.color} floodOpacity="0.4" />
+                    <feDropShadow dx="0" dy="0" stdDeviation="5" floodColor={scoreCategory.color} floodOpacity="0.45" />
+                  </filter>
+
+                  {/* Needle Drop Shadow */}
+                  <filter id="needleShadow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000000" floodOpacity="0.5" />
                   </filter>
                 </defs>
 
                 {/* Background Arc Track */}
                 <path
-                  d="M 30 150 A 120 120 0 0 1 270 150"
+                  d="M 60 145 A 100 100 0 0 1 260 145"
                   fill="none"
                   stroke="rgba(255, 255, 255, 0.08)"
-                  strokeWidth="22"
+                  strokeWidth="20"
                   strokeLinecap="round"
                 />
 
                 {/* Colored Zones Arc Track */}
                 <path
-                  d="M 30 150 A 120 120 0 0 1 270 150"
+                  d="M 60 145 A 100 100 0 0 1 260 145"
                   fill="none"
                   stroke="url(#speedometerGradient)"
-                  strokeWidth="20"
+                  strokeWidth="16"
                   strokeLinecap="round"
                   filter="url(#gaugeGlow)"
                 />
 
-                {/* Zone Indicators */}
-                <text x="35" y="172" fill="#10B981" fontSize="11" fontWeight="700">0 (SAFE)</text>
-                <text x="140" y="55" fill="#F59E0B" fontSize="11" fontWeight="700" textAnchor="middle">50 (CAUTION)</text>
-                <text x="265" y="172" fill="#EF4444" fontSize="11" fontWeight="700" textAnchor="end">100 (HIGH RISK)</text>
+                {/* Subtle Inner Dash Ring */}
+                <path
+                  d="M 76 145 A 84 84 0 0 1 244 145"
+                  fill="none"
+                  stroke="rgba(255, 255, 255, 0.12)"
+                  strokeWidth="1.5"
+                  strokeDasharray="3 5"
+                />
 
-                {/* Animated Needle */}
-                <g
-                  transform={`rotate(${needleAngle} 150 150)`}
-                  className="mv-speedometer-needle-group"
-                >
+                {/* Graduation Tick Marks */}
+                <line x1="44" y1="145" x2="52" y2="145" stroke="#10B981" strokeWidth="2.5" strokeLinecap="round" />
+                <line x1="79" y1="74" x2="85" y2="80" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="160" y1="35" x2="160" y2="29" stroke="#F59E0B" strokeWidth="2.5" strokeLinecap="round" />
+                <line x1="241" y1="74" x2="235" y2="80" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="276" y1="145" x2="268" y2="145" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
+
+                {/* Zone Indicators - Cleanly separated from arc */}
+                <text x="56" y="172" fill="#10B981" fontSize="10.5" fontWeight="800" letterSpacing="0.04em" textAnchor="middle">
+                  0 (SAFE)
+                </text>
+                <text x="160" y="20" fill="#F59E0B" fontSize="10.5" fontWeight="800" letterSpacing="0.05em" textAnchor="middle">
+                  50 (CAUTION)
+                </text>
+                <text x="264" y="172" fill="#EF4444" fontSize="10.5" fontWeight="800" letterSpacing="0.04em" textAnchor="middle">
+                  100 (HIGH RISK)
+                </text>
+
+                {/* Mathematically Anchored Needle & Hub */}
+                <g filter="url(#needleShadow)">
                   <polygon
-                    points="146,150 154,150 151,35 149,35"
+                    points={needleGeom.points}
                     fill={scoreCategory.color}
-                    className="mv-needle-poly"
+                    stroke="rgba(255, 255, 255, 0.4)"
+                    strokeWidth="0.8"
                   />
-                  <circle cx="150" cy="150" r="14" fill="#0f172a" stroke={scoreCategory.color} strokeWidth="3" />
-                  <circle cx="150" cy="150" r="6" fill={scoreCategory.color} />
+                  <circle cx={needleGeom.cx} cy={needleGeom.cy} r="13" fill="#0c1626" stroke={scoreCategory.color} strokeWidth="3" />
+                  <circle cx={needleGeom.cx} cy={needleGeom.cy} r="5" fill={scoreCategory.color} />
                 </g>
               </svg>
 
               {/* Big Score Number */}
               <div className="mv-meter-score-display">
                 <span className="mv-big-number" style={{ color: scoreCategory.color }}>
-                  {simulatedScore}
+                  {displayedScore}
                 </span>
                 <span className="mv-big-label">CONCERN INDEX</span>
               </div>
