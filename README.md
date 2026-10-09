@@ -1,16 +1,31 @@
 # MediFy — Smart Medicine Verification Platform
 
-> **"Check Your Medicine. Stay Safe."**  
-> A patient safety platform designed to inspect medicine packaging, decode pharmaceutical serialization, read packaging typography via OCR, and guide users on confirming product details with authorized health regulators.
+<div align="center">
+
+<img src="public/logo.png" alt="MediFy — Safe Medicines, Healthier India" width="380" />
+
+### Smart Medicine Verification & Packaging Safety Platform
+
+**"Check Your Medicine. Stay Safe."**
+
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-8.3-646CFF?logo=vite&logoColor=white)](https://vite.dev)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES2023+-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org)
+[![Tesseract.js](https://img.shields.io/badge/OCR-Tesseract.js-5c6bc0)](https://github.com/naptha/tesseract.js)
+[![html5-qrcode](https://img.shields.io/badge/Scanner-html5--qrcode-22c55e)](https://github.com/mebjas/html5-qrcode)
+
+[Features](#1-project-overview--core-mission) · [Tech Stack](#2-technology-stack) · [Architecture](#3-project-architecture) · [Quick Start](#5-installation--local-development) · [Safety Protocol](#10-critical-safety-disclaimer)
+
+</div>
 
 ---
 
 ## 1. Project Overview & Core Mission
 
-Substandard and falsified (SF) medical products pose grave risks to patient health globally. While counterfeiters frequently duplicate barcodes or mimic outer brand aesthetics, discrepancies often emerge in micro-typography, mismatching batch identifiers, expired shelf-life stamps, or tampered physical seals.
+Substandard and falsified (SF) medical products pose severe risks to patient health globally. While counterfeiters frequently duplicate barcodes or mimic outer brand aesthetics, discrepancies often emerge in micro-typography, mismatching batch identifiers, expired shelf-life stamps, or tampered physical seals.
 
 **MediFy** empowers patients, caregivers, and community pharmacies with browser-native tools to:
-1. **Decode Serialization Codes**: Read 2D DataMatrix (GS1), QR codes, and barcodes stamped on medicine cartons and blister packs.
+1. **Decode Serialization Codes**: Read 2D DataMatrix (GS1), QR codes, and linear barcodes stamped on medicine cartons and blister packs.
 2. **Extract Label Typography**: Use client-side Optical Character Recognition (OCR) to convert fine-print pharmaceutical labels into editable digital records.
 3. **Analyze Batch & Shelf Life**: Evaluate alphanumeric batch structures and calculate real-time expiration timelines to prevent consuming stale pharmaceuticals.
 4. **Compare with Reference Standards**: Highlight what matches standard monographs while explicitly identifying parameters that **remain unverified** by digital scans.
@@ -23,7 +38,7 @@ Substandard and falsified (SF) medical products pose grave risks to patient heal
 
 - **Framework**: [React 19](https://react.dev/) with [Vite](https://vite.dev/)
 - **Language**: JavaScript (ES2023+ JSX)
-- **Styling**: Vanilla Modern CSS using CSS custom properties (design tokens), Google Fonts (`Manrope` & `Inter`), responsive grid and flexbox architectures.
+- **Styling**: Vanilla Modern CSS using CSS custom properties (design tokens), modern typography (`Manrope` & `Inter`), responsive grid and flexbox architectures.
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Camera Barcode & QR Scanner**: [`html5-qrcode`](https://github.com/mebjas/html5-qrcode) (supporting GS1 DataMatrix, QR codes, and linear barcodes)
 - **Image OCR**: [`tesseract.js`](https://github.com/naptha/tesseract.js) (client-side optical character recognition)
@@ -34,7 +49,7 @@ Substandard and falsified (SF) medical products pose grave risks to patient heal
 
 ## 3. Project Architecture
 
-```
+```text
 Med-Verify/
 ├── index.html                           # App shell, Google Fonts (Manrope & Inter), meta tags
 ├── package.json                         # Dependencies & npm scripts
@@ -42,13 +57,16 @@ Med-Verify/
 ├── .env.example                         # Environment configuration template
 ├── README.md                            # Complete documentation & safety guide
 ├── public/
-│   ├── favicon.svg                      # Platform brand mark
-│   └── icons.svg                        # SVG symbol definitions
+│   ├── favicon.png                      # 3D MediFy icon mark
+│   ├── logo.png                         # 3D MediFy brand wordmark
+│   ├── logo-icon.png                    # Square 3D brand emblem
+│   └── logo.svg                         # Vector branding definition
 └── src/
     ├── main.jsx                         # React root bootstrap
     ├── App.jsx                          # Main view orchestration & state management
     ├── index.css                        # Design tokens, color system, typography, resets
     ├── App.css                          # Master component stylesheet, animations & responsive layout
+    ├── assets/                          # Static brand image assets
     ├── constants/
     │   ├── demoCatalog.js               # Sample reference drugs & monographs (Demo Mode)
     │   └── medicineKnowledge.js         # Regulatory registers, physical inspection checklist, disclaimers
@@ -63,11 +81,11 @@ Med-Verify/
         ├── layout/
         │   ├── Navbar.jsx               # Header with mobile drawer & quick jumps
         │   ├── Footer.jsx               # Authority links, emergency helplines, legal disclaimers
-        │   └── ContactModal.jsx         # User feedback & partnership inquiry dialog
+        │   └── ContactModal.jsx         # User feedback & inquiry dialog
         ├── home/
         │   ├── Hero.jsx                 # Value proposition, interactive medicine mockup card
         │   ├── BenefitsSection.jsx      # Practical healthcare utilities
-        │   ├── HowItWorksSection.jsx    # 3-step inspection process
+        │   ├── HowItWorksSection.jsx    # 3-step inspection process pipeline
         │   ├── SafetySection.jsx        # Boundaries of automated scans & golden safety rules
         │   └── RegulatoryRegistrySection.jsx # CDSCO, US FDA, MHRA, EMA, WHO directories
         ├── scanner/
@@ -100,9 +118,10 @@ Med-Verify/
 
 ## 5. Installation & Local Development
 
-1. Clone or navigate to the repository on the `frontend` branch:
+1. Clone or navigate to the repository:
    ```bash
-   git checkout frontend
+   git clone https://github.com/archisharma158-cmd/Med-Verify.git
+   cd Med-Verify
    ```
 
 2. Install dependencies:
@@ -209,3 +228,13 @@ No UI components require rewriting when transitioning from demo mode to live API
 - **United Kingdom**: MHRA Yellow Card: **0800 731 6789** | [Yellow Card Scheme](https://yellowcard.mhra.gov.uk)
 - **European Union**: [European Medicines Agency (EMA)](https://www.ema.europa.eu)
 - **Global**: WHO Medical Product Alerts: **rapidalert@who.int**
+
+---
+
+<div align="center">
+
+### 🛡️ Built with patient safety as the highest priority.
+
+**MediFy · Safer Medicines • Healthier India**
+
+</div>
