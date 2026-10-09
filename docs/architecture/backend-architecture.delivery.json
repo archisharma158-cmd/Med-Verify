@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "aa3751db-823b-46de-bfb3-8d866df4dd17",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\candidate-backend-architecture.json",
+  "output": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\backend-architecture.html",
+  "specification": {
+    "sha256": "f32a4f1c486c8a364c1e30f124652feceb774d814eecf00c81d3c829e8fd2227",
+    "bytes": 4960
+  },
+  "artifact": {
+    "sha256": "418cd115499986ea96eef31889821a6175467114371bff91081dd772c6533cea",
+    "bytes": 766788
+  }
+}

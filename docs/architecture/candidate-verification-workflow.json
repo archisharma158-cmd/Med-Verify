@@ -1,0 +1,191 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "MedVerify - Verification Workflow",
+    "output": "docs/architecture/verification-workflow.html",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "ui", "label": "User Interface & Input Scanners" },
+    { "id": "processing", "label": "Data Extraction & Parsing" },
+    { "id": "engine", "label": "Verification & Safety Rules" },
+    { "id": "output", "label": "Results & Actionable Reporting" }
+  ],
+  "phases": [
+    { "id": "intake_phase", "label": "1. Multi-Modal Intake", "fromCol": 0, "toCol": 1 },
+    { "id": "extraction_phase", "label": "2. Extraction & Parsing", "fromCol": 2, "toCol": 2 },
+    { "id": "verification_phase", "label": "3. Safety & Regulatory Checks", "fromCol": 3, "toCol": 4 },
+    { "id": "reporting_phase", "label": "4. Results & Reporting", "fromCol": 5, "toCol": 5 }
+  ],
+  "mainPath": [
+    "scan_input",
+    "data_extraction",
+    "verification_engine",
+    "cdsco_checks",
+    "risk_scoring",
+    "result_generation"
+  ],
+  "nodes": [
+    {
+      "id": "scan_input",
+      "lane": "ui",
+      "col": 0,
+      "type": "frontend",
+      "label": "QR / Barcode Scan",
+      "sublabel": "GS1 / Retail barcodes",
+      "tag": "Input 1",
+      "width": 150
+    },
+    {
+      "id": "ocr_input",
+      "lane": "ui",
+      "col": 1,
+      "type": "frontend",
+      "label": "Packaging OCR Photo",
+      "sublabel": "Camera image upload",
+      "tag": "Input 2",
+      "width": 150
+    },
+    {
+      "id": "manual_input",
+      "lane": "ui",
+      "col": 0,
+      "type": "frontend",
+      "label": "Manual Form Input",
+      "sublabel": "Name, Batch, Expiry form",
+      "tag": "Input 3",
+      "yOffset": 110,
+      "width": 150
+    },
+    {
+      "id": "data_extraction",
+      "lane": "processing",
+      "col": 2,
+      "type": "backend",
+      "label": "Data Extraction",
+      "sublabel": "OCR.space & GS1 Parser",
+      "tag": "Structured Payload",
+      "width": 150
+    },
+    {
+      "id": "verification_engine",
+      "lane": "engine",
+      "col": 3,
+      "type": "backend",
+      "label": "Medicine Verification",
+      "sublabel": "Database & openFDA lookup",
+      "tag": "Catalog Match",
+      "width": 150
+    },
+    {
+      "id": "cdsco_checks",
+      "lane": "engine",
+      "col": 4,
+      "type": "security",
+      "label": "CDSCO Safety Check",
+      "sublabel": "NSQ / Spurious Alert query",
+      "tag": "Safety Guardrail",
+      "width": 150
+    },
+    {
+      "id": "risk_scoring",
+      "lane": "engine",
+      "col": 4,
+      "type": "backend",
+      "label": "Risk Scoring Engine",
+      "sublabel": "Rule-based 0-100 Score",
+      "tag": "Low/Med/High Risk",
+      "yOffset": 110,
+      "width": 150
+    },
+    {
+      "id": "result_generation",
+      "lane": "output",
+      "col": 5,
+      "type": "backend",
+      "label": "Result Generator",
+      "sublabel": "Hindi/English + Voice AI",
+      "tag": "Bilingual Output",
+      "width": 150
+    },
+    {
+      "id": "suspicious_reporting",
+      "lane": "output",
+      "col": 5,
+      "type": "security",
+      "label": "Suspicious Reporting",
+      "sublabel": "Submit concern & photo",
+      "tag": "Flag Issue",
+      "yOffset": 110,
+      "width": 150
+    }
+  ],
+  "edges": [
+    {
+      "id": "scan-to-extract",
+      "from": "scan_input",
+      "to": "data_extraction",
+      "label": "Barcode payload"
+    },
+    {
+      "id": "ocr-to-extract",
+      "from": "ocr_input",
+      "to": "data_extraction",
+      "label": "OCR image payload"
+    },
+    {
+      "id": "manual-to-extract",
+      "from": "manual_input",
+      "to": "data_extraction",
+      "label": "Form payload"
+    },
+    {
+      "id": "extract-to-verify",
+      "from": "data_extraction",
+      "to": "verification_engine",
+      "label": "Extracted data",
+      "variant": "emphasis"
+    },
+    {
+      "id": "verify-to-cdsco",
+      "from": "verification_engine",
+      "to": "cdsco_checks",
+      "label": "Batch & Product check"
+    },
+    {
+      "id": "cdsco-to-risk",
+      "from": "cdsco_checks",
+      "to": "risk_scoring",
+      "label": "Alert findings"
+    },
+    {
+      "id": "risk-to-result",
+      "from": "risk_scoring",
+      "to": "result_generation",
+      "label": "Risk score",
+      "variant": "emphasis"
+    },
+    {
+      "id": "result-to-report",
+      "from": "result_generation",
+      "to": "suspicious_reporting",
+      "label": "If high concern",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Verification Workflow Steps",
+      "items": [
+        "1. Multi-Modal Intake: Scans QR/barcode, OCR packaging photo, or accepts manual form input",
+        "2. Data Extraction: Extracts product name, batch number, GTIN, manufacturing and expiry dates",
+        "3. Verification & CDSCO Checks: Queries catalog database, openFDA info, and CDSCO alert notices",
+        "4. Risk Analysis: Computes 0-100 screening risk score and categorizes into Low, Medium, or High concern",
+        "5. Bilingual Output: Generates accessible English & Hindi explanations with Sarvam voice synthesis",
+        "6. Reporting: Allows users to report suspicious packaging or flagged batches directly to admins"
+      ]
+    }
+  ]
+}
