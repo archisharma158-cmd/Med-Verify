@@ -567,12 +567,12 @@ Medify was conceptualized and built for national-level innovation hackathons to 
 
 | Contributor | Position / Key Contributions | Profile / Contact |
 |:---|:---|:---:|
-| **Sonu Sharma** | **Team Lead** • ML Model Training • PPT Preparation | — |
+| **Sonu Sharma** | **Team Lead** • ML Model Training • PPT Preparation | [sonusharma15112007@gmail.com](mailto:sonusharma15112007@gmail.com) |
 | **Archi Sharma** | **Backend Development** • System Integration • Deployment • README Documentation • Repository Maintenance | [@archisharma158-cmd](https://github.com/archisharma158-cmd) |
-| **Parth Goyal** | **Frontend Development** • Language Conversion | — |
-| **Aanchal Pandey** | **Research** • PPT Preparation | — |
-| **Aishwarya Bhatt** | **Research** | — |
-| **Dipanshu Jasrotiya** | **Research** | — |
+| **Parth Goyal** | **Frontend Development** • Language Conversion | [goyalparth61@gmail.com](mailto:goyalparth61@gmail.com) |
+| **Aanchal Pandey** | **Research** • PPT Preparation | [aanchi450@gmail.com](mailto:aanchi450@gmail.com) |
+| **Aishwarya Bhatt** | **Research** | [bhattaishwarya65@gmail.com](mailto:bhattaishwarya65@gmail.com) |
+| **Dipanshu Jasrotiya** | **Research** | [dipanshujasrotia@gmail.com](mailto:dipanshujasrotia@gmail.com) |
 
 <br />
 
