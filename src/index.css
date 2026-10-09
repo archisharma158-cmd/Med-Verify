@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MEDVERIFY DESIGN SYSTEM & FOUNDATION TOKENS
+   MEDIFY DESIGN SYSTEM & FOUNDATION TOKENS
    Aesthetic: Light Mint & White background, Deep Forest-Green typography & buttons
    Typography: Manrope (Headings), Inter (Body & UI Data)
    ========================================================================== */
@@ -52,8 +52,10 @@
   --color-demo-border: #c7d2fe;
 
   /* Typography */
+  --font-display: "Plus Jakarta Sans", "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-heading: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-handwritten: "Caveat", cursive, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Radius */

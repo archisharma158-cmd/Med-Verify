@@ -41,8 +41,8 @@ export default function ContactModal({ isOpen, onClose }) {
       <div className="mv-modal-dialog">
         <div className="mv-modal-header">
           <div className="mv-modal-title-group">
-            <img src="/logo-icon.png" alt="MedVerify" className="mv-modal-logo-icon" />
-            <h3 id="contact-modal-title">Contact MedVerify Project</h3>
+            <img src="/logo-icon.png" alt="Medify" className="mv-modal-logo-icon" />
+            <h3 id="contact-modal-title">Contact Medify Project</h3>
           </div>
           <button
             type="button"
@@ -60,10 +60,10 @@ export default function ContactModal({ isOpen, onClose }) {
               <CheckCircle2 size={48} className="text-emerald" />
               <h4>Message Received</h4>
               <p>
-                Thank you, <strong>{name}</strong>. Your feedback or inquiry regarding the MedVerify platform has been recorded locally for review.
+                Thank you, <strong>{name}</strong>. Your feedback or inquiry regarding the Medify platform has been recorded locally for review.
               </p>
               <div className="mv-privacy-assurance">
-                <small>Privacy Note: MedVerify does not store personal medical history or share user queries with advertising networks.</small>
+                <small>Privacy Note: Medify does not store personal medical history or share user queries with advertising networks.</small>
               </div>
               <button
                 type="button"

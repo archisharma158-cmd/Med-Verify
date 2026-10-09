@@ -161,7 +161,18 @@ export default function MediBot() {
           <X size={26} />
         ) : (
           <div className="mv-robot-icon-wrap">
-            <Bot size={28} />
+            <svg width="38" height="38" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 7V3" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" />
+              <circle cx="20" cy="2.5" r="2.5" fill="#4ade80" />
+              <rect x="5" y="7" width="30" height="26" rx="13" fill="#22c55e" />
+              <rect x="2" y="16" width="3" height="8" rx="1.5" fill="#16a34a" />
+              <rect x="35" y="16" width="3" height="8" rx="1.5" fill="#16a34a" />
+              <rect x="9" y="11" width="22" height="18" rx="9" fill="#091b15" />
+              <ellipse cx="15" cy="20" rx="3.2" ry="3.8" fill="#22c55e" />
+              <ellipse cx="25" cy="20" rx="3.2" ry="3.8" fill="#22c55e" />
+              <circle cx="14" cy="19" r="1.1" fill="#ffffff" />
+              <circle cx="24" cy="19" r="1.1" fill="#ffffff" />
+            </svg>
             <span className="mv-bot-pulse-ring" />
           </div>
         )}
@@ -178,7 +189,14 @@ export default function MediBot() {
           <div className="mv-bot-header">
             <div className="mv-bot-title-group">
               <div className="mv-bot-avatar-badge">
-                <Bot size={20} />
+                <svg width="24" height="24" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 7V3" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" />
+                  <circle cx="20" cy="2.5" r="2.5" fill="#4ade80" />
+                  <rect x="5" y="7" width="30" height="26" rx="13" fill="#22c55e" />
+                  <rect x="9" y="11" width="22" height="18" rx="9" fill="#091b15" />
+                  <ellipse cx="15" cy="20" rx="3.2" ry="3.8" fill="#22c55e" />
+                  <ellipse cx="25" cy="20" rx="3.2" ry="3.8" fill="#22c55e" />
+                </svg>
               </div>
               <div>
                 <div className="mv-bot-title-row">

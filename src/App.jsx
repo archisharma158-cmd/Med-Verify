@@ -60,8 +60,8 @@ export default function App() {
         {/* Hero Section */}
         <Hero onStartVerification={handleSelectTab} />
 
-        {/* Benefits Overview */}
-        <BenefitsSection />
+        {/* How It Works Process (Flows directly from Hero like the reference image) */}
+        <HowItWorksSection onGoToScanner={handleSelectTab} />
 
         {/* The Medicine Scanner Component */}
         <MedicineScanner
@@ -78,8 +78,8 @@ export default function App() {
           />
         )}
 
-        {/* How It Works Process */}
-        <HowItWorksSection onGoToScanner={handleSelectTab} />
+        {/* Benefits Overview */}
+        <BenefitsSection />
 
         {/* Safety & Limitations */}
         <SafetySection />

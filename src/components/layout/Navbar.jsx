@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { ShieldCheck, ScanLine, Menu, X, ArrowRight } from "lucide-react";
+import { Globe, User, Menu, X, ChevronDown, Check } from "lucide-react";
 
-export default function Navbar({ onOpenContact, onSelectScanTab }) {
+export default function Navbar({ onOpenContact, onSelectScanTab, currentLanguage = "en", onLanguageChange }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [activeNav, setActiveNav] = useState("home");
+  const [lang, setLang] = useState(currentLanguage);
 
   const closeMenu = () => setMobileMenuOpen(false);
 
-  const handleNavClick = (e, targetId, tabMode = null) => {
+  const handleNavClick = (e, targetId, navKey, tabMode = null) => {
     e.preventDefault();
     closeMenu();
+    setActiveNav(navKey);
 
     if (tabMode && onSelectScanTab) {
       onSelectScanTab(tabMode);
@@ -20,6 +24,14 @@ export default function Navbar({ onOpenContact, onSelectScanTab }) {
     }
   };
 
+  const handleSelectLang = (newLang) => {
+    setLang(newLang);
+    setLangMenuOpen(false);
+    if (onLanguageChange) {
+      onLanguageChange(newLang);
+    }
+  };
+
   return (
     <header className="mv-navbar" role="banner">
       <div className="mv-nav-container">
@@ -27,56 +39,115 @@ export default function Navbar({ onOpenContact, onSelectScanTab }) {
         <a
           href="#home"
           className="mv-brand"
-          onClick={(e) => handleNavClick(e, "home")}
-          aria-label="MedVerify Homepage"
+          onClick={(e) => handleNavClick(e, "home", "home")}
+          aria-label="Medify Homepage"
         >
-          <img
-            src="/logo.png"
-            alt="MedVerify - Safe Medicines, Trusted Health"
-            className="mv-brand-logo-img"
-          />
+          <div className="mv-brand-logo-wrap">
+            <div className="mv-brand-shield">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L4 5V11C4 16.52 7.42 21.61 12 22.93C16.58 21.61 20 16.52 20 11V5L12 2Z" fill="#10b981" />
+                <path d="M12 7V17M7 12H17" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className="mv-brand-text">
+              <span className="mv-brand-title">Medify</span>
+              <span className="mv-brand-tagline">Safer Medicines. Healthier India</span>
+            </div>
+          </div>
         </a>
 
         {/* Desktop Navigation Links */}
         <nav className="mv-nav-links" aria-label="Main Navigation">
-          <a href="#home" onClick={(e) => handleNavClick(e, "home")}>
-            Home
-          </a>
-          <a href="#scanner" onClick={(e) => handleNavClick(e, "scanner")}>
-            Verify Medicine
-          </a>
-          <a href="#how-it-works" onClick={(e) => handleNavClick(e, "how-it-works")}>
-            How It Works
-          </a>
-          <a href="#safety" onClick={(e) => handleNavClick(e, "safety")}>
-            Safety Information
-          </a>
-          <a href="#regulatory" onClick={(e) => handleNavClick(e, "regulatory")}>
-            Regulatory Registers
-          </a>
-          <button
-            type="button"
-            className="mv-nav-link-btn"
-            onClick={() => {
-              closeMenu();
-              onOpenContact();
-            }}
+          <a
+            href="#home"
+            className={activeNav === "home" ? "is-active" : ""}
+            onClick={(e) => handleNavClick(e, "home", "home")}
           >
-            Contact
-          </button>
+            Home
+            {activeNav === "home" && <span className="mv-nav-indicator" />}
+          </a>
+          <a
+            href="#how-it-works"
+            className={activeNav === "how-it-works" ? "is-active" : ""}
+            onClick={(e) => handleNavClick(e, "how-it-works", "how-it-works")}
+          >
+            How It Works
+            {activeNav === "how-it-works" && <span className="mv-nav-indicator" />}
+          </a>
+          <a
+            href="#safety"
+            className={activeNav === "safety" ? "is-active" : ""}
+            onClick={(e) => handleNavClick(e, "safety", "safety")}
+          >
+            Safety Guide
+            {activeNav === "safety" && <span className="mv-nav-indicator" />}
+          </a>
+          <a
+            href="#regulatory"
+            className={activeNav === "reports" ? "is-active" : ""}
+            onClick={(e) => handleNavClick(e, "regulatory", "reports")}
+          >
+            Reports
+            {activeNav === "reports" && <span className="mv-nav-indicator" />}
+          </a>
+          <a
+            href="#benefits"
+            className={activeNav === "about" ? "is-active" : ""}
+            onClick={(e) => handleNavClick(e, "benefits", "about")}
+          >
+            About
+            {activeNav === "about" && <span className="mv-nav-indicator" />}
+          </a>
         </nav>
 
-        {/* Action Button */}
+        {/* Right Nav Controls: Language + Sign In */}
         <div className="mv-nav-action-wrapper">
-          <a
-            href="#scanner"
-            className="mv-nav-cta-btn"
-            onClick={(e) => handleNavClick(e, "scanner", "scan")}
+          {/* Language Selector */}
+          <div className="mv-lang-dropdown-wrapper">
+            <button
+              type="button"
+              className="mv-lang-btn"
+              onClick={() => setLangMenuOpen(!langMenuOpen)}
+              aria-expanded={langMenuOpen}
+              aria-label="Select language"
+            >
+              <Globe size={15} />
+              <span>{lang.toUpperCase()}</span>
+              <ChevronDown size={14} className={`mv-chevron ${langMenuOpen ? "open" : ""}`} />
+            </button>
+
+            {langMenuOpen && (
+              <div className="mv-lang-menu">
+                <button
+                  type="button"
+                  className={`mv-lang-option ${lang === "en" ? "active" : ""}`}
+                  onClick={() => handleSelectLang("en")}
+                >
+                  <span>English (EN)</span>
+                  {lang === "en" && <Check size={14} />}
+                </button>
+                <button
+                  type="button"
+                  className={`mv-lang-option ${lang === "hi" ? "active" : ""}`}
+                  onClick={() => handleSelectLang("hi")}
+                >
+                  <span>हिंदी (HI)</span>
+                  {lang === "hi" && <Check size={14} />}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Sign In Button */}
+          <button
+            type="button"
+            className="mv-signin-btn"
+            onClick={onOpenContact}
+            aria-label="Sign In or Contact"
           >
-            <ScanLine size={16} />
-            <span>Verify a Medicine</span>
-            <ArrowRight size={15} />
-          </a>
+            <User size={16} />
+            <span>Sign In</span>
+          </button>
 
           {/* Mobile Menu Toggle */}
           <button
@@ -95,40 +166,52 @@ export default function Navbar({ onOpenContact, onSelectScanTab }) {
       {mobileMenuOpen && (
         <div className="mv-mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
           <nav className="mv-mobile-nav">
-            <a href="#home" onClick={(e) => handleNavClick(e, "home")}>
+            <a href="#home" onClick={(e) => handleNavClick(e, "home", "home")}>
               Home
             </a>
-            <a href="#scanner" onClick={(e) => handleNavClick(e, "scanner")}>
-              Verify Medicine
-            </a>
-            <a href="#how-it-works" onClick={(e) => handleNavClick(e, "how-it-works")}>
+            <a href="#how-it-works" onClick={(e) => handleNavClick(e, "how-it-works", "how-it-works")}>
               How It Works
             </a>
-            <a href="#safety" onClick={(e) => handleNavClick(e, "safety")}>
-              Safety Information
+            <a href="#safety" onClick={(e) => handleNavClick(e, "safety", "safety")}>
+              Safety Guide
             </a>
-            <a href="#regulatory" onClick={(e) => handleNavClick(e, "regulatory")}>
-              Regulatory Registers
+            <a href="#regulatory" onClick={(e) => handleNavClick(e, "regulatory", "reports")}>
+              Reports & Registries
             </a>
-            <button
-              type="button"
-              className="mv-mobile-link-btn"
-              onClick={() => {
-                closeMenu();
-                onOpenContact();
-              }}
-            >
-              Contact & Feedback
-            </button>
-            <div className="mv-mobile-cta-wrap">
-              <a
-                href="#scanner"
-                className="mv-btn-primary mv-w-full"
-                onClick={(e) => handleNavClick(e, "scanner", "scan")}
+            <a href="#benefits" onClick={(e) => handleNavClick(e, "benefits", "about")}>
+              About Medify
+            </a>
+
+            <div className="mv-mobile-lang-row">
+              <span className="label">Language:</span>
+              <button
+                type="button"
+                className={`mv-btn-chip ${lang === "en" ? "active" : ""}`}
+                onClick={() => handleSelectLang("en")}
               >
-                <ScanLine size={18} />
-                <span>Verify a Medicine Now</span>
-              </a>
+                English
+              </button>
+              <button
+                type="button"
+                className={`mv-btn-chip ${lang === "hi" ? "active" : ""}`}
+                onClick={() => handleSelectLang("hi")}
+              >
+                हिंदी
+              </button>
+            </div>
+
+            <div className="mv-mobile-cta-wrap">
+              <button
+                type="button"
+                className="mv-signin-btn mv-w-full"
+                onClick={() => {
+                  closeMenu();
+                  onOpenContact();
+                }}
+              >
+                <User size={18} />
+                <span>Sign In / Contact</span>
+              </button>
             </div>
           </nav>
         </div>

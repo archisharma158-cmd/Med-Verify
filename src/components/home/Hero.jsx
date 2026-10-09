@@ -1,178 +1,301 @@
-import { ShieldCheck, ScanLine, ArrowRight, CheckCircle2, LockKeyhole, Sparkles, QrCode, Calendar, Layers, Eye } from "lucide-react";
+import { useState } from "react";
+import { QrCode, Camera, Keyboard, ArrowRight, Shield, ShieldCheck, Home, History, FileText, User } from "lucide-react";
 
 export default function Hero({ onStartVerification }) {
-  const scrollToSection = (e, id, tab = null) => {
-    e.preventDefault();
-    if (tab && onStartVerification) {
+  const [phoneTab, setPhoneTab] = useState("scan");
+
+  const handleCardClick = (tab) => {
+    setPhoneTab(tab);
+    if (onStartVerification) {
       onStartVerification(tab);
     }
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    const scannerEl = document.getElementById("scanner");
+    if (scannerEl) {
+      scannerEl.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleSimulateScan = () => {
+    if (onStartVerification) {
+      onStartVerification("scan");
+    }
+    const scannerEl = document.getElementById("scanner");
+    if (scannerEl) {
+      scannerEl.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
-    <section className="mv-hero-section" id="home" aria-label="Hero Introduction">
-      <div className="mv-hero-bg-blobs">
-        <div className="mv-blob mv-blob-1" />
-        <div className="mv-blob mv-blob-2" />
+    <section className="mv-hero-section" id="home" aria-label="Medify Introduction">
+      {/* Organic Background Ambience & Botanical Foliage */}
+      <div className="mv-hero-backdrop">
+        <div className="mv-leaf-decor mv-leaf-left" aria-hidden="true" />
+        <div className="mv-leaf-decor mv-leaf-right" aria-hidden="true" />
+        <div className="mv-hero-glow-radial" />
       </div>
 
-      <div className="mv-container mv-hero-grid">
-        {/* Left Column: Copy & CTAs */}
-        <div className="mv-hero-content">
-          <div className="mv-hero-eyebrow">
-            <span className="mv-eyebrow-icon">
-              <ShieldCheck size={16} />
-            </span>
-            <span>VERIFIED PACKAGING INTELLIGENCE FOR PATIENT SAFETY</span>
+      <div className="mv-container mv-hero-content-wrapper">
+        {/* Left Column: Headlines & 3 Action Cards */}
+        <div className="mv-hero-left">
+          {/* Tag Pill */}
+          <div className="mv-hero-badge">
+            <span className="mv-badge-plus">+</span>
+            <span className="mv-badge-text">SMART MEDICINE VERIFICATION</span>
           </div>
 
-          <h1 className="mv-hero-title">
-            Know your medicine.<br />
-            <span className="text-emerald">Protect your health.</span>
+          {/* Main Headline */}
+          <h1 className="mv-hero-heading">
+            Check Your Medicine.<br />
+            <span className="mv-heading-glow">Stay Safe.</span>
           </h1>
 
-          <p className="mv-hero-description">
-            MedVerify helps patients, caregivers, and pharmacies inspect medicine packaging, read barcode serialization data, extract label typography with OCR, and identify crucial details that require confirmation with authorized health regulators.
+          {/* Subtitle */}
+          <p className="mv-hero-subheading">
+            Scan the QR code, barcode or take a photo to verify your medicine, check expiry date and get instant safety alerts.
           </p>
 
-          <div className="mv-hero-actions-row">
-            <a
-              href="#scanner"
-              className="mv-btn-primary mv-btn-hero"
-              onClick={(e) => scrollToSection(e, "scanner", "scan")}
-            >
-              <ScanLine size={19} />
-              <span>Verify a Medicine</span>
-              <ArrowRight size={17} />
-            </a>
-
-            <a
-              href="#how-it-works"
-              className="mv-btn-secondary mv-btn-hero"
-              onClick={(e) => scrollToSection(e, "how-it-works")}
-            >
-              <span>How It Works</span>
-            </a>
-          </div>
-
-          {/* Verification Method Quick Jump Chips */}
-          <div className="mv-hero-method-chips">
-            <span className="mv-quick-label">Jump to method:</span>
+          {/* 3 Action Cards Row */}
+          <div className="mv-action-cards-grid">
+            {/* Card 1: Scan QR / Barcode */}
             <button
               type="button"
-              className="mv-quick-chip"
-              onClick={(e) => scrollToSection(e, "scanner", "scan")}
+              className={`mv-action-card mv-card-scan ${phoneTab === "scan" ? "is-selected" : ""}`}
+              onClick={() => handleCardClick("scan")}
             >
-              <QrCode size={13} /> QR / Barcode
+              <div className="mv-card-icon-box mv-icon-green">
+                <QrCode size={24} />
+              </div>
+              <div className="mv-card-info">
+                <h2 className="mv-card-title">Scan QR / Barcode</h2>
+                <p className="mv-card-sub">Point your camera at the code</p>
+              </div>
+              <div className="mv-card-arrow-btn">
+                <ArrowRight size={16} />
+              </div>
             </button>
-            <button
-              type="button"
-              className="mv-quick-chip"
-              onClick={(e) => scrollToSection(e, "scanner", "photo")}
-            >
-              <Sparkles size={13} /> Photo OCR
-            </button>
-            <button
-              type="button"
-              className="mv-quick-chip"
-              onClick={(e) => scrollToSection(e, "scanner", "manual")}
-            >
-              <Layers size={13} /> Manual Entry
-            </button>
-          </div>
 
-          {/* Trust Value Badges (No false claims) */}
-          <div className="mv-hero-trust-bar">
-            <div className="mv-trust-item">
-              <CheckCircle2 size={16} />
-              <span>Transparent Data Source Attribution</span>
-            </div>
-            <div className="mv-trust-item">
-              <LockKeyhole size={16} />
-              <span>Zero Personal Health Logging</span>
-            </div>
-            <div className="mv-trust-item">
-              <ShieldCheck size={16} />
-              <span>Strict Regulatory Disclaimers</span>
-            </div>
+            {/* Card 2: Take a Photo (OCR) */}
+            <button
+              type="button"
+              className={`mv-action-card mv-card-photo ${phoneTab === "photo" ? "is-selected" : ""}`}
+              onClick={() => handleCardClick("photo")}
+            >
+              <div className="mv-card-icon-box mv-icon-blue">
+                <Camera size={24} />
+              </div>
+              <div className="mv-card-info">
+                <h2 className="mv-card-title">Take a Photo (OCR)</h2>
+                <p className="mv-card-sub">Capture the medicine packaging</p>
+              </div>
+              <div className="mv-card-arrow-btn">
+                <ArrowRight size={16} />
+              </div>
+            </button>
+
+            {/* Card 3: Enter Details Manually */}
+            <button
+              type="button"
+              className={`mv-action-card mv-card-manual ${phoneTab === "manual" ? "is-selected" : ""}`}
+              onClick={() => handleCardClick("manual")}
+            >
+              <div className="mv-card-icon-box mv-icon-purple">
+                <Keyboard size={24} />
+              </div>
+              <div className="mv-card-info">
+                <h2 className="mv-card-title">Enter Details Manually</h2>
+                <p className="mv-card-sub">Type name, batch or expiry date</p>
+              </div>
+              <div className="mv-card-arrow-btn">
+                <ArrowRight size={16} />
+              </div>
+            </button>
           </div>
         </div>
 
-        {/* Right Column: High-Tech Medicine Packaging Visual */}
-        <div className="mv-hero-visual-col">
-          <div className="mv-visual-card-wrap">
-            {/* Ambient concentric radar rings */}
-            <div className="mv-radar-ring mv-radar-outer" />
-            <div className="mv-radar-ring mv-radar-inner" />
+        {/* Right Column: 3D Smartphone Mockup + Medicine Box & Pills */}
+        <div className="mv-hero-right">
+          {/* Handwritten Annotation Callout */}
+          <div className="mv-handwritten-note">
+            <span className="mv-note-line">Scan</span>
+            <span className="mv-note-line">Check</span>
+            <span className="mv-note-line">Stay Safe</span>
+            <svg className="mv-note-arrow" viewBox="0 0 70 50" fill="none">
+              <path
+                d="M10 10 C 25 35, 45 42, 60 40"
+                stroke="rgba(255,255,255,0.75)"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                fill="none"
+              />
+              <path
+                d="M52 35 L62 40 L54 48"
+                stroke="rgba(255,255,255,0.75)"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
 
-            {/* Interactive Medicine Packaging Mockup */}
-            <div className="mv-package-mockup-card">
-              <div className="mv-mockup-header">
-                <div className="mv-rx-symbol">Rx</div>
-                <div className="mv-mockup-title-wrap">
-                  <span className="mv-mockup-brand">PARACETAMOL 650mg</span>
-                  <small className="mv-mockup-subtitle">IP / ANALGESIC & ANTIPYRETIC TABLETS</small>
-                </div>
-                <span className="mv-mockup-shield">
-                  <ShieldCheck size={18} />
-                </span>
+          <div className="mv-mockup-scene">
+            {/* Realistic 3D Smartphone */}
+            <div className="mv-phone-device">
+              {/* Phone Speaker & Camera Notch */}
+              <div className="mv-phone-notch">
+                <span className="mv-phone-camera-lens" />
+                <span className="mv-phone-speaker-slit" />
               </div>
 
-              {/* Medicine Strip / Blister graphic */}
-              <div className="mv-blister-illustration">
-                <div className="mv-blister-grid">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className="mv-tablet-cell">
-                      <div className="mv-tablet-pill" />
+              {/* Phone Screen Display */}
+              <div className="mv-phone-screen">
+                {/* Phone Status Bar */}
+                <div className="mv-phone-status-bar">
+                  <span className="time">9:41</span>
+                  <div className="status-icons">
+                    <span className="wifi">●●●</span>
+                    <span className="battery">100%</span>
+                  </div>
+                </div>
+
+                {/* Phone In-App Header */}
+                <div className="mv-phone-app-header">
+                  <div className="mv-app-brand">
+                    <span className="plus-shield">+</span>
+                    <span className="app-title">Medify</span>
+                  </div>
+                </div>
+
+                {/* Segmented Mode Selector Pills */}
+                <div className="mv-phone-tabs">
+                  <button
+                    type="button"
+                    className={`mv-phone-tab ${phoneTab === "scan" ? "active" : ""}`}
+                    onClick={() => setPhoneTab("scan")}
+                  >
+                    Scan
+                  </button>
+                  <button
+                    type="button"
+                    className={`mv-phone-tab ${phoneTab === "photo" ? "active" : ""}`}
+                    onClick={() => setPhoneTab("photo")}
+                  >
+                    Photo
+                  </button>
+                  <button
+                    type="button"
+                    className={`mv-phone-tab ${phoneTab === "manual" ? "active" : ""}`}
+                    onClick={() => setPhoneTab("manual")}
+                  >
+                    Manual
+                  </button>
+                </div>
+
+                {/* Camera Viewfinder Area */}
+                <div className="mv-phone-viewfinder">
+                  {/* Inside Camera Feed: Medicine Preview */}
+                  <div className="mv-viewfinder-feed">
+                    <div className="mv-feed-med-box">
+                      <div className="med-box-label">
+                        <strong>Paracetamol</strong>
+                        <small>Tablets IP 500 mg</small>
+                      </div>
+                      <div className="med-box-qr">
+                        {/* 2D QR Pattern */}
+                        <div className="qr-simulated-grid" />
+                      </div>
+                      <span className="med-box-brand">ABC Pharma</span>
                     </div>
-                  ))}
-                </div>
 
-                <div className="mv-packaging-details-strip">
-                  <div className="mv-strip-row">
-                    <span>B.No: <strong>DL6509B</strong></span>
-                    <span>MFG: <strong>09/2024</strong></span>
+                    {/* Laser Scan Beam */}
+                    <div className="mv-scan-laser-line" />
+
+                    {/* Viewfinder Reticle Framing Corners */}
+                    <div className="mv-reticle-corner top-left" />
+                    <div className="mv-reticle-corner top-right" />
+                    <div className="mv-reticle-corner bottom-left" />
+                    <div className="mv-reticle-corner bottom-right" />
                   </div>
-                  <div className="mv-strip-row">
-                    <span>EXP: <strong>08/2027</strong></span>
-                    <span>MRP: <strong>₹32.50</strong></span>
+
+                  {/* Alignment Prompt */}
+                  <p className="mv-reticle-instruction">
+                    Align the QR / Barcode within the frame
+                  </p>
+
+                  {/* Shutter / Trigger Button */}
+                  <div className="mv-phone-shutter-wrap">
+                    <button
+                      type="button"
+                      className="mv-phone-shutter-btn"
+                      onClick={handleSimulateScan}
+                      title="Click to start verification"
+                      aria-label="Start scanning"
+                    >
+                      <span className="shutter-inner" />
+                    </button>
                   </div>
                 </div>
 
-                {/* Simulated 2D DataMatrix barcode */}
-                <div className="mv-mockup-datamatrix">
-                  <div className="mv-datamatrix-pattern" />
-                  <small>GS1 DATAMATRIX (01)0890123(10)DL6509B(17)270831</small>
-                </div>
-              </div>
-
-              {/* Inspection Hotspots */}
-              <div className="mv-hotspot-badge mv-hotspot-batch" title="Batch number inspection">
-                <span className="mv-hotspot-pin" />
-                <div>
-                  <strong>Batch DL6509B</strong>
-                  <small>Standard Alphanumeric Code</small>
-                </div>
-              </div>
-
-              <div className="mv-hotspot-badge mv-hotspot-exp" title="Expiry date inspection">
-                <Calendar size={14} />
-                <div>
-                  <strong>EXP 08/2027</strong>
-                  <small>Shelf Life Active</small>
+                {/* Phone Bottom Navigation Bar */}
+                <div className="mv-phone-bottom-nav">
+                  <div className="nav-item active">
+                    <Home size={16} />
+                    <span>Home</span>
+                  </div>
+                  <div className="nav-item">
+                    <History size={16} />
+                    <span>History</span>
+                  </div>
+                  <div className="nav-item">
+                    <FileText size={16} />
+                    <span>Report</span>
+                  </div>
+                  <div className="nav-item">
+                    <User size={16} />
+                    <span>Profile</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Floating Live Verification Status Tag */}
-            <div className="mv-floating-tag">
-              <div className="mv-floating-icon">
-                <Eye size={18} />
+            {/* Medicine Packaging Box & Blister Pack Alongside Phone */}
+            <div className="mv-physical-medicine-cluster">
+              {/* Paracetamol Medicine Carton */}
+              <div className="mv-real-medicine-carton">
+                <div className="carton-top-accent" />
+                <div className="carton-body">
+                  <div className="carton-brand">
+                    <h3>Paracetamol</h3>
+                    <p>Tablets IP 500 mg</p>
+                  </div>
+                  <div className="carton-barcode-strip">
+                    <div className="barcode-bars" />
+                    <span className="barcode-num">890123456789</span>
+                  </div>
+                  <div className="carton-footer">
+                    <span>ABC Pharma</span>
+                    <span>10 × 10 Tablets</span>
+                  </div>
+                </div>
               </div>
-              <div>
-                <strong>Packaging Inspector</strong>
-                <small>Structural format check · Demo Ready</small>
+
+              {/* Realistic Blister Pack with White Round Tablets */}
+              <div className="mv-real-blister-strip">
+                <div className="blister-metallic-surface">
+                  <div className="blister-pills-row">
+                    <div className="blister-pill-pocket"><span className="white-pill" /></div>
+                    <div className="blister-pill-pocket"><span className="white-pill" /></div>
+                    <div className="blister-pill-pocket"><span className="white-pill" /></div>
+                    <div className="blister-pill-pocket"><span className="white-pill" /></div>
+                    <div className="blister-pill-pocket"><span className="white-pill" /></div>
+                  </div>
+                  <div className="blister-pills-row">
+                    <div className="blister-pill-pocket"><span className="white-pill" /></div>
+                    <div className="blister-pill-pocket"><span className="white-pill" /></div>
+                    <div className="blister-pill-pocket"><span className="white-pill" /></div>
+                    <div className="blister-pill-pocket"><span className="white-pill" /></div>
+                    <div className="blister-pill-pocket"><span className="white-pill" /></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

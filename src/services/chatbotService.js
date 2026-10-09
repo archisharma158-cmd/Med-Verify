@@ -38,14 +38,14 @@ export const SUGGESTED_QUESTIONS = {
     "What is a batch number?",
     "How can I spot fake packaging?",
     "Where do I report suspect medicine?",
-    "Can MedVerify guarantee 100% authenticity?"
+    "Can Medify guarantee 100% authenticity?"
   ],
   hi: [
     "एक्सपायरी डेट कैसे पढ़ें?",
     "बैच नंबर क्या होता है?",
     "नकली पैकेजिंग कैसे पहचानें?",
     "संदिग्ध दवा की शिकायत कहाँ करें?",
-    "क्या MedVerify 100% असली होने की गारंटी दे सकता है?"
+    "क्या Medify 100% असली होने की गारंटी दे सकता है?"
   ]
 };
 
@@ -97,7 +97,7 @@ function getEnglishResponse(query) {
       "1. Verification from an authorized licensed distributor/pharmacy.\n" +
       "2. Official laboratory chemical assay analysis.\n" +
       "3. Checking the batch release status with the manufacturer or regulatory body (such as CDSCO or the FDA).\n\n" +
-      "MedVerify helps you spot discrepancies and gather packaging details for verification, but never replaces physical pharmacist inspection." +
+      "Medify helps you spot discrepancies and gather packaging details for verification, but never replaces physical pharmacist inspection." +
       SAFETY_GUARDRAIL_NOTE_EN
     );
   }
@@ -182,7 +182,7 @@ function getEnglishResponse(query) {
   // Default helpful response
   return (
     `Thank you for asking about "${query}".\n\n` +
-    "As MedVerify's safety guide, I can assist you with:\n" +
+    "As Medify's safety guide, I can assist you with:\n" +
     "• Understanding batch and lot numbers stamped on medicine blisters.\n" +
     "• Identifying manufacturing and expiry date codes.\n" +
     "• Spotting physical packaging discrepancies and counterfeit red flags.\n" +

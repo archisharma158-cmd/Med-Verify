@@ -1,76 +1,130 @@
-import { ScanLine, FileCheck, ShieldCheck, ArrowRight } from "lucide-react";
+import { QrCode, FileText, ShieldCheck, BarChart3, Database, Users, Heart, ArrowRight } from "lucide-react";
 
 export default function HowItWorksSection({ onGoToScanner }) {
   const steps = [
     {
-      number: "01",
-      icon: <ScanLine size={26} />,
-      title: "Scan or Enter Medicine Details",
-      description:
-        "Select your preferred inspection method: scan the 2D DataMatrix code with your camera, upload a photo of the blister packaging for OCR extraction, or enter known details manually.",
-      tip: "Ensure good lighting and avoid camera glare on foil strips."
+      num: 1,
+      icon: <QrCode size={26} />,
+      title: "Scan or Enter",
+      desc: "Scan QR/barcode, take a photo or enter details manually.",
+      mode: "scan"
     },
     {
-      number: "02",
-      icon: <FileCheck size={26} />,
-      title: "Review Extracted Information",
-      description:
-        "Inspect the structured output: verify extracted product name, candidate batch ID, and calculated shelf life status. Edit any OCR misreadings directly on the interface.",
-      tip: "Double-check that the inner blister strip matches the outer box."
+      num: 2,
+      icon: <FileText size={26} />,
+      title: "Extract Information",
+      desc: "We read key details like medicine name, batch, expiry etc.",
+      mode: "photo"
     },
     {
-      number: "03",
+      num: 3,
       icon: <ShieldCheck size={26} />,
-      title: "Confirm with a Trusted Source",
-      description:
-        "Review the physical packaging safety checklist and compare details against official regulatory directories (CDSCO, US FDA Orange Book) or consult your licensed pharmacist if anything appears suspect.",
-      tip: "Never ingest medication if packaging shows signs of tampering."
+      title: "Verify & Analyze",
+      desc: "We check with trusted databases and look for alerts or duplicate scans.",
+      mode: "manual"
+    },
+    {
+      num: 4,
+      icon: <BarChart3 size={26} />,
+      title: "Get Result",
+      desc: "See risk level (Low / Medium / High) with details and next steps.",
+      mode: "scan"
     }
   ];
 
+  const trustHighlights = [
+    {
+      icon: <ShieldCheck size={28} className="text-forest" />,
+      title: "Quick Verification",
+      subtitle: "Get results in seconds"
+    },
+    {
+      icon: <Database size={28} className="text-forest" />,
+      title: "Trusted Sources",
+      subtitle: "CDSCO, NSQ and more"
+    },
+    {
+      icon: <Users size={28} className="text-forest" />,
+      title: "Hindi + English",
+      subtitle: "Easy for everyone"
+    },
+    {
+      icon: <Heart size={28} className="text-forest" />,
+      title: "Made for Safer Communities",
+      subtitle: "Awareness for a healthier India"
+    }
+  ];
+
+  const handleStepClick = (mode) => {
+    if (onGoToScanner) {
+      onGoToScanner(mode);
+    }
+    const scannerEl = document.getElementById("scanner");
+    if (scannerEl) {
+      scannerEl.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <section className="mv-how-section" id="how-it-works" aria-label="How MedVerify Works">
+    <section className="mv-how-section" id="how-it-works" aria-label="How Medify Works">
       <div className="mv-container">
-        <div className="mv-section-heading">
-          <span className="mv-section-eyebrow">TRANSPARENT 3-STEP PROCESS</span>
-          <h2>How MedVerify Works</h2>
-          <p>
-            A simple, responsible workflow that pairs browser technology with human vigilance to safeguard your health.
-          </p>
-        </div>
+        {/* Curving Light Mint Container */}
+        <div className="mv-how-card">
+          {/* Section Heading */}
+          <div className="mv-how-header">
+            <h2 className="mv-how-title">How Medify Works?</h2>
+          </div>
 
-        <div className="mv-steps-grid">
-          {steps.map((step, idx) => (
-            <div key={idx} className="mv-step-card">
-              <div className="mv-step-top">
-                <span className="mv-step-num-badge">{step.number}</span>
-                <div className="mv-step-icon-wrap">{step.icon}</div>
+          {/* 4 Steps Horizontal Flow */}
+          <div className="mv-how-steps-flow">
+            {steps.map((step, idx) => (
+              <div key={step.num} className="mv-how-step-col">
+                <div
+                  className="mv-how-step-item"
+                  onClick={() => handleStepClick(step.mode)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === "Enter" && handleStepClick(step.mode)}
+                >
+                  {/* Step Number Badge */}
+                  <span className="mv-step-circle-badge">{step.num}</span>
+
+                  {/* Icon Card Box */}
+                  <div className="mv-step-icon-box">
+                    {step.icon}
+                  </div>
+
+                  {/* Step Text Info */}
+                  <div className="mv-step-text-wrap">
+                    <h3 className="mv-step-title">{step.title}</h3>
+                    <p className="mv-step-desc">{step.desc}</p>
+                  </div>
+                </div>
+
+                {/* Arrow Connector between steps */}
+                {idx < steps.length - 1 && (
+                  <div className="mv-step-arrow-connector" aria-hidden="true">
+                    <ArrowRight size={20} />
+                  </div>
+                )}
               </div>
+            ))}
+          </div>
 
-              <h3>{step.title}</h3>
-              <p className="mv-step-desc">{step.description}</p>
-
-              <div className="mv-step-tip">
-                <strong>Pro Tip:</strong> {step.tip}
+          {/* Bottom Trust Highlights Row */}
+          <div className="mv-trust-bar-bottom">
+            {trustHighlights.map((hl, i) => (
+              <div key={i} className="mv-trust-bar-col">
+                <div className="mv-trust-icon-wrap">
+                  {hl.icon}
+                </div>
+                <div className="mv-trust-text-wrap">
+                  <h4 className="mv-trust-title">{hl.title}</h4>
+                  <p className="mv-trust-sub">{hl.subtitle}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mv-how-cta-center">
-          <a
-            href="#scanner"
-            className="mv-btn-primary"
-            onClick={(e) => {
-              e.preventDefault();
-              if (onGoToScanner) onGoToScanner("scan");
-              const el = document.getElementById("scanner");
-              if (el) el.scrollIntoView({ behavior: "smooth" });
-            }}
-          >
-            <span>Try the Inspection Tools Now</span>
-            <ArrowRight size={16} />
-          </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -11,16 +11,16 @@ export default function Footer({ onOpenContact }) {
             <a
               href="#home"
               className="mv-brand mv-footer-brand"
-              aria-label="MedVerify Homepage"
+              aria-label="Medify Homepage"
             >
               <img
                 src="/logo.png"
-                alt="MedVerify - Safe Medicines, Trusted Health"
+                alt="Medify - Safe Medicines, Healthier India"
                 className="mv-footer-logo-img"
               />
             </a>
             <p className="mv-footer-mission">
-              &quot;Know your medicine. Protect your health.&quot; MedVerify is a technology demonstration platform designed to assist patients and caregivers in reading medicine packaging codes and identifying details that need verification from trusted sources.
+              &quot;Check Your Medicine. Stay Safe.&quot; Medify is a smart medicine verification platform designed to assist patients and caregivers in reading medicine packaging codes, checking expiry dates, and identifying details that need verification from trusted sources.
             </p>
             <div className="mv-demo-pill">
               <span>● Educational Demonstration Platform · Zero Unverified Claims</span>
@@ -98,7 +98,7 @@ export default function Footer({ onOpenContact }) {
           <div className="mv-disclaimer-text">
             <strong>CRITICAL MEDICINE SAFETY DISCLAIMER:</strong>
             <p>
-              MedVerify is an educational packaging inspection tool. Scanning a barcode or performing optical character recognition (OCR) on medicine packaging does NOT prove that a medicine is authentic, genuine, medically safe, correctly formulated, or regulator-approved. Counterfeiters can duplicate physical packaging and barcodes. Always purchase prescription medications through licensed pharmacies, check physical tamper seals, and consult a qualified medical doctor or pharmacist before consumption.
+              Medify is an educational packaging inspection tool. Scanning a barcode or performing optical character recognition (OCR) on medicine packaging does NOT prove that a medicine is authentic, genuine, medically safe, correctly formulated, or regulator-approved. Counterfeiters can duplicate physical packaging and barcodes. Always purchase prescription medications through licensed pharmacies, check physical tamper seals, and consult a qualified medical doctor or pharmacist before consumption.
             </p>
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function Footer({ onOpenContact }) {
         {/* Bottom Bar */}
         <div className="mv-footer-bottom">
           <p>
-            © {new Date().getFullYear()} MedVerify. Built with patient safety as the highest priority.
+            © {new Date().getFullYear()} Medify. Built with patient safety as the highest priority.
           </p>
           <div className="mv-footer-bottom-links">
             <span>Privacy-Conscious · No Server Storage of Patient Medicine Data</span>
