@@ -251,12 +251,12 @@
   object-fit: contain;
   display: block;
   transition: transform var(--transition-fast), filter var(--transition-fast);
-  filter: drop-shadow(0 2px 10px rgba(56, 189, 248, 0.25));
+  filter: drop-shadow(0 2px 10px rgba(16, 185, 129, 0.3));
 }
 
 .mv-brand:hover .mv-brand-logo-img {
   transform: translateY(-1px) scale(1.03);
-  filter: drop-shadow(0 4px 18px rgba(56, 189, 248, 0.45));
+  filter: drop-shadow(0 4px 18px rgba(16, 185, 129, 0.55));
 }
 
 .mv-footer-brand {
@@ -272,12 +272,12 @@
   object-fit: contain;
   display: block;
   transition: transform var(--transition-fast), filter var(--transition-fast);
-  filter: drop-shadow(0 4px 16px rgba(34, 211, 238, 0.35));
+  filter: drop-shadow(0 4px 16px rgba(16, 185, 129, 0.35));
 }
 
 .mv-footer-brand:hover .mv-footer-logo-img {
   transform: translateY(-1px) scale(1.03);
-  filter: drop-shadow(0 6px 20px rgba(59, 130, 246, 0.5));
+  filter: drop-shadow(0 6px 20px rgba(16, 185, 129, 0.6));
 }
 
 .mv-modal-logo-icon {
