@@ -1,19 +1,27 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:8FFFD1,40:22DDA0,75:008F68,100:063F36&height=230&section=header&text=MEDIFY&fontSize=62&fontColor=FFFFFF&fontAlignY=38&desc=Smart%20Medicine%20Verification%20%26%20Health%20Safety%20Awareness&descSize=18&descAlignY=58&descAlign=50&animation=fadeIn" width="100%" alt="Medify Header Banner" />
+  <img
+    src="https://capsule-render.vercel.app/api?type=waving&amp;color=0:8FFFD1,40:22DDA0,75:008F68,100:063F36&amp;height=230&amp;section=header&amp;text=MEDIFY&amp;fontSize=62&amp;fontColor=FFFFFF&amp;fontAlignY=38&amp;animation=fadeIn"
+    width="100%"
+    alt="Medify Header Banner"
+  />
 
-<br /><br />
+  <br />
 
-<img src="docs/readme-assets/medify-logo.png" alt="MEDIFY — Smart Medicine Verification System" width="340" />
+  <img
+    src="docs/readme-assets/medify-logo.png"
+    alt="Medify Logo"
+    width="340"
+  />
 
-<br /><br />
+  <br />
 
-<a href="https://readme-typing-svg.demolab.com">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=19&duration=2500&pause=800&color=00C878&center=true&vCenter=true&width=700&lines=Scanning+medicine+information...;Extracting+packaging+details...;Checking+expiry+dates...;Matching+regulatory+safety+alerts...;Evaluating+medicine+risk+signals...;Generating+accessible+explanations...;MEDIFY+%E2%80%A2+SAFETY+AWARENESS" alt="Medify Animated Typing Text" />
-</a>
+  <img
+    src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&amp;weight=600&amp;size=19&amp;duration=2500&amp;pause=800&amp;color=00C878&amp;center=true&amp;vCenter=true&amp;width=700&amp;lines=Scanning+medicine+information...;Checking+expiry+dates...;Matching+regulatory+alerts...;Evaluating+medicine+risk...;Making+Healthcare+Accessible..."
+    alt="Medify Animated Typing Text"
+  />
 
-<br /><br />
-
+</div>
 [![Live Showcase Site](https://img.shields.io/badge/🌐_Live_Showcase-Medify_Site-00D9AA?style=for-the-badge&logo=googlechrome&logoColor=black)](https://archisharma158-cmd.github.io/Med-Verify/)
 [![Interactive Architecture](https://img.shields.io/badge/📐_Interactive-Architecture_Hub-00A86B?style=for-the-badge&logo=diagramsdotnet&logoColor=white)](#-system-architecture)
 [![Documentation](https://img.shields.io/badge/📖_View-Documentation-006B45?style=for-the-badge&logo=github&logoColor=white)](#-about-medify)
