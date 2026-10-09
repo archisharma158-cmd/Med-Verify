@@ -291,8 +291,7 @@ class MLRiskEngine(RiskScoringEngine):
     """ML-based risk engine that loads trained models.
     
     Supports:
-    - .joblib files (scikit-learn, XGBoost)
-    - .pkl files (pickle-based models)
+    - .joblib / .pkl files (scikit-learn Pipelines, Random Forest, Gradient Boosting)
     - .onnx files (ONNX Runtime)
     """
 
@@ -300,6 +299,15 @@ class MLRiskEngine(RiskScoringEngine):
         self._model_path = model_path
         self._model_version = model_version
         self._model = None
+        self._feature_keys = [
+            "is_expired", "is_near_expiry", "expiry_unknown",
+            "manufacturer_confirmed", "manufacturer_name_only",
+            "manufacturer_mismatch", "manufacturer_no_data",
+            "has_strong_alert", "has_partial_alert", "alert_count",
+            "duplicate_anomaly", "duplicate_minor", "duplicate_score",
+            "packaging_mismatch", "packaging_damage",
+            "missing_medicine_name", "missing_batch", "missing_expiry",
+        ]
         self._load_model()
 
     def _load_model(self):
@@ -309,13 +317,14 @@ class MLRiskEngine(RiskScoringEngine):
 
         ext = os.path.splitext(self._model_path)[1].lower()
 
-        if ext == ".joblib":
+        if ext in (".joblib", ".pkl"):
             import joblib
-            self._model = joblib.load(self._model_path)
-        elif ext == ".pkl":
-            import pickle
-            with open(self._model_path, "rb") as f:
-                self._model = pickle.load(f)
+            try:
+                self._model = joblib.load(self._model_path)
+            except Exception:
+                import pickle
+                with open(self._model_path, "rb") as f:
+                    self._model = pickle.load(f)
         elif ext == ".onnx":
             import onnxruntime as ort
             self._model = ort.InferenceSession(self._model_path)
@@ -334,47 +343,72 @@ class MLRiskEngine(RiskScoringEngine):
 
     def extract_features(self, verification_data: dict) -> dict:
         """Extract features in the same schema as rule-based engine."""
-        # Use the same feature extraction as rule-based for compatibility
         rule_engine = RuleBasedRiskEngine()
         return rule_engine.extract_features(verification_data)
 
     def predict(self, features: dict) -> dict:
-        """Run ML model prediction."""
+        """Run ML model prediction with safety guardrails and fallback."""
         import numpy as np
+        import pandas as pd
 
-        # Convert features to array (order must match training)
-        feature_keys = [
-            "is_expired", "is_near_expiry", "expiry_unknown",
-            "manufacturer_confirmed", "manufacturer_name_only",
-            "manufacturer_mismatch", "manufacturer_no_data",
-            "has_strong_alert", "has_partial_alert", "alert_count",
-            "duplicate_anomaly", "duplicate_minor", "duplicate_score",
-            "packaging_mismatch", "packaging_damage",
-            "missing_medicine_name", "missing_batch", "missing_expiry",
-        ]
-        feature_array = np.array([[
-            float(features.get(k, 0)) for k in feature_keys
-        ]])
+        feature_df = pd.DataFrame([{
+            k: float(features.get(k, 0.0) or 0.0) for k in self._feature_keys
+        }])[self._feature_keys]
 
         ext = os.path.splitext(self._model_path)[1].lower()
 
         if ext == ".onnx":
             input_name = self._model.get_inputs()[0].name
-            result = self._model.run(None, {input_name: feature_array.astype(np.float32)})
-            score = float(result[0][0]) * 100
+            result = self._model.run(None, {input_name: feature_df.values.astype(np.float32)})
+            calculated_score = float(result[0][0]) * 100
         else:
             if hasattr(self._model, "predict_proba"):
-                proba = self._model.predict_proba(feature_array)
-                score = float(proba[0][1]) * 100  # Probability of "risky" class
+                proba = self._model.predict_proba(feature_df)[0]
+                if len(proba) == 3:
+                    calculated_score = float(proba[0] * 10.0 + proba[1] * 42.0 + proba[2] * 82.0)
+                else:
+                    calculated_score = float(proba[1]) * 100
             else:
-                pred = self._model.predict(feature_array)
-                score = float(pred[0]) * 100
+                pred = self._model.predict(feature_df)
+                calculated_score = float(pred[0]) * 100
 
-        score = max(0.0, min(100.0, score))
+        # Independent deterministic safety guardrails (expiry, official CDSCO alerts)
+        contributing_factors: list[str] = []
+        if features.get("is_expired"):
+            calculated_score = max(calculated_score, 65.0)
+            contributing_factors.append("expired")
+        if features.get("is_near_expiry"):
+            contributing_factors.append("near_expiry")
+        if features.get("has_strong_alert"):
+            calculated_score = max(calculated_score, 70.0)
+            contributing_factors.append("regulatory_alert_strong")
+        elif features.get("has_partial_alert"):
+            contributing_factors.append("regulatory_alert_partial")
+        if features.get("manufacturer_mismatch"):
+            calculated_score = max(calculated_score, 62.0)
+            contributing_factors.append("manufacturer_mismatch")
+        elif features.get("manufacturer_no_data"):
+            contributing_factors.append("manufacturer_no_data")
+        if features.get("duplicate_anomaly"):
+            calculated_score = max(calculated_score, 65.0)
+            contributing_factors.append("duplicate_anomaly")
+        elif features.get("duplicate_minor"):
+            contributing_factors.append("duplicate_minor")
+        if features.get("packaging_mismatch"):
+            contributing_factors.append("packaging_mismatch")
+        if features.get("packaging_damage"):
+            contributing_factors.append("packaging_damage")
 
-        if score <= 25:
+        uncertainty_count = sum(1 for k in ["missing_medicine_name", "missing_batch", "missing_expiry"] if features.get(k))
+        if uncertainty_count > 0:
+            contributing_factors.append("data_uncertainty")
+
+        # Clamp to 0-100
+        score = max(0.0, min(100.0, calculated_score))
+
+        if score <= 25.0:
             category = "low"
-        elif score <= 60:
+        elif score <= 60.0:
             category = "medium"
         else:
             category = "high"
@@ -382,38 +416,56 @@ class MLRiskEngine(RiskScoringEngine):
         return {
             "score": round(score, 1),
             "category": category,
-            "contributing_factors": [],  # ML models may not provide factor breakdown
+            "contributing_factors": contributing_factors,
             "method": self.method,
             "model_version": self.model_version,
-            "validated_probability": True,
+            "validated_probability": False,
         }
 
     def explain(self, features: dict, prediction: dict) -> dict:
-        """Fallback to rule-based explanations until SHAP/LIME integration."""
+        """Provide human-readable explanations in English and Hindi."""
         rule_engine = RuleBasedRiskEngine()
-        rule_pred = rule_engine.predict(features)
-        return rule_engine.explain(features, rule_pred)
+        return rule_engine.explain(features, prediction)
 
 
-# ══════════════════════════════════════════════════
-#  Engine Factory
-# ══════════════════════════════════════════════════
+# ── Engine Factory ──────────────────────────────────────────────────────────
 
-def get_risk_engine() -> RiskScoringEngine:
+_cached_engine: Optional[RiskScoringEngine] = None
+
+
+def get_risk_engine(force_refresh: bool = False, force_rule_based: bool = False) -> RiskScoringEngine:
     """Get the appropriate risk scoring engine.
     
-    Uses ML model if configured and available, otherwise falls back to rule-based.
+    Caches the ML model in memory at startup. Falls back to rule-based engine on error.
     """
-    settings = get_settings()
+    global _cached_engine
+    if not force_refresh and not force_rule_based and _cached_engine is not None:
+        return _cached_engine
 
-    if settings.RISK_MODEL_PATH and os.path.exists(settings.RISK_MODEL_PATH):
-        try:
-            return MLRiskEngine(
-                model_path=settings.RISK_MODEL_PATH,
-                model_version=settings.RISK_MODEL_VERSION,
-            )
-        except Exception as e:
-            logger.error("ml_model_load_failed", error=str(e))
-            logger.info("falling_back_to_rule_based")
+    if force_rule_based:
+        return RuleBasedRiskEngine()
+
+    settings = get_settings()
+    model_path = settings.RISK_MODEL_PATH
+
+    if model_path:
+        # Resolve relative path to project root
+        if not os.path.isabs(model_path):
+            project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            candidate = os.path.join(project_root, model_path)
+            if os.path.exists(candidate):
+                model_path = candidate
+
+        if os.path.exists(model_path):
+            try:
+                engine = MLRiskEngine(
+                    model_path=model_path,
+                    model_version=settings.RISK_MODEL_VERSION or "ml-v1",
+                )
+                _cached_engine = engine
+                return engine
+            except Exception as e:
+                logger.error("ml_model_load_failed", error=str(e))
+                logger.info("falling_back_to_rule_based")
 
     return RuleBasedRiskEngine()

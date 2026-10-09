@@ -1,4 +1,4 @@
-"""Barcode and QR code decoding service using pyzbar + OpenCV."""
+﻿"""Barcode and QR code decoding service using pyzbar + OpenCV."""
 from __future__ import annotations
 
 import io
@@ -8,7 +8,10 @@ from typing import Any
 import cv2
 import numpy as np
 from PIL import Image
-from pyzbar.pyzbar import decode as pyzbar_decode
+try:
+    from pyzbar.pyzbar import decode as pyzbar_decode
+except (ImportError, FileNotFoundError, OSError):
+    pyzbar_decode = None
 
 from app.core.logging import get_logger
 from app.schemas.schemas import BarcodeDecodeResponse
@@ -145,7 +148,7 @@ async def decode_barcode_image(image_bytes: bytes) -> BarcodeDecodeResponse:
             if raw_expiry:
                 expiry_date = _parse_gs1_date(raw_expiry)
         elif barcode_type in ("EAN13", "EAN8", "UPCA", "UPCE"):
-            # Standard retail barcodes – the number itself may be a GTIN
+            # Standard retail barcodes â€“ the number itself may be a GTIN
             gtin = raw_payload
             parsed_fields["gtin"] = gtin
             notes.append(
@@ -187,3 +190,4 @@ async def decode_barcode_image(image_bytes: bytes) -> BarcodeDecodeResponse:
             success=False,
             notes=[f"Barcode decoding failed: {str(e)}"],
         )
+

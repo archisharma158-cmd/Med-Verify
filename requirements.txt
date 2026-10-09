@@ -54,5 +54,6 @@ pandas==2.2.3
 numpy==2.2.1
 
 # ── ML Model Loading (future) ──
-joblib==1.4.2
+scikit-learn>=1.4.0
+joblib>=1.3.0
 # onnxruntime==1.20.1  # Uncomment when ONNX models are ready

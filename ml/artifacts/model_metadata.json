@@ -1,0 +1,176 @@
+{
+  "model_name": "medicine_risk_model",
+  "algorithm": "RandomForestClassifier",
+  "model_version": "ml-v1",
+  "framework": "scikit-learn",
+  "pipeline_steps": [
+    "StandardScaler",
+    "RandomForestClassifier"
+  ],
+  "hyperparameters": {
+    "n_estimators": 120,
+    "max_depth": 8,
+    "min_samples_split": 4,
+    "min_samples_leaf": 2,
+    "class_weight": "balanced",
+    "random_state": 42
+  },
+  "feature_schema_version": "1.0",
+  "feature_count": 18,
+  "feature_names": [
+    "is_expired",
+    "is_near_expiry",
+    "expiry_unknown",
+    "manufacturer_confirmed",
+    "manufacturer_name_only",
+    "manufacturer_mismatch",
+    "manufacturer_no_data",
+    "has_strong_alert",
+    "has_partial_alert",
+    "alert_count",
+    "duplicate_anomaly",
+    "duplicate_minor",
+    "duplicate_score",
+    "packaging_mismatch",
+    "packaging_damage",
+    "missing_medicine_name",
+    "missing_batch",
+    "missing_expiry"
+  ],
+  "feature_data_types": {
+    "is_expired": "float64",
+    "is_near_expiry": "float64",
+    "expiry_unknown": "float64",
+    "manufacturer_confirmed": "float64",
+    "manufacturer_name_only": "float64",
+    "manufacturer_mismatch": "float64",
+    "manufacturer_no_data": "float64",
+    "has_strong_alert": "float64",
+    "has_partial_alert": "float64",
+    "alert_count": "float64",
+    "duplicate_anomaly": "float64",
+    "duplicate_minor": "float64",
+    "duplicate_score": "float64",
+    "packaging_mismatch": "float64",
+    "packaging_damage": "float64",
+    "missing_medicine_name": "float64",
+    "missing_batch": "float64",
+    "missing_expiry": "float64"
+  },
+  "feature_importances": {
+    "is_expired": 0.0899,
+    "is_near_expiry": 0.0828,
+    "expiry_unknown": 0.0178,
+    "manufacturer_confirmed": 0.1101,
+    "manufacturer_name_only": 0.0332,
+    "manufacturer_mismatch": 0.0565,
+    "manufacturer_no_data": 0.0466,
+    "has_strong_alert": 0.0663,
+    "has_partial_alert": 0.0564,
+    "alert_count": 0.0525,
+    "duplicate_anomaly": 0.0614,
+    "duplicate_minor": 0.032,
+    "duplicate_score": 0.0877,
+    "packaging_mismatch": 0.0603,
+    "packaging_damage": 0.095,
+    "missing_medicine_name": 0.0,
+    "missing_batch": 0.0489,
+    "missing_expiry": 0.0027
+  },
+  "label_mapping": {
+    "0": "low",
+    "1": "medium",
+    "2": "high"
+  },
+  "score_interpretation": {
+    "low": {
+      "score_range": "0.0 - 25.0",
+      "description": "Verification checks passed. No regulatory alert, valid expiry, confirmed manufacturer."
+    },
+    "medium": {
+      "score_range": "25.1 - 60.0",
+      "description": "Cautionary indicators: near expiry, packaging irregularity, or incomplete metadata."
+    },
+    "high": {
+      "score_range": "60.1 - 100.0",
+      "description": "High alert: expired medicine, CDSCO NSQ recall match, duplicate scan clone, or manufacturer mismatch."
+    }
+  },
+  "training_details": {
+    "total_samples": 3200,
+    "train_samples": 2560,
+    "test_samples": 640,
+    "class_distribution": {
+      "low": 1440,
+      "medium": 800,
+      "high": 960
+    }
+  },
+  "evaluation_metrics": {
+    "test_accuracy": 1.0,
+    "f1_macro": 1.0,
+    "f1_weighted": 1.0,
+    "cv_accuracy_mean": 1.0,
+    "cv_accuracy_std": 0.0,
+    "classification_report": {
+      "low": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 288.0
+      },
+      "medium": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 160.0
+      },
+      "high": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 192.0
+      },
+      "accuracy": 1.0,
+      "macro avg": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 640.0
+      },
+      "weighted avg": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 640.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        288,
+        0,
+        0
+      ],
+      [
+        0,
+        160,
+        0
+      ],
+      [
+        0,
+        0,
+        192
+      ]
+    ]
+  },
+  "runtime_environment": {
+    "python_version": "3.14",
+    "libraries": {
+      "scikit-learn": "1.9.1",
+      "numpy": "2.5.3",
+      "pandas": "3.0.6",
+      "joblib": "1.6.0"
+    }
+  },
+  "safety_disclaimer": "This ML model outputs screening risk scores based on laboratory/regulatory feature correlations. It does not replace professional pharmacist judgment or clinical regulatory laboratory testing."
+}
