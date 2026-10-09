@@ -6,7 +6,7 @@ export default function BenefitsSection() {
       icon: <FileSearch size={24} />,
       title: "Decodes Complex Label Typography",
       description:
-        "Medicine packaging often uses tiny, condensed fonts that are difficult to read under poor lighting. Medify extracts and magnifies brand names, active pharmaceutical ingredients (APIs), and manufacturer addresses."
+        "Medicine packaging often uses tiny, condensed fonts that are difficult to read under poor lighting. MediFy extracts and magnifies brand names, active pharmaceutical ingredients (APIs), and manufacturer addresses."
     },
     {
       icon: <Clock size={24} />,
@@ -24,7 +24,7 @@ export default function BenefitsSection() {
       icon: <ShieldAlert size={24} />,
       title: "Identifies What Demands Confirmation",
       description:
-        "Rather than giving a false sense of security, Medify explicitly highlights what cannot be proven by a barcode or photograph alone, equipping you with an objective checklist for your pharmacist."
+        "Rather than giving a false sense of security, MediFy explicitly highlights what cannot be proven by a barcode or photograph alone, equipping you with an objective checklist for your pharmacist."
     }
   ];
 
@@ -35,7 +35,7 @@ export default function BenefitsSection() {
           <span className="mv-section-eyebrow">PRACTICAL CLINICAL UTILITY</span>
           <h2>Empowering Safer Medicine Decisions</h2>
           <p>
-            Medify is built to promote packaging literacy and patient vigilance. Here is how our tools support your everyday healthcare safety checks.
+            MediFy is built to promote packaging literacy and patient vigilance. Here is how our tools support your everyday healthcare safety checks.
           </p>
         </div>
 

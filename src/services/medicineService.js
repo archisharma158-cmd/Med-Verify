@@ -423,7 +423,7 @@ export function formatVerificationReport(result) {
   const { extractedData, catalogMatch, expiryAnalysis, batchAnalysis } = result;
 
   return `========================================
-MEDIFY — PACKAGING INSPECTION REPORT
+MediFy — PACKAGING INSPECTION REPORT
 Date: ${new Date(result.timestamp).toLocaleString()}
 Status: ${result.statusBadgeLabel}
 ========================================

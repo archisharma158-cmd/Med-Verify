@@ -40,11 +40,11 @@ export default function Navbar({ onOpenContact, onSelectScanTab, currentLanguage
           href="#home"
           className="mv-brand"
           onClick={(e) => handleNavClick(e, "home", "home")}
-          aria-label="Medify Homepage"
+          aria-label="MediFy Homepage"
         >
           <img
             src="/logo.png"
-            alt="Medify - Safe Medicines, Healthier India"
+            alt="MediFy - Safe Medicines, Healthier India"
             className="mv-brand-logo-img"
           />
         </a>
@@ -172,7 +172,7 @@ export default function Navbar({ onOpenContact, onSelectScanTab, currentLanguage
               Reports & Registries
             </a>
             <a href="#benefits" onClick={(e) => handleNavClick(e, "benefits", "about")}>
-              About Medify
+              About MediFy
             </a>
 
             <div className="mv-mobile-lang-row">

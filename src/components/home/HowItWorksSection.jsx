@@ -66,13 +66,13 @@ export default function HowItWorksSection({ onGoToScanner }) {
   };
 
   return (
-    <section className="mv-how-section" id="how-it-works" aria-label="How Medify Works">
+    <section className="mv-how-section" id="how-it-works" aria-label="How MediFy Works">
       <div className="mv-container">
         {/* Curving Light Mint Container */}
         <div className="mv-how-card">
           {/* Section Heading */}
           <div className="mv-how-header">
-            <h2 className="mv-how-title">How Medify Works?</h2>
+            <h2 className="mv-how-title">How MediFy Works?</h2>
           </div>
 
           {/* 4 Steps Horizontal Flow */}

@@ -26,7 +26,7 @@ export default function Hero({ onStartVerification }) {
   };
 
   return (
-    <section className="mv-hero-section" id="home" aria-label="Medify Introduction">
+    <section className="mv-hero-section" id="home" aria-label="MediFy Introduction">
       {/* Organic Background Ambience & Botanical Foliage */}
       <div className="mv-hero-backdrop">
         <div className="mv-leaf-decor mv-leaf-left" aria-hidden="true" />
@@ -161,7 +161,7 @@ export default function Hero({ onStartVerification }) {
                 <div className="mv-phone-app-header">
                   <div className="mv-app-brand">
                     <span className="plus-shield">+</span>
-                    <span className="app-title">Medify</span>
+                    <span className="app-title">MediFy</span>
                   </div>
                 </div>
 

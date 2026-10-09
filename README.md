@@ -1,4 +1,4 @@
-# Medify — Smart Medicine Verification Platform
+# MediFy — Smart Medicine Verification Platform
 
 > **"Check Your Medicine. Stay Safe."**  
 > A patient safety platform designed to inspect medicine packaging, decode pharmaceutical serialization, read packaging typography via OCR, and guide users on confirming product details with authorized health regulators.
@@ -9,7 +9,7 @@
 
 Substandard and falsified (SF) medical products pose grave risks to patient health globally. While counterfeiters frequently duplicate barcodes or mimic outer brand aesthetics, discrepancies often emerge in micro-typography, mismatching batch identifiers, expired shelf-life stamps, or tampered physical seals.
 
-**Medify** empowers patients, caregivers, and community pharmacies with browser-native tools to:
+**MediFy** empowers patients, caregivers, and community pharmacies with browser-native tools to:
 1. **Decode Serialization Codes**: Read 2D DataMatrix (GS1), QR codes, and barcodes stamped on medicine cartons and blister packs.
 2. **Extract Label Typography**: Use client-side Optical Character Recognition (OCR) to convert fine-print pharmaceutical labels into editable digital records.
 3. **Analyze Batch & Shelf Life**: Evaluate alphanumeric batch structures and calculate real-time expiration timelines to prevent consuming stale pharmaceuticals.
@@ -134,7 +134,7 @@ Med-Verify/
 
 ## 6. Scanner Camera Permissions & Troubleshooting
 
-- **Explicit User Action Required**: Medify adheres strictly to web privacy standards. The camera will **never** activate simply by switching tabs. Camera access is requested only when the user explicitly clicks **"Start Camera Scanner"**.
+- **Explicit User Action Required**: MediFy adheres strictly to web privacy standards. The camera will **never** activate simply by switching tabs. Camera access is requested only when the user explicitly clicks **"Start Camera Scanner"**.
 - **Secure Context (HTTPS)**: Browsers block camera access unless served over `https://` or `localhost`.
 - **Camera Selection**: If your device has multiple sensors (front vs rear/environment), a dropdown appears automatically allowing you to select the high-focus macro camera.
 - **Image File Fallback**: Users without a working camera can use the **"Upload code screenshot or photo"** dropzone in the same tab, which decodes barcodes directly from image files using `Html5Qrcode.scanFile()`.
@@ -147,13 +147,13 @@ Med-Verify/
 - **Image Quality**: Blister foils are reflective and metallic; glare from overhead lights can cause character misreadings. For best results:
   - Take photos in even, indirect lighting.
   - Position the camera perpendicular to the text without steep angles.
-- **Editable Extraction**: Medify makes both the candidate fields (Name, Batch, Expiry) and the raw extracted text **directly editable** in the UI, allowing users to correct any misread letters prior to verification.
+- **Editable Extraction**: MediFy makes both the candidate fields (Name, Batch, Expiry) and the raw extracted text **directly editable** in the UI, allowing users to correct any misread letters prior to verification.
 
 ---
 
 ## 8. How to Connect a Future Official Medicine API
 
-Medify separates data consumption from presentation through `src/services/medicineService.js`. Currently, it runs in **Reference Framework Mode** using the local standard catalog `src/constants/demoCatalog.js`.
+MediFy separates data consumption from presentation through `src/services/medicineService.js`. Currently, it runs in **Reference Framework Mode** using the local standard catalog `src/constants/demoCatalog.js`.
 
 To integrate an authorized government API (e.g. CDSCO SUGAM, US FDA NDC directory, or GS1 Global Registry):
 1. Add endpoint credentials to your local `.env`:
@@ -198,7 +198,7 @@ No UI components require rewriting when transitioning from demo mode to live API
 > 
 > Sophisticated counterfeiters can duplicate genuine barcodes onto fake packaging. True confirmation requires physical inspection by a licensed pharmacist, checking with the manufacturer, or laboratory testing.
 > 
-> Medify and MediBot **do not provide medical diagnosis, prescribe treatments, or suggest dosage changes**. Always consult a registered medical practitioner or licensed pharmacist for medical advice.
+> MediFy and MediBot **do not provide medical diagnosis, prescribe treatments, or suggest dosage changes**. Always consult a registered medical practitioner or licensed pharmacist for medical advice.
 
 ---
 
