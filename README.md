@@ -11,6 +11,7 @@
 
 <br />
 
+[![Live Showcase Site](https://img.shields.io/badge/Live_Showcase-Medify_Site-00D9AA?style=for-the-badge&logo=googlechrome&logoColor=black)](https://archisharma158-cmd.github.io/Med-Verify/)
 [![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
@@ -22,7 +23,7 @@
 
 <br />
 
-[📖 System Architecture](#-system-architecture) · [⚙️ Backend Architecture](#-backend-architecture) · [🔄 Verification Workflow](#-medicine-verification-workflow) · [✨ Features](#-key-features) · [🚀 Quick Start](#-getting-started) · [🔌 API Docs](#-api-documentation)
+[🌐 Live Showcase Site](https://archisharma158-cmd.github.io/Med-Verify/) · [📖 System Architecture](#-system-architecture) · [⚙️ Backend Architecture](#-backend-architecture) · [🔄 Verification Workflow](#-medicine-verification-workflow) · [✨ Features](#-key-features) · [🚀 Quick Start](#-getting-started) · [🔌 API Docs](#-api-documentation)
 
 ---
 
