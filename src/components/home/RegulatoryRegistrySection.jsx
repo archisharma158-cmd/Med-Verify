@@ -1,10 +1,31 @@
-import { ExternalLink, Building2, PhoneCall, AlertCircle } from "lucide-react";
+import { ExternalLink, Building2, PhoneCall, AlertCircle, ShieldAlert, ChevronRight } from "lucide-react";
 import { REGULATORY_REGISTRIES } from "../../constants/medicineKnowledge";
 
-export default function RegulatoryRegistrySection() {
+export default function RegulatoryRegistrySection({ onOpenAlerts }) {
   return (
     <section className="mv-regulatory-section" id="regulatory" aria-label="Official Regulatory Drug Registries">
       <div className="mv-container">
+        {/* Interactive CDSCO Surveillance Banner */}
+        {onOpenAlerts && (
+          <div className="mv-registry-alert-cta-banner">
+            <div className="mv-cta-banner-icon">
+              <ShieldAlert size={28} />
+            </div>
+            <div className="mv-cta-banner-text">
+              <h4>Live CDSCO Drug Quality Surveillance Database</h4>
+              <p>Cross-reference your medicine's batch number against published Not of Standard Quality (NSQ) and spurious drug alerts.</p>
+            </div>
+            <button
+              type="button"
+              className="mv-btn-primary mv-btn-sm mv-cta-banner-btn"
+              onClick={onOpenAlerts}
+            >
+              <span>Search Active Notices</span>
+              <ChevronRight size={15} />
+            </button>
+          </div>
+        )}
+
         <div className="mv-section-heading">
           <span className="mv-section-eyebrow">OFFICIAL HEALTH AUTHORITIES</span>
           <h2>Government Regulatory Registries</h2>

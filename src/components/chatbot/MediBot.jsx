@@ -20,6 +20,7 @@ import {
   SUGGESTED_QUESTIONS,
   getBotResponse
 } from "../../services/chatbotService";
+import { sendChatMessageToBackend } from "../../services/api";
 import { useSpeechRecognition } from "../../hooks/useSpeechRecognition";
 import { useSpeechSynthesis } from "../../hooks/useSpeechSynthesis";
 
@@ -72,6 +73,33 @@ export default function MediBot() {
     }
   }, [messages, isOpen]);
 
+  const [scanContext, setScanContext] = useState(null);
+
+  // Listen for custom trigger to explain scan results from the UI
+  useEffect(() => {
+    const handleExplainScan = (event) => {
+      const { scanResult, language: reqLang } = event.detail || {};
+      setIsOpen(true);
+      if (reqLang) setLanguage(reqLang);
+      if (scanResult) {
+        setScanContext(scanResult);
+        const medName = scanResult.extractedData?.medicineName || "Medicine";
+        const batch = scanResult.extractedData?.batchNumber || "Unknown";
+        const risk = scanResult.riskAnalysis?.label || "Screened";
+        const promptText = (reqLang || language) === "hi"
+          ? `कृपया मुझे इस स्कैन का रिजल्ट समझाएं: दवा "${medName}", बैच "${batch}", रिस्क लेवल "${risk}"। क्या यह सुरक्षित है?`
+          : `Please explain this scan result: Medicine "${medName}", Batch "${batch}", Risk Level "${risk}". What does this mean?`;
+        
+        setTimeout(() => {
+          handleSendMessage(promptText, scanResult);
+        }, 350);
+      }
+    };
+
+    window.addEventListener("medify:explain-scan", handleExplainScan);
+    return () => window.removeEventListener("medify:explain-scan", handleExplainScan);
+  }, [language]);
+
   // Switch initial message on language change if chat just opened
   const handleLanguageSwitch = (newLang) => {
     setLanguage(newLang);
@@ -80,7 +108,7 @@ export default function MediBot() {
     }
   };
 
-  const handleSendMessage = async (textToSend = null) => {
+  const handleSendMessage = async (textToSend = null, contextOverride = null) => {
     const text = (textToSend || inputText).trim();
     if (!text || isLoading) return;
 
@@ -102,8 +130,25 @@ export default function MediBot() {
     resetTranscript();
     setIsLoading(true);
 
+    const activeContext = contextOverride || scanContext;
+
     try {
-      const botReply = await getBotResponse(text, language);
+      // 1. Try FastAPI backend Gemini chat
+      const backendReply = await sendChatMessageToBackend(text, language, activeContext);
+      let botReply;
+
+      if (backendReply) {
+        botReply = {
+          id: createMessageId("gemini"),
+          sender: "bot",
+          text: backendReply,
+          timestamp: timeString
+        };
+      } else {
+        // 2. Fall back to local safe guidance engine
+        botReply = await getBotResponse(text, language);
+      }
+
       setMessages((prev) => [...prev, botReply]);
 
       if (autoSpeechEnabled && isTtsSupported) {
@@ -326,6 +371,24 @@ export default function MediBot() {
           {sttError && (
             <div className="mv-bot-speech-notice" role="alert">
               <span>{sttError}</span>
+            </div>
+          )}
+
+          {/* Audio Visualizer (Sarvam AI / Web Speech Voice activity) */}
+          {(isListening || isSpeaking) && (
+            <div className="mv-soundwave-visualizer" aria-live="polite">
+              <div className="mv-soundwave-bars">
+                <span className="mv-soundwave-bar bar-1" />
+                <span className="mv-soundwave-bar bar-2" />
+                <span className="mv-soundwave-bar bar-3" />
+                <span className="mv-soundwave-bar bar-4" />
+                <span className="mv-soundwave-bar bar-5" />
+              </div>
+              <span className="mv-soundwave-label">
+                {isListening
+                  ? language === "hi" ? "आवाज सुन रहा हूँ..." : "Listening to your voice..."
+                  : language === "hi" ? "MediBot बोल रहा है..." : "MediBot is speaking..."}
+              </span>
             </div>
           )}
 

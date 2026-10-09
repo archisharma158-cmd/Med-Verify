@@ -9,15 +9,28 @@ import {
   AlertTriangle,
   Clock,
   Sparkles,
-  Check
+  Check,
+  ShieldAlert,
+  Bot,
+  ChevronDown,
+  ChevronUp,
+  Info,
+  Activity,
+  History
 } from "lucide-react";
 import StatusBadge from "../common/StatusBadge";
 import DisclaimerAlert from "../common/DisclaimerAlert";
 import PackagingChecklist from "./PackagingChecklist";
 import { formatVerificationReport } from "../../services/medicineService";
 
-export default function VerificationResults({ result, onReset }) {
+export default function VerificationResults({
+  result,
+  onReset,
+  onReportSuspicious,
+  onAskAiToExplain
+}) {
   const [copied, setCopied] = useState(false);
+  const [showFactorBreakdown, setShowFactorBreakdown] = useState(false);
 
   if (!result) return null;
 
@@ -26,6 +39,9 @@ export default function VerificationResults({ result, onReset }) {
     catalogMatch,
     expiryAnalysis,
     batchAnalysis,
+    cdscoAlert,
+    duplicateAnalysis,
+    riskAnalysis,
     unverifiedAttributes,
     overallStatus,
     statusBadgeLabel,
@@ -49,6 +65,12 @@ export default function VerificationResults({ result, onReset }) {
   const handlePrint = () => {
     window.print();
   };
+
+  // SVG Gauge calculations (radius = 54, circumference = 2 * PI * 54 = ~339.29)
+  const score = riskAnalysis?.score || 10;
+  const radius = 54;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (score / 100) * circumference;
 
   return (
     <section className="mv-results-section" id="results" aria-label="Medicine Verification Results">
@@ -77,12 +99,42 @@ export default function VerificationResults({ result, onReset }) {
               <span className="mv-badge mv-badge-neutral">
                 Source: {extractedData.source.replace("_", " ").toUpperCase()}
               </span>
+
+              {duplicateAnalysis?.isDuplicate && (
+                <span className="mv-badge mv-badge-duplicate">
+                  <History size={12} /> Scanned {duplicateAnalysis.scanCount}x
+                </span>
+              )}
             </div>
 
             <p className="mv-status-description">{statusDescription}</p>
           </div>
 
           <div className="mv-results-actions">
+            {onAskAiToExplain && (
+              <button
+                type="button"
+                className="mv-btn-primary mv-btn-ai-explain"
+                onClick={() => onAskAiToExplain(result)}
+                title="Explain this result with AI assistant in Hindi or English"
+              >
+                <Bot size={16} />
+                <span>Explain With AI</span>
+              </button>
+            )}
+
+            {onReportSuspicious && (
+              <button
+                type="button"
+                className="mv-btn-outline mv-btn-danger-accent"
+                onClick={() => onReportSuspicious(result)}
+                title="Report this suspect medicine to safety logs"
+              >
+                <ShieldAlert size={16} />
+                <span>Report Defect</span>
+              </button>
+            )}
+
             <button
               type="button"
               className="mv-btn-outline mv-btn-copy"
@@ -90,7 +142,7 @@ export default function VerificationResults({ result, onReset }) {
               title="Copy formatted summary"
             >
               {copied ? <Check size={16} /> : <Copy size={16} />}
-              <span>{copied ? "Copied to Clipboard!" : "Copy Inspection Notes"}</span>
+              <span>{copied ? "Copied!" : "Copy Report"}</span>
             </button>
 
             <button
@@ -105,20 +157,126 @@ export default function VerificationResults({ result, onReset }) {
 
             <button
               type="button"
-              className="mv-btn-primary"
+              className="mv-btn-outline mv-btn-reset"
               onClick={onReset}
             >
               <RotateCcw size={16} />
-              <span>Verify Another Item</span>
+              <span>Scan Another</span>
             </button>
           </div>
         </div>
 
+        {/* CDSCO Regulatory Alert Banner (If Matched) */}
+        {cdscoAlert && (
+          <div className="mv-cdsco-flagged-banner" role="alert">
+            <div className="mv-cdsco-banner-icon">
+              <ShieldAlert size={28} />
+            </div>
+            <div className="mv-cdsco-banner-content">
+              <div className="mv-cdsco-banner-title-row">
+                <h4>OFFICIAL CDSCO REGULATORY ALERT: {cdscoAlert.alertType} NOTICE</h4>
+                <span className="mv-cdsco-pill">{cdscoAlert.id}</span>
+              </div>
+              <p>
+                <strong>Flagged Batch:</strong> {cdscoAlert.batchNumber} | <strong>Authority:</strong> {cdscoAlert.issuingAuthority}
+              </p>
+              <p className="mv-cdsco-issue-desc">{cdscoAlert.reportedIssue}</p>
+              <div className="mv-cdsco-mandate">
+                <strong>Mandatory Directive:</strong> {cdscoAlert.recommendedAction}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 0-100 Risk Score Gauge & Assessment Card */}
+        {riskAnalysis && (
+          <div className={`mv-risk-meter-card mv-risk-level-${riskAnalysis.category}`}>
+            <div className="mv-risk-meter-main">
+              {/* Circular Animated SVG Gauge */}
+              <div className="mv-risk-gauge-visual">
+                <svg viewBox="0 0 120 120" className="mv-risk-gauge-svg">
+                  {/* Background Track */}
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r={radius}
+                    fill="none"
+                    stroke="rgba(255, 255, 255, 0.08)"
+                    strokeWidth="10"
+                  />
+                  {/* Animated Progress Arc */}
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r={radius}
+                    fill="none"
+                    stroke={riskAnalysis.color}
+                    strokeWidth="10"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={strokeDashoffset}
+                    strokeLinecap="round"
+                    transform="rotate(-90 60 60)"
+                    className="mv-gauge-arc-anim"
+                  />
+                </svg>
+
+                <div className="mv-gauge-center-content">
+                  <span className="mv-gauge-score-number" style={{ color: riskAnalysis.color }}>
+                    {riskAnalysis.score}
+                  </span>
+                  <span className="mv-gauge-score-max">/100</span>
+                </div>
+              </div>
+
+              {/* Score Info Text */}
+              <div className="mv-risk-meter-info">
+                <div className="mv-risk-level-tag-wrap">
+                  <span className={`mv-risk-level-tag mv-tag-${riskAnalysis.category}`}>
+                    <Activity size={14} /> {riskAnalysis.label.toUpperCase()}
+                  </span>
+                  <span className="mv-risk-heuristic-pill">Rule-Based Screening Engine v1</span>
+                </div>
+                <h3>Screening Risk Assessment</h3>
+                <p>
+                  Calculated using multi-parameter pharmaceutical risk heuristics (expiration status, CDSCO recall matches, manufacturer authorization, and duplicate serial tracking).
+                </p>
+
+                <button
+                  type="button"
+                  className="mv-toggle-factors-btn"
+                  onClick={() => setShowFactorBreakdown(!showFactorBreakdown)}
+                >
+                  <span>{showFactorBreakdown ? "Hide Factor Breakdown" : "View Contributing Risk Factors"}</span>
+                  {showFactorBreakdown ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Expandable Contributing Factors List */}
+            {showFactorBreakdown && (
+              <div className="mv-factors-breakdown-tray">
+                <h4>Contributing Risk Points ({riskAnalysis.factors.length} Factors Triggered):</h4>
+                <div className="mv-factors-grid">
+                  {riskAnalysis.factors.map((f, i) => (
+                    <div key={i} className={`mv-factor-card mv-factor-${f.type}`}>
+                      <div className="mv-factor-head">
+                        <span className="mv-factor-name">{f.name}</span>
+                        <span className="mv-factor-pts">+{f.points} pts</span>
+                      </div>
+                      <p className="mv-factor-desc">{f.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Mandatory Safety Alert */}
         <div className="mv-mb-6">
           <DisclaimerAlert
-            variant={overallStatus === "expired_warning" ? "danger" : "warning"}
-            title="CRITICAL SAFETY BOUNDARY NOTICE"
+            variant={overallStatus === "cdsco_flagged" || overallStatus === "expired_warning" ? "danger" : "warning"}
+            title="CRITICAL MEDICINE SAFETY BOUNDARY NOTICE"
           >
             <p>{disclaimer}</p>
           </DisclaimerAlert>
@@ -176,6 +334,15 @@ export default function VerificationResults({ result, onReset }) {
                   {extractedData.manufacturer || "Not identified"}
                 </span>
               </div>
+
+              {duplicateAnalysis?.isDuplicate && (
+                <div className="mv-data-row">
+                  <span className="mv-data-label">Scan Frequency:</span>
+                  <span className="mv-data-val text-amber font-semibold">
+                    Scanned {duplicateAnalysis.scanCount} times (Repeated session)
+                  </span>
+                </div>
+              )}
 
               {extractedData.rawCodeOrText && (
                 <div className="mv-extracted-raw-preview">

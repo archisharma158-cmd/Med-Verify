@@ -1,7 +1,29 @@
 import { useState } from "react";
-import { Globe, User, Menu, X, ChevronDown, Check } from "lucide-react";
+import {
+  Globe,
+  User,
+  Menu,
+  X,
+  ChevronDown,
+  Check,
+  History,
+  ShieldAlert,
+  LayoutDashboard,
+  AlertTriangle,
+  QrCode
+} from "lucide-react";
 
-export default function Navbar({ onOpenContact, onSelectScanTab, currentLanguage = "en", onLanguageChange }) {
+export default function Navbar({
+  onOpenContact,
+  onSelectScanTab,
+  onOpenHistory,
+  onOpenReport,
+  onOpenAlerts,
+  onOpenAdmin,
+  historyCount = 0,
+  currentLanguage = "en",
+  onLanguageChange
+}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [activeNav, setActiveNav] = useState("home");
@@ -60,6 +82,14 @@ export default function Navbar({ onOpenContact, onSelectScanTab, currentLanguage
             {activeNav === "home" && <span className="mv-nav-indicator" />}
           </a>
           <a
+            href="#scanner"
+            className={activeNav === "scanner" ? "is-active" : ""}
+            onClick={(e) => handleNavClick(e, "scanner", "scanner", "scan")}
+          >
+            Verify Medicine
+            {activeNav === "scanner" && <span className="mv-nav-indicator" />}
+          </a>
+          <a
             href="#how-it-works"
             className={activeNav === "how-it-works" ? "is-active" : ""}
             onClick={(e) => handleNavClick(e, "how-it-works", "how-it-works")}
@@ -67,34 +97,57 @@ export default function Navbar({ onOpenContact, onSelectScanTab, currentLanguage
             How It Works
             {activeNav === "how-it-works" && <span className="mv-nav-indicator" />}
           </a>
-          <a
-            href="#safety"
-            className={activeNav === "safety" ? "is-active" : ""}
-            onClick={(e) => handleNavClick(e, "safety", "safety")}
+          <button
+            type="button"
+            className="mv-nav-btn-link"
+            onClick={onOpenAlerts}
+            title="Browse official CDSCO recalls & alerts"
           >
-            Safety Guide
-            {activeNav === "safety" && <span className="mv-nav-indicator" />}
-          </a>
-          <a
-            href="#regulatory"
-            className={activeNav === "reports" ? "is-active" : ""}
-            onClick={(e) => handleNavClick(e, "regulatory", "reports")}
+            <ShieldAlert size={14} className="text-emerald" />
+            <span>CDSCO Alerts</span>
+          </button>
+          <button
+            type="button"
+            className="mv-nav-btn-link"
+            onClick={onOpenAdmin}
+            title="Open safety oversight & admin dashboard"
           >
-            Reports
-            {activeNav === "reports" && <span className="mv-nav-indicator" />}
-          </a>
-          <a
-            href="#benefits"
-            className={activeNav === "about" ? "is-active" : ""}
-            onClick={(e) => handleNavClick(e, "benefits", "about")}
-          >
-            About
-            {activeNav === "about" && <span className="mv-nav-indicator" />}
-          </a>
+            <LayoutDashboard size={14} className="text-cyan" />
+            <span>Admin Portal</span>
+          </button>
         </nav>
 
-        {/* Right Nav Controls: Language + Sign In */}
+        {/* Right Nav Action Toolbar */}
         <div className="mv-nav-action-wrapper">
+          {/* Scan History Button */}
+          {onOpenHistory && (
+            <button
+              type="button"
+              className="mv-nav-icon-btn"
+              onClick={onOpenHistory}
+              title="View Scan History"
+              aria-label="Scan History"
+            >
+              <History size={17} />
+              {historyCount > 0 && (
+                <span className="mv-nav-badge-count">{historyCount}</span>
+              )}
+            </button>
+          )}
+
+          {/* Report Suspicious Defect Button */}
+          {onOpenReport && (
+            <button
+              type="button"
+              className="mv-nav-report-btn"
+              onClick={onOpenReport}
+              title="Report suspicious medicine or defect"
+            >
+              <AlertTriangle size={14} />
+              <span>Report Fake</span>
+            </button>
+          )}
+
           {/* Language Selector */}
           <div className="mv-lang-dropdown-wrapper">
             <button
@@ -131,17 +184,6 @@ export default function Navbar({ onOpenContact, onSelectScanTab, currentLanguage
             )}
           </div>
 
-          {/* Sign In Button */}
-          <button
-            type="button"
-            className="mv-signin-btn"
-            onClick={onOpenContact}
-            aria-label="Sign In or Contact"
-          >
-            <User size={16} />
-            <span>Sign In</span>
-          </button>
-
           {/* Mobile Menu Toggle */}
           <button
             type="button"
@@ -158,55 +200,83 @@ export default function Navbar({ onOpenContact, onSelectScanTab, currentLanguage
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="mv-mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
-          <nav className="mv-mobile-nav">
-            <a href="#home" onClick={(e) => handleNavClick(e, "home", "home")}>
-              Home
-            </a>
-            <a href="#how-it-works" onClick={(e) => handleNavClick(e, "how-it-works", "how-it-works")}>
-              How It Works
-            </a>
-            <a href="#safety" onClick={(e) => handleNavClick(e, "safety", "safety")}>
-              Safety Guide
-            </a>
-            <a href="#regulatory" onClick={(e) => handleNavClick(e, "regulatory", "reports")}>
-              Reports & Registries
-            </a>
-            <a href="#benefits" onClick={(e) => handleNavClick(e, "benefits", "about")}>
-              About MediFy
-            </a>
-
-            <div className="mv-mobile-lang-row">
-              <span className="label">Language:</span>
+          <div className="mv-mobile-drawer-inner">
+            <div className="mv-mobile-nav-links">
+              <a
+                href="#home"
+                onClick={(e) => handleNavClick(e, "home", "home")}
+              >
+                Home
+              </a>
+              <a
+                href="#scanner"
+                onClick={(e) => handleNavClick(e, "scanner", "scanner", "scan")}
+              >
+                Verify Medicine
+              </a>
+              <a
+                href="#how-it-works"
+                onClick={(e) => handleNavClick(e, "how-it-works", "how-it-works")}
+              >
+                How It Works
+              </a>
               <button
                 type="button"
-                className={`mv-btn-chip ${lang === "en" ? "active" : ""}`}
-                onClick={() => handleSelectLang("en")}
+                className="mv-mobile-drawer-btn"
+                onClick={() => {
+                  closeMenu();
+                  onOpenAlerts();
+                }}
               >
-                English
+                <ShieldAlert size={16} className="text-emerald" />
+                <span>CDSCO Quality Alerts</span>
               </button>
               <button
                 type="button"
-                className={`mv-btn-chip ${lang === "hi" ? "active" : ""}`}
-                onClick={() => handleSelectLang("hi")}
+                className="mv-mobile-drawer-btn"
+                onClick={() => {
+                  closeMenu();
+                  onOpenHistory();
+                }}
               >
-                हिंदी
+                <History size={16} className="text-amber" />
+                <span>Scan History ({historyCount})</span>
               </button>
-            </div>
-
-            <div className="mv-mobile-cta-wrap">
               <button
                 type="button"
-                className="mv-signin-btn mv-w-full"
+                className="mv-mobile-drawer-btn"
+                onClick={() => {
+                  closeMenu();
+                  onOpenReport();
+                }}
+              >
+                <AlertTriangle size={16} className="text-crimson" />
+                <span>Report Suspicious Medicine</span>
+              </button>
+              <button
+                type="button"
+                className="mv-mobile-drawer-btn"
+                onClick={() => {
+                  closeMenu();
+                  onOpenAdmin();
+                }}
+              >
+                <LayoutDashboard size={16} className="text-cyan" />
+                <span>Admin & Safety Dashboard</span>
+              </button>
+              <button
+                type="button"
+                className="mv-mobile-drawer-btn"
                 onClick={() => {
                   closeMenu();
                   onOpenContact();
                 }}
               >
-                <User size={18} />
-                <span>Sign In / Contact</span>
+                <User size={16} />
+                <span>Contact Project</span>
               </button>
             </div>
-          </nav>
+          </div>
         </div>
       )}
     </header>
