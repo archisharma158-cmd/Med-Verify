@@ -1,7 +1,10 @@
-import { ShieldCheck, ExternalLink, AlertTriangle, Phone } from "lucide-react";
+import { ExternalLink, AlertTriangle, Phone } from "lucide-react";
 import { REGULATORY_REGISTRIES } from "../../constants/medicineKnowledge";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function Footer({ onOpenContact }) {
+  const { t } = useLanguage();
+
   return (
     <footer className="mv-footer-section" role="contentinfo">
       <div className="mv-container">
@@ -20,30 +23,30 @@ export default function Footer({ onOpenContact }) {
               />
             </a>
             <p className="mv-footer-mission">
-              &quot;Check Your Medicine. Stay Safe.&quot; MediFy is a smart medicine verification platform designed to assist patients and caregivers in reading medicine packaging codes, checking expiry dates, and identifying details that need verification from trusted sources.
+              {t("footerMission")}
             </p>
             <div className="mv-demo-pill">
-              <span>● Educational Demonstration Platform · Zero Unverified Claims</span>
+              <span>● {t("footerEduNotice")}</span>
             </div>
           </div>
 
           {/* Quick Links */}
           <div className="mv-footer-col">
-            <h4>Platform Navigation</h4>
+            <h4>{t("footerNavTitle")}</h4>
             <ul className="mv-footer-links">
-              <li><a href="#home">Home</a></li>
-              <li><a href="#scanner">Verify Medicine</a></li>
-              <li><a href="#how-it-works">How It Works</a></li>
-              <li><a href="#benefits">Packaging Benefits</a></li>
-              <li><a href="#safety">Safety & Limits</a></li>
-              <li><a href="#regulatory">Regulatory Registers</a></li>
+              <li><a href="#home">{t("navHome")}</a></li>
+              <li><a href="#scanner">{t("navVerify")}</a></li>
+              <li><a href="#how-it-works">{t("navHowItWorks")}</a></li>
+              <li><a href="#risk-meter">{t("navRiskMeter")}</a></li>
+              <li><a href="#safety">{t("safetyEyebrow")}</a></li>
+              <li><a href="#regulatory">{t("footerRegTitle")}</a></li>
               <li>
                 <button
                   type="button"
                   className="mv-footer-btn-link"
                   onClick={onOpenContact}
                 >
-                  Contact & Support
+                  {t("footerContactBtn")}
                 </button>
               </li>
             </ul>
@@ -51,7 +54,7 @@ export default function Footer({ onOpenContact }) {
 
           {/* Official Health Authorities */}
           <div className="mv-footer-col">
-            <h4>Official Regulators</h4>
+            <h4>{t("footerRegTitle")}</h4>
             <ul className="mv-footer-links">
               {REGULATORY_REGISTRIES.slice(0, 4).map((reg) => (
                 <li key={reg.country}>
@@ -71,13 +74,13 @@ export default function Footer({ onOpenContact }) {
 
           {/* Emergency / Safety Guidance */}
           <div className="mv-footer-col">
-            <h4>Safety & Helpline</h4>
+            <h4>{t("footerHelplineTitle")}</h4>
             <div className="mv-footer-help-box">
               <p className="mv-help-title">
                 <Phone size={14} /> India PvPI Helpline:
               </p>
               <strong className="mv-phone-val">1800-180-3024 (Toll-Free)</strong>
-              <p className="mv-help-sub">Report adverse drug reactions or suspect medicine batches.</p>
+              <p className="mv-help-sub">{t("footerHelplineDesk")}</p>
             </div>
 
             <div className="mv-footer-help-box">
@@ -96,9 +99,9 @@ export default function Footer({ onOpenContact }) {
             <AlertTriangle size={20} />
           </div>
           <div className="mv-disclaimer-text">
-            <strong>CRITICAL MEDICINE SAFETY DISCLAIMER:</strong>
+            <strong>{t("footerDisclaimTitle")}:</strong>
             <p>
-              MediFy is an educational packaging inspection tool. Scanning a barcode or performing optical character recognition (OCR) on medicine packaging does NOT prove that a medicine is authentic, genuine, medically safe, correctly formulated, or regulator-approved. Counterfeiters can duplicate physical packaging and barcodes. Always purchase prescription medications through licensed pharmacies, check physical tamper seals, and consult a qualified medical doctor or pharmacist before consumption.
+              {t("footerDisclaimText")}
             </p>
           </div>
         </div>
@@ -106,7 +109,7 @@ export default function Footer({ onOpenContact }) {
         {/* Bottom Bar */}
         <div className="mv-footer-bottom">
           <p>
-            © {new Date().getFullYear()} MediFy. Built with patient safety as the highest priority.
+            {t("footerCopyright")}
           </p>
           <div className="mv-footer-bottom-links">
             <span>Privacy-Conscious · No Server Storage of Patient Medicine Data</span>

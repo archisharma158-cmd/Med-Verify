@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Search, Sparkles, AlertCircle, RotateCcw } from "lucide-react";
 import { DEMO_PREFILLS } from "../../constants/demoCatalog";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function ManualEntryForm({ onSubmitDetails }) {
+  const { t } = useLanguage();
   const [medicineName, setMedicineName] = useState("");
   const [batchNumber, setBatchNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -67,16 +69,16 @@ export default function ManualEntryForm({ onSubmitDetails }) {
   return (
     <div className="mv-manual-tab">
       <div className="mv-tab-intro">
-        <h3>Manual Packaging Details Entry</h3>
+        <h3>{t("manualIntroTitle", "Manual Packaging Details Entry")}</h3>
         <p>
-          Enter the pharmaceutical details printed on your packaging. You do not need to fill every optional field.
+          {t("manualIntroDesc", "Enter the pharmaceutical details printed on your packaging. You do not need to fill every optional field.")}
         </p>
       </div>
 
       {/* Quick Demo Prefill Presets */}
       <div className="mv-prefills-bar">
         <span className="mv-prefill-label">
-          <Sparkles size={14} /> Quick Demo Presets:
+          <Sparkles size={14} /> {t("manualPrefillsLabel", "Quick Demo Presets")}:
         </span>
         <div className="mv-prefill-chips">
           {DEMO_PREFILLS.map((item) => (
@@ -97,7 +99,7 @@ export default function ManualEntryForm({ onSubmitDetails }) {
         {/* Medicine Name (Required) */}
         <div className="mv-form-field">
           <label htmlFor="mv-input-name">
-            Medicine / Product Brand or Generic Name <span className="mv-required">*</span>
+            {t("manualNameLabel", "Medicine / Product Brand or Generic Name")} <span className="mv-required">*</span>
           </label>
           <div className={`mv-input-wrapper ${errors.medicineName ? "has-error" : ""}`}>
             <input
@@ -124,7 +126,7 @@ export default function ManualEntryForm({ onSubmitDetails }) {
         <div className="mv-form-row">
           <div className="mv-form-field">
             <label htmlFor="mv-input-batch">
-              Batch or Lot Number <span className="mv-optional">(Optional)</span>
+              {t("manualBatchLabel", "Batch or Lot Number")} <span className="mv-optional">(Optional)</span>
             </label>
             <div className={`mv-input-wrapper ${errors.batchNumber ? "has-error" : ""}`}>
               <input
@@ -145,7 +147,7 @@ export default function ManualEntryForm({ onSubmitDetails }) {
 
           <div className="mv-form-field">
             <label htmlFor="mv-input-exp">
-              Expiry Date <span className="mv-optional">(Optional)</span>
+              {t("manualExpiryLabel", "Expiry Date")} <span className="mv-optional">(Optional)</span>
             </label>
             <div className="mv-input-wrapper">
               <input
@@ -164,7 +166,7 @@ export default function ManualEntryForm({ onSubmitDetails }) {
         <div className="mv-form-row">
           <div className="mv-form-field">
             <label htmlFor="mv-input-mfr">
-              Manufacturer Name <span className="mv-optional">(Optional)</span>
+              {t("manualMfrLabel", "Manufacturer Name")} <span className="mv-optional">(Optional)</span>
             </label>
             <div className="mv-input-wrapper">
               <input
@@ -179,7 +181,7 @@ export default function ManualEntryForm({ onSubmitDetails }) {
 
           <div className="mv-form-field">
             <label htmlFor="mv-input-dosage">
-              Dosage Form <span className="mv-optional">(Optional)</span>
+              {t("manualDosageLabel", "Dosage Form")} <span className="mv-optional">(Optional)</span>
             </label>
             <div className="mv-input-wrapper">
               <select
@@ -207,7 +209,7 @@ export default function ManualEntryForm({ onSubmitDetails }) {
             disabled={isSubmitting}
           >
             <Search size={17} />
-            <span>{isSubmitting ? "Evaluating..." : "Check Medicine Information"}</span>
+            <span>{isSubmitting ? "Evaluating..." : t("manualSubmitBtn", "Verify Medicine Details")}</span>
           </button>
 
           <button
@@ -217,7 +219,7 @@ export default function ManualEntryForm({ onSubmitDetails }) {
             disabled={isSubmitting}
           >
             <RotateCcw size={15} />
-            <span>Reset Form</span>
+            <span>{t("manualResetBtn", "Reset Fields")}</span>
           </button>
         </div>
       </form>

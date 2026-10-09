@@ -3,8 +3,10 @@ import { QrCode, Camera, FileEdit, ShieldCheck } from "lucide-react";
 import QrBarcodeScanner from "./QrBarcodeScanner";
 import PhotoOcrScanner from "./PhotoOcrScanner";
 import ManualEntryForm from "./ManualEntryForm";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function MedicineScanner({ onVerificationReady, activeTab, onTabChange }) {
+  const { t } = useLanguage();
   const [internalTab, setInternalTab] = useState("scan");
   const currentTab = activeTab || internalTab;
 
@@ -28,11 +30,14 @@ export default function MedicineScanner({ onVerificationReady, activeTab, onTabC
         <div className="mv-section-heading">
           <div className="mv-section-eyebrow">
             <ShieldCheck size={16} />
-            <span>INTELLIGENT PACKAGING INSPECTOR</span>
+            <span>{t("scannerEyebrow", "INTELLIGENT PACKAGING INSPECTOR")}</span>
           </div>
-          <h2>Verify Before You Trust</h2>
+          <h2>{t("scannerHeading", "Verify Before You Trust")}</h2>
           <p>
-            Choose your preferred verification method below to inspect codes, extract packaging typography, or cross-reference pharmaceutical details.
+            {t(
+              "scannerSub",
+              "Choose your preferred verification method below to inspect codes, extract packaging typography, or cross-reference pharmaceutical details."
+            )}
           </p>
         </div>
 
@@ -48,8 +53,8 @@ export default function MedicineScanner({ onVerificationReady, activeTab, onTabC
             >
               <QrCode size={19} />
               <div className="mv-tab-text">
-                <span className="title">Scan QR / Barcode</span>
-                <span className="subtitle">Camera or code image</span>
+                <span className="title">{t("tabMethodScanTitle", "Scan QR / Barcode")}</span>
+                <span className="subtitle">{t("tabMethodScanSub", "Camera or code image")}</span>
               </div>
             </button>
 
@@ -62,8 +67,8 @@ export default function MedicineScanner({ onVerificationReady, activeTab, onTabC
             >
               <Camera size={19} />
               <div className="mv-tab-text">
-                <span className="title">Upload Packaging Photo</span>
-                <span className="subtitle">OCR text & batch reader</span>
+                <span className="title">{t("tabMethodPhotoTitle", "Upload Packaging Photo")}</span>
+                <span className="subtitle">{t("tabMethodPhotoSub", "OCR text & batch reader")}</span>
               </div>
             </button>
 
@@ -76,8 +81,8 @@ export default function MedicineScanner({ onVerificationReady, activeTab, onTabC
             >
               <FileEdit size={19} />
               <div className="mv-tab-text">
-                <span className="title">Enter Details Manually</span>
-                <span className="subtitle">Name, batch & expiry</span>
+                <span className="title">{t("tabMethodManualTitle", "Enter Details Manually")}</span>
+                <span className="subtitle">{t("tabMethodManualSub", "Name, batch & expiry")}</span>
               </div>
             </button>
           </div>

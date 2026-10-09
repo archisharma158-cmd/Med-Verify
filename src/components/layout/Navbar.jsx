@@ -301,7 +301,7 @@ export default function Navbar({
                 }}
               >
                 <User size={16} />
-                <span>Contact Project</span>
+                <span>{t("footerContactBtn", "Contact & Support")}</span>
               </button>
             </div>
           </div>

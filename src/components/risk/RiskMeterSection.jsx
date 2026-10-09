@@ -262,13 +262,13 @@ export default function RiskMeterSection({ activeVerificationResult, onGoToScann
 
                 {/* Zone Indicators - Cleanly separated from arc */}
                 <text x="56" y="172" fill="#10B981" fontSize="10.5" fontWeight="800" letterSpacing="0.04em" textAnchor="middle">
-                  0 (SAFE)
+                  {t("meterSafeLabel", "0 (SAFE)")}
                 </text>
                 <text x="160" y="20" fill="#F59E0B" fontSize="10.5" fontWeight="800" letterSpacing="0.05em" textAnchor="middle">
-                  50 (CAUTION)
+                  {t("meterCautionLabel", "50 (CAUTION)")}
                 </text>
                 <text x="264" y="172" fill="#EF4444" fontSize="10.5" fontWeight="800" letterSpacing="0.04em" textAnchor="middle">
-                  100 (HIGH RISK)
+                  {t("meterDangerLabel", "100 (HIGH RISK)")}
                 </text>
 
                 {/* Mathematically Anchored Needle & Hub */}
@@ -289,7 +289,7 @@ export default function RiskMeterSection({ activeVerificationResult, onGoToScann
                 <span className="mv-big-number" style={{ color: scoreCategory.color }}>
                   {displayedScore}
                 </span>
-                <span className="mv-big-label">CONCERN INDEX</span>
+                <span className="mv-big-label">{t("meterConcernIndex", "CONCERN INDEX")}</span>
               </div>
             </div>
 
@@ -317,7 +317,7 @@ export default function RiskMeterSection({ activeVerificationResult, onGoToScann
                 className="mv-meter-verify-cta-btn"
                 onClick={onGoToScanner}
               >
-                <span>Check Your Medicine Now</span>
+                <span>{t("meterCheckCta", "Check Your Medicine Now")}</span>
                 <ChevronRight size={16} />
               </button>
             )}

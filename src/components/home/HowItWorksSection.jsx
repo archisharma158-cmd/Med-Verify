@@ -1,33 +1,36 @@
 import { QrCode, FileText, ShieldCheck, BarChart3, Database, Users, Heart, ArrowRight } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function HowItWorksSection({ onGoToScanner }) {
+  const { t } = useLanguage();
+
   const steps = [
     {
       num: 1,
       icon: <QrCode size={26} />,
-      title: "Scan or Enter",
-      desc: "Scan QR/barcode, take a photo or enter details manually.",
+      title: t("step1Title", "Scan or Enter"),
+      desc: t("step1Desc", "Scan QR/barcode, take a photo or enter details manually."),
       mode: "scan"
     },
     {
       num: 2,
       icon: <FileText size={26} />,
-      title: "Extract Information",
-      desc: "We read key details like medicine name, batch, expiry etc.",
+      title: t("step2Title", "Extract Information"),
+      desc: t("step2Desc", "We read key details like medicine name, batch, expiry etc."),
       mode: "photo"
     },
     {
       num: 3,
       icon: <ShieldCheck size={26} />,
-      title: "Verify & Analyze",
-      desc: "We check with trusted databases and look for alerts or duplicate scans.",
+      title: t("step3Title", "Verify & Analyze"),
+      desc: t("step3Desc", "We check with trusted databases and look for alerts or duplicate scans."),
       mode: "manual"
     },
     {
       num: 4,
       icon: <BarChart3 size={26} />,
-      title: "Get Result",
-      desc: "See risk level (Low / Medium / High) with details and next steps.",
+      title: t("step4Title", "Get Result"),
+      desc: t("step4Desc", "See risk level (Low / Medium / High) with details and next steps."),
       mode: "scan"
     }
   ];
@@ -35,23 +38,23 @@ export default function HowItWorksSection({ onGoToScanner }) {
   const trustHighlights = [
     {
       icon: <ShieldCheck size={28} className="text-forest" />,
-      title: "Quick Verification",
-      subtitle: "Get results in seconds"
+      title: t("trust1Title", "Quick Verification"),
+      subtitle: t("trust1Sub", "Get results in seconds")
     },
     {
       icon: <Database size={28} className="text-forest" />,
-      title: "Trusted Sources",
-      subtitle: "CDSCO, NSQ and more"
+      title: t("trust2Title", "Trusted Sources"),
+      subtitle: t("trust2Sub", "CDSCO, NSQ and more")
     },
     {
       icon: <Users size={28} className="text-forest" />,
-      title: "Hindi + English",
-      subtitle: "Easy for everyone"
+      title: t("trust3Title", "Multi-Language Support"),
+      subtitle: t("trust3Sub", "11 Indian languages")
     },
     {
       icon: <Heart size={28} className="text-forest" />,
-      title: "Made for Safer Communities",
-      subtitle: "Awareness for a healthier India"
+      title: t("trust4Title", "Safer Communities"),
+      subtitle: t("trust4Sub", "Patient safety first")
     }
   ];
 
@@ -72,7 +75,7 @@ export default function HowItWorksSection({ onGoToScanner }) {
         <div className="mv-how-card">
           {/* Section Heading */}
           <div className="mv-how-header">
-            <h2 className="mv-how-title">How MediFy Works?</h2>
+            <h2 className="mv-how-title">{t("howHeading", "How Medicine Verification Works")}</h2>
           </div>
 
           {/* 4 Steps Horizontal Flow */}

@@ -124,9 +124,9 @@ export default function Hero({ onStartVerification }) {
         <div className="mv-hero-right">
           {/* Handwritten Annotation Callout */}
           <div className="mv-handwritten-note">
-            <span className="mv-note-line">Scan</span>
-            <span className="mv-note-line">Check</span>
-            <span className="mv-note-line">Stay Safe</span>
+            <span className="mv-note-line">{t("heroNoteScan", "Scan")}</span>
+            <span className="mv-note-line">{t("heroNoteCheck", "Check")}</span>
+            <span className="mv-note-line">{t("heroNoteSafe", "Stay Safe")}</span>
             <svg className="mv-note-arrow" viewBox="0 0 70 50" fill="none">
               <path
                 d="M10 10 C 25 35, 45 42, 60 40"
@@ -180,21 +180,21 @@ export default function Hero({ onStartVerification }) {
                     className={`mv-phone-tab ${phoneTab === "scan" ? "active" : ""}`}
                     onClick={() => setPhoneTab("scan")}
                   >
-                    Scan
+                    {t("phoneTabScan", "Scan")}
                   </button>
                   <button
                     type="button"
                     className={`mv-phone-tab ${phoneTab === "photo" ? "active" : ""}`}
                     onClick={() => setPhoneTab("photo")}
                   >
-                    Photo
+                    {t("phoneTabPhoto", "Photo")}
                   </button>
                   <button
                     type="button"
                     className={`mv-phone-tab ${phoneTab === "manual" ? "active" : ""}`}
                     onClick={() => setPhoneTab("manual")}
                   >
-                    Manual
+                    {t("phoneTabManual", "Manual")}
                   </button>
                 </div>
 
@@ -226,7 +226,7 @@ export default function Hero({ onStartVerification }) {
 
                   {/* Alignment Prompt */}
                   <p className="mv-reticle-instruction">
-                    Align the QR / Barcode within the frame
+                    {t("reticleInstruction", "Align the QR / Barcode within the frame")}
                   </p>
 
                   {/* Shutter / Trigger Button */}
@@ -247,19 +247,19 @@ export default function Hero({ onStartVerification }) {
                 <div className="mv-phone-bottom-nav">
                   <div className="nav-item active">
                     <Home size={16} />
-                    <span>Home</span>
+                    <span>{t("phoneNavHome", "Home")}</span>
                   </div>
                   <div className="nav-item">
                     <History size={16} />
-                    <span>History</span>
+                    <span>{t("phoneNavHistory", "History")}</span>
                   </div>
                   <div className="nav-item">
                     <FileText size={16} />
-                    <span>Report</span>
+                    <span>{t("phoneNavReport", "Report")}</span>
                   </div>
                   <div className="nav-item">
                     <User size={16} />
-                    <span>Profile</span>
+                    <span>{t("phoneNavProfile", "Profile")}</span>
                   </div>
                 </div>
               </div>

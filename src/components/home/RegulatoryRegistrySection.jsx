@@ -1,7 +1,10 @@
 import { ExternalLink, Building2, PhoneCall, AlertCircle, ShieldAlert, ChevronRight } from "lucide-react";
 import { REGULATORY_REGISTRIES } from "../../constants/medicineKnowledge";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function RegulatoryRegistrySection({ onOpenAlerts }) {
+  const { t } = useLanguage();
+
   return (
     <section className="mv-regulatory-section" id="regulatory" aria-label="Official Regulatory Drug Registries">
       <div className="mv-container">
@@ -12,26 +15,24 @@ export default function RegulatoryRegistrySection({ onOpenAlerts }) {
               <ShieldAlert size={28} />
             </div>
             <div className="mv-cta-banner-text">
-              <h4>Live CDSCO Drug Quality Surveillance Database</h4>
-              <p>Cross-reference your medicine's batch number against published Not of Standard Quality (NSQ) and spurious drug alerts.</p>
+              <h4>{t("regCtaTitle")}</h4>
+              <p>{t("regCtaDesc")}</p>
             </div>
             <button
               type="button"
               className="mv-btn-primary mv-btn-sm mv-cta-banner-btn"
               onClick={onOpenAlerts}
             >
-              <span>Search Active Notices</span>
+              <span>{t("regCtaBtn")}</span>
               <ChevronRight size={15} />
             </button>
           </div>
         )}
 
         <div className="mv-section-heading">
-          <span className="mv-section-eyebrow">OFFICIAL HEALTH AUTHORITIES</span>
-          <h2>Government Regulatory Registries</h2>
-          <p>
-            For authentic verification of manufacturing licenses, approved drug lists, and reporting suspicious medicine batches, always refer to these official national regulators.
-          </p>
+          <span className="mv-section-eyebrow">{t("regEyebrow")}</span>
+          <h2>{t("regHeading")}</h2>
+          <p>{t("regSub")}</p>
         </div>
 
         <div className="mv-registry-grid">

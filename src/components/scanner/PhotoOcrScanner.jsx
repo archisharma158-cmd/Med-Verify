@@ -10,8 +10,10 @@ import {
   LoaderCircle
 } from "lucide-react";
 import { parseOcrText } from "../../services/medicineService";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function PhotoOcrScanner({ onVerifyExtracted }) {
+  const { t } = useLanguage();
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [ocrLoading, setOcrLoading] = useState(false);
@@ -127,9 +129,9 @@ export default function PhotoOcrScanner({ onVerifyExtracted }) {
   return (
     <div className="mv-ocr-tab">
       <div className="mv-tab-intro">
-        <h3>Packaging Photo OCR Text Extraction</h3>
+        <h3>{t("ocrIntroTitle", "Packaging Photo OCR Text Extraction")}</h3>
         <p>
-          Upload a clear photograph of the medicine blister, strip, bottle label, or carton. Our client-side OCR engine will extract text and identify candidate batch and expiry details.
+          {t("ocrIntroDesc", "Upload a clear photograph of the medicine blister, strip, bottle label, or carton. Our client-side OCR engine will extract text and identify candidate batch and expiry details.")}
         </p>
       </div>
 
@@ -146,9 +148,9 @@ export default function PhotoOcrScanner({ onVerifyExtracted }) {
           <div className="mv-dropzone-icon">
             <Upload size={38} />
           </div>
-          <h4>Drop medicine packaging photo here</h4>
-          <p>Supports JPG, PNG, WebP up to 12MB. Processed securely on your device.</p>
-          <span className="mv-dropzone-browse-btn">Browse Local Files</span>
+          <h4>{t("ocrDropTitle", "Drop medicine packaging photo here")}</h4>
+          <p>{t("ocrDropSub", "Supports JPG, PNG, WebP up to 12MB. Processed securely on your device.")}</p>
+          <span className="mv-dropzone-browse-btn">{t("ocrBrowseBtn", "Browse Local Files")}</span>
         </label>
       )}
 
@@ -170,7 +172,7 @@ export default function PhotoOcrScanner({ onVerifyExtracted }) {
               disabled={ocrLoading}
             >
               <RefreshCw size={14} />
-              <span>Choose Another Photo</span>
+              <span>{t("ocrChooseAnother", "Choose Another Photo")}</span>
             </button>
           </div>
 
@@ -199,17 +201,17 @@ export default function PhotoOcrScanner({ onVerifyExtracted }) {
                   <div className="mv-ocr-candidates-header">
                     <h4>
                       <Sparkles size={16} />
-                      Candidate Fields (Review & Edit)
+                      {t("ocrCandidateTitle", "Candidate Fields (Review & Edit)")}
                     </h4>
                     <span className="mv-hint-badge">
-                      Unconfirmed Candidates — Verify against label
+                      {t("ocrCandidateHint", "Unconfirmed Candidates — Verify against label")}
                     </span>
                   </div>
 
                   <div className="mv-candidate-fields">
                     <div className="mv-input-group">
                       <label htmlFor="candidate-name">
-                        Candidate Medicine Name
+                        {t("ocrCandidateName", "Candidate Medicine Name")}
                         <span className="tag-unconfirmed">Unconfirmed</span>
                       </label>
                       <input
@@ -224,7 +226,7 @@ export default function PhotoOcrScanner({ onVerifyExtracted }) {
                     <div className="mv-fields-row">
                       <div className="mv-input-group">
                         <label htmlFor="candidate-batch">
-                          Candidate Batch / Lot
+                          {t("ocrCandidateBatch", "Candidate Batch / Lot")}
                           <span className="tag-unconfirmed">Unconfirmed</span>
                         </label>
                         <input
@@ -238,7 +240,7 @@ export default function PhotoOcrScanner({ onVerifyExtracted }) {
 
                       <div className="mv-input-group">
                         <label htmlFor="candidate-exp">
-                          Candidate Expiry Date
+                          {t("ocrCandidateExp", "Candidate Expiry Date")}
                           <span className="tag-unconfirmed">Unconfirmed</span>
                         </label>
                         <input
@@ -272,7 +274,7 @@ export default function PhotoOcrScanner({ onVerifyExtracted }) {
 
                       <div className="mv-input-group">
                         <label htmlFor="candidate-mfr">
-                          Candidate Manufacturer
+                          {t("ocrCandidateMfr", "Candidate Manufacturer")}
                           <span className="tag-unconfirmed">Unconfirmed</span>
                         </label>
                         <input
@@ -310,7 +312,7 @@ export default function PhotoOcrScanner({ onVerifyExtracted }) {
                       onClick={handleProceed}
                     >
                       <Sparkles size={17} />
-                      <span>Proceed to Verification Panel</span>
+                      <span>{t("ocrVerifyExtractedBtn", "Proceed to Verification Panel")}</span>
                     </button>
                   </div>
                 </>

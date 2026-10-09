@@ -84,7 +84,7 @@ export default function VerificationResults({
           <div className="mv-results-title-group">
             <div className="mv-results-eyebrow">
               <span className="mv-pulse-dot" />
-              <span>VERIFICATION EVALUATION SUMMARY</span>
+              <span>{t("resultsTitle", "VERIFICATION EVALUATION SUMMARY")}</span>
             </div>
 
             <h2>{extractedData.medicineName || "Extracted Packaging Record"}</h2>
@@ -252,7 +252,7 @@ export default function VerificationResults({
                   </span>
                   <span className="mv-risk-heuristic-pill">Rule-Based Screening Engine v1</span>
                 </div>
-                <h3>Screening Risk Assessment</h3>
+                <h3>{t("riskAssessmentTitle", "Screening Risk Assessment")}</h3>
                 <p>
                   Calculated using multi-parameter pharmaceutical risk heuristics (expiration status, CDSCO recall matches, manufacturer authorization, and duplicate serial tracking).
                 </p>
@@ -262,7 +262,7 @@ export default function VerificationResults({
                   className="mv-toggle-factors-btn"
                   onClick={() => setShowFactorBreakdown(!showFactorBreakdown)}
                 >
-                  <span>{showFactorBreakdown ? "Hide Factor Breakdown" : "View Contributing Risk Factors"}</span>
+                  <span>{showFactorBreakdown ? t("hideFactors", "Hide Factor Breakdown") : t("viewFactors", "View Contributing Risk Factors")}</span>
                   {showFactorBreakdown ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </button>
               </div>
@@ -277,7 +277,7 @@ export default function VerificationResults({
                     <div key={i} className={`mv-factor-card mv-factor-${f.type}`}>
                       <div className="mv-factor-head">
                         <span className="mv-factor-name">{f.name}</span>
-                        <span className="mv-factor-pts">+{f.points} pts</span>
+                        <span className="mv-factor-pts">+{f.points} {t("pointsAdded", "pts")}</span>
                       </div>
                       <p className="mv-factor-desc">{f.description}</p>
                     </div>

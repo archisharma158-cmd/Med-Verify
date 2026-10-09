@@ -2,8 +2,10 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { Camera, CameraOff, Upload, CheckCircle2, AlertCircle, RefreshCw, Sparkles } from "lucide-react";
 import { parseBarcodeOrQr } from "../../services/medicineService";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function QrBarcodeScanner({ onScanComplete }) {
+  const { t } = useLanguage();
   const [isScanning, setIsScanning] = useState(false);
   const [cameras, setCameras] = useState([]);
   const [selectedCameraId, setSelectedCameraId] = useState("");
@@ -150,9 +152,9 @@ export default function QrBarcodeScanner({ onScanComplete }) {
   return (
     <div className="mv-qr-scanner-tab">
       <div className="mv-tab-intro">
-        <h3>Camera & Image Barcode Scanner</h3>
+        <h3>{t("qrIntroTitle", "Camera & Image Barcode Scanner")}</h3>
         <p>
-          Position the 2D DataMatrix code, QR code, or linear barcode printed on the medicine carton or blister foil.
+          {t("qrIntroDesc", "Position the 2D DataMatrix code, QR code, or linear barcode printed on the medicine carton or blister foil.")}
         </p>
       </div>
 
@@ -165,15 +167,15 @@ export default function QrBarcodeScanner({ onScanComplete }) {
               <div className="mv-idle-icon-wrap">
                 <Camera size={44} />
               </div>
-              <h4>Camera Scanner Inactive</h4>
-              <p>Camera access is requested only when you click the button below.</p>
+              <h4>{t("qrInactiveTitle", "Camera Scanner Inactive")}</h4>
+              <p>{t("qrInactiveDesc", "Camera access is requested only when you click the button below.")}</p>
               <button
                 type="button"
                 className="mv-btn-primary mv-btn-start-scan"
                 onClick={() => startCameraScanner()}
               >
                 <Camera size={18} />
-                <span>Start Camera Scanner</span>
+                <span>{t("qrStartBtn", "Start Camera Scanner")}</span>
               </button>
             </div>
           )}
@@ -209,7 +211,7 @@ export default function QrBarcodeScanner({ onScanComplete }) {
                 onClick={stopCameraScanner}
               >
                 <CameraOff size={16} />
-                <span>Stop Camera</span>
+                <span>{t("qrStopBtn", "Stop Camera")}</span>
               </button>
             </div>
           </div>
@@ -225,7 +227,7 @@ export default function QrBarcodeScanner({ onScanComplete }) {
 
       <div className="mv-code-file-alternative">
         <div className="mv-divider-text">
-          <span>OR SCAN FROM SAVED IMAGE</span>
+          <span>{t("qrOrUpload", "OR SCAN FROM SAVED IMAGE")}</span>
         </div>
 
         <label className="mv-file-dropzone-mini">
@@ -237,7 +239,7 @@ export default function QrBarcodeScanner({ onScanComplete }) {
           />
           <Upload size={18} />
           <span>
-            {isProcessingFile ? "Decoding barcode from image..." : "Upload code screenshot or photo"}
+            {isProcessingFile ? t("qrDecoding", "Decoding barcode from image...") : t("qrUploadPrompt", "Upload code screenshot or photo")}
           </span>
         </label>
       </div>
@@ -247,45 +249,45 @@ export default function QrBarcodeScanner({ onScanComplete }) {
           <div className="mv-decoded-header">
             <div className="mv-decoded-badge">
               <CheckCircle2 size={16} />
-              <span>Code Decoded Successfully</span>
+              <span>{t("qrDecodedSuccess", "Code Decoded Successfully")}</span>
             </div>
             <span className="mv-decoded-time">{lastDecoded.timestamp}</span>
           </div>
 
           <div className="mv-decoded-body">
             <div className="mv-decoded-format">
-              Format: <strong>{lastDecoded.parsed.format}</strong>
+              {t("qrDecodedFormat", "Format")}: <strong>{lastDecoded.parsed.format}</strong>
             </div>
 
             <div className="mv-decoded-fields-grid">
               {lastDecoded.parsed.batch && (
                 <div className="mv-field-chip">
-                  <span className="label">Decoded Batch:</span>
+                  <span className="label">{t("qrDecodedBatch", "Decoded Batch")}:</span>
                   <span className="val">{lastDecoded.parsed.batch}</span>
                 </div>
               )}
               {lastDecoded.parsed.expiryDate && (
                 <div className="mv-field-chip">
-                  <span className="label">Decoded Expiry:</span>
+                  <span className="label">{t("qrDecodedExpiry", "Decoded Expiry")}:</span>
                   <span className="val">{lastDecoded.parsed.expiryDate}</span>
                 </div>
               )}
               {lastDecoded.parsed.gtin && (
                 <div className="mv-field-chip">
-                  <span className="label">GS1 GTIN:</span>
+                  <span className="label">{t("qrDecodedGtin", "GS1 GTIN")}:</span>
                   <span className="val">{lastDecoded.parsed.gtin}</span>
                 </div>
               )}
               {lastDecoded.parsed.serialNo && (
                 <div className="mv-field-chip">
-                  <span className="label">Serial No:</span>
+                  <span className="label">{t("qrDecodedSerial", "Serial No")}:</span>
                   <span className="val">{lastDecoded.parsed.serialNo}</span>
                 </div>
               )}
             </div>
 
             <div className="mv-raw-payload-box">
-              <span className="mv-raw-label">Raw Decoded Payload:</span>
+              <span className="mv-raw-label">{t("qrRawPayload", "Raw Decoded Payload")}:</span>
               <code>{lastDecoded.raw}</code>
             </div>
           </div>
@@ -297,7 +299,7 @@ export default function QrBarcodeScanner({ onScanComplete }) {
               onClick={handleProceedToVerification}
             >
               <Sparkles size={16} />
-              <span>Verify Extracted Data</span>
+              <span>{t("qrVerifyBtn", "Verify Extracted Data")}</span>
             </button>
             <button
               type="button"
@@ -308,7 +310,7 @@ export default function QrBarcodeScanner({ onScanComplete }) {
               }}
             >
               <RefreshCw size={15} />
-              <span>Scan Another Code</span>
+              <span>{t("qrScanAnother", "Scan Another Code")}</span>
             </button>
           </div>
         </div>
