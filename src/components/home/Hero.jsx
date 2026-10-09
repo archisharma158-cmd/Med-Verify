@@ -64,15 +64,17 @@ export default function Hero({ onStartVerification }) {
               className={`mv-action-card mv-card-scan ${phoneTab === "scan" ? "is-selected" : ""}`}
               onClick={() => handleCardClick("scan")}
             >
-              <div className="mv-card-icon-box mv-icon-green">
-                <QrCode size={24} />
+              <div className="mv-card-head">
+                <div className="mv-card-icon-box mv-icon-green">
+                  <QrCode size={22} />
+                </div>
+                <div className="mv-card-arrow-btn">
+                  <ArrowRight size={15} />
+                </div>
               </div>
               <div className="mv-card-info">
                 <h2 className="mv-card-title">{t("cardScanTitle", "Scan QR / Barcode")}</h2>
-                <p className="mv-card-sub">{t("cardScanSub", "Point your camera at packaging code")}</p>
-              </div>
-              <div className="mv-card-arrow-btn">
-                <ArrowRight size={16} />
+                <p className="mv-card-sub">{t("cardScanSub", "Point camera at packaging code")}</p>
               </div>
             </button>
 
@@ -82,15 +84,17 @@ export default function Hero({ onStartVerification }) {
               className={`mv-action-card mv-card-photo ${phoneTab === "photo" ? "is-selected" : ""}`}
               onClick={() => handleCardClick("photo")}
             >
-              <div className="mv-card-icon-box mv-icon-blue">
-                <Camera size={24} />
+              <div className="mv-card-head">
+                <div className="mv-card-icon-box mv-icon-blue">
+                  <Camera size={22} />
+                </div>
+                <div className="mv-card-arrow-btn">
+                  <ArrowRight size={15} />
+                </div>
               </div>
               <div className="mv-card-info">
                 <h2 className="mv-card-title">{t("cardPhotoTitle", "Take a Photo (OCR)")}</h2>
                 <p className="mv-card-sub">{t("cardPhotoSub", "Capture medicine packaging")}</p>
-              </div>
-              <div className="mv-card-arrow-btn">
-                <ArrowRight size={16} />
               </div>
             </button>
 
@@ -100,15 +104,17 @@ export default function Hero({ onStartVerification }) {
               className={`mv-action-card mv-card-manual ${phoneTab === "manual" ? "is-selected" : ""}`}
               onClick={() => handleCardClick("manual")}
             >
-              <div className="mv-card-icon-box mv-icon-purple">
-                <Keyboard size={24} />
+              <div className="mv-card-head">
+                <div className="mv-card-icon-box mv-icon-purple">
+                  <Keyboard size={22} />
+                </div>
+                <div className="mv-card-arrow-btn">
+                  <ArrowRight size={15} />
+                </div>
               </div>
               <div className="mv-card-info">
                 <h2 className="mv-card-title">{t("cardManualTitle", "Enter Details Manually")}</h2>
                 <p className="mv-card-sub">{t("cardManualSub", "Type brand & batch number")}</p>
-              </div>
-              <div className="mv-card-arrow-btn">
-                <ArrowRight size={16} />
               </div>
             </button>
           </div>
