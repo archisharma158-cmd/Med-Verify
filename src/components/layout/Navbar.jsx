@@ -42,18 +42,11 @@ export default function Navbar({ onOpenContact, onSelectScanTab, currentLanguage
           onClick={(e) => handleNavClick(e, "home", "home")}
           aria-label="Medify Homepage"
         >
-          <div className="mv-brand-logo-wrap">
-            <div className="mv-brand-shield">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L4 5V11C4 16.52 7.42 21.61 12 22.93C16.58 21.61 20 16.52 20 11V5L12 2Z" fill="#10b981" />
-                <path d="M12 7V17M7 12H17" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div className="mv-brand-text">
-              <span className="mv-brand-title">Medify</span>
-              <span className="mv-brand-tagline">Safer Medicines. Healthier India</span>
-            </div>
-          </div>
+          <img
+            src="/logo.png"
+            alt="Medify - Safe Medicines, Healthier India"
+            className="mv-brand-logo-img"
+          />
         </a>
 
         {/* Desktop Navigation Links */}
