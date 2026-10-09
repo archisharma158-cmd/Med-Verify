@@ -1,0 +1,187 @@
+/* ==========================================================================
+   MEDVERIFY DESIGN SYSTEM & FOUNDATION TOKENS
+   Aesthetic: Light Mint & White background, Deep Forest-Green typography & buttons
+   Typography: Manrope (Headings), Inter (Body & UI Data)
+   ========================================================================== */
+
+:root {
+  /* Color Palette - Forest & Mint Harmony */
+  --bg-page: #f6fbf7;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-mint-subtle: #edf7f0;
+  --bg-mint-light: #e3f3e8;
+  --bg-mint-medium: #cce9d5;
+
+  --forest-900: #0a251b;
+  --forest-800: #0f392b;
+  --forest-700: #164e3b;
+  --forest-600: #1b6b47;
+  --forest-500: #24885a;
+
+  --emerald-600: #1b8a53;
+  --emerald-500: #22a364;
+  --emerald-400: #2ec279;
+  --emerald-100: #e3f7ec;
+
+  --text-primary: #0f2d22;
+  --text-secondary: #3b564b;
+  --text-muted: #6b8478;
+  --text-light: #8fa59b;
+  --text-white: #ffffff;
+
+  --border-subtle: #e2ede5;
+  --border-medium: #cde2d3;
+  --border-strong: #a4ceaf;
+
+  /* Semantic Alerts */
+  --color-danger: #c92a2a;
+  --color-danger-bg: #fff5f5;
+  --color-danger-border: #ffc9c9;
+
+  --color-warning: #d97706;
+  --color-warning-bg: #fffbeb;
+  --color-warning-border: #fde68a;
+
+  --color-info: #0284c7;
+  --color-info-bg: #f0f9ff;
+  --color-info-border: #bae6fd;
+
+  --color-demo: #6366f1;
+  --color-demo-bg: #eef2ff;
+  --color-demo-border: #c7d2fe;
+
+  /* Typography */
+  --font-heading: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 3px rgba(15, 45, 34, 0.04);
+  --shadow-sm: 0 4px 10px rgba(15, 45, 34, 0.05);
+  --shadow-md: 0 10px 25px rgba(15, 45, 34, 0.07);
+  --shadow-lg: 0 18px 45px rgba(15, 45, 34, 0.1);
+  --shadow-float: 0 20px 50px rgba(15, 45, 34, 0.16);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 240ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Box Sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--forest-900);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+p {
+  color: var(--text-secondary);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* Focus Visible Accessibility */
+:focus-visible {
+  outline: 2px solid var(--forest-600);
+  outline-offset: 2px;
+}
+
+/* Container Utility */
+.mv-container {
+  width: 100%;
+  max-width: 1220px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (max-width: 640px) {
+  .mv-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* Screen Reader Only Utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Text and Color Helpers */
+.text-emerald {
+  color: var(--emerald-600);
+}
+.text-danger {
+  color: var(--color-danger);
+}
+.text-amber {
+  color: var(--color-warning);
+}
+.text-muted {
+  color: var(--text-muted);
+}
+.font-semibold {
+  font-weight: 600;
+}
+.mono {
+  font-family: var(--font-mono);
+}

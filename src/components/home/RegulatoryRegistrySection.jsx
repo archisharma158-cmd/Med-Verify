@@ -1,0 +1,66 @@
+import { ExternalLink, Building2, PhoneCall, AlertCircle } from "lucide-react";
+import { REGULATORY_REGISTRIES } from "../../constants/medicineKnowledge";
+
+export default function RegulatoryRegistrySection() {
+  return (
+    <section className="mv-regulatory-section" id="regulatory" aria-label="Official Regulatory Drug Registries">
+      <div className="mv-container">
+        <div className="mv-section-heading">
+          <span className="mv-section-eyebrow">OFFICIAL HEALTH AUTHORITIES</span>
+          <h2>Government Regulatory Registries</h2>
+          <p>
+            For authentic verification of manufacturing licenses, approved drug lists, and reporting suspicious medicine batches, always refer to these official national regulators.
+          </p>
+        </div>
+
+        <div className="mv-registry-grid">
+          {REGULATORY_REGISTRIES.map((item) => (
+            <div key={item.country} className="mv-registry-card">
+              <div className="mv-registry-top">
+                <div className="mv-registry-badge">
+                  <Building2 size={16} />
+                  <span>{item.country}</span>
+                </div>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mv-registry-link-icon"
+                  title={`Open official ${item.agency} website`}
+                >
+                  <ExternalLink size={16} />
+                </a>
+              </div>
+
+              <h3>{item.agency}</h3>
+              <div className="mv-registry-portal-name">{item.portalName}</div>
+              <p className="mv-registry-desc">{item.description}</p>
+
+              <div className="mv-registry-helpline">
+                <PhoneCall size={14} className="text-emerald" />
+                <span>{item.helpline}</span>
+              </div>
+
+              <div className="mv-registry-action-note">
+                <AlertCircle size={13} />
+                <span>{item.reportingAction}</span>
+              </div>
+
+              <div className="mv-registry-bottom-action">
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mv-btn-outline mv-w-full mv-btn-sm"
+                >
+                  <span>Visit {item.agency.split(" ")[0]} Portal</span>
+                  <ExternalLink size={13} />
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
