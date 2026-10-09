@@ -61,7 +61,12 @@ Med-Verify/
 │   ├── logo.png                         # 3D MediFy brand wordmark
 │   ├── logo-icon.png                    # Square 3D brand emblem
 │   └── logo.svg                         # Vector branding definition
-└── src/
+├── app/                                 # FastAPI Backend (Python)
+│   ├── main.py                          # Backend entrypoint
+│   ├── api/                             # REST API routes (verify, barcode, ocr, chat, voice)
+│   ├── services/                        # Service logic & integrations
+│   └── models/                          # Database schemas & models
+└── src/                                 # React Frontend (Vite)
     ├── main.jsx                         # React root bootstrap
     ├── App.jsx                          # Main view orchestration & state management
     ├── index.css                        # Design tokens, color system, typography, resets

@@ -1,0 +1,58 @@
+# ── Core Framework ──
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic[email]==2.10.4
+pydantic-settings==2.7.1
+
+# ── Database ──
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+alembic==1.14.1
+greenlet==3.1.1
+
+# ── Supabase ──
+supabase==2.11.0
+postgrest==0.18.0
+gotrue==2.11.1
+storage3==0.8.1
+
+# ── HTTP Client ──
+httpx==0.28.1
+
+# ── Authentication / Security ──
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.20
+slowapi==0.1.9
+
+# ── AI / ML ──
+google-genai==1.10.0
+sarvamai==0.0.12
+
+# ── Image Processing ──
+opencv-python-headless==4.10.0.84
+Pillow==11.1.0
+pyzbar==0.1.9
+
+# ── Utilities ──
+python-dotenv==1.0.1
+structlog==24.4.0
+orjson==3.10.14
+aiofiles==24.1.0
+tenacity==9.0.0
+apscheduler==3.10.4
+python-dateutil==2.9.0.post0
+
+# ── Testing ──
+pytest==8.3.4
+pytest-asyncio==0.25.0
+pytest-cov==6.0.0
+httpx==0.28.1
+
+# ── Data Processing ──
+pandas==2.2.3
+numpy==2.2.1
+
+# ── ML Model Loading (future) ──
+joblib==1.4.2
+# onnxruntime==1.20.1  # Uncomment when ONNX models are ready

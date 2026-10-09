@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "workflow",
+  "quality": "showcase",
+  "specification": {
+    "path": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\candidate-verification-workflow.json",
+    "sha256": "8059e78c9d04a34442bf7d8115f9fdd9fd41330432cc61455c342f53e69315c3",
+    "bytes": 5262
+  },
+  "artifact": {
+    "path": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\verification-workflow.html",
+    "sha256": "d582770b44f3d266eaf0fed4d76e1e182932ccb14c82e8052a547011c3f6411d",
+    "bytes": 764122
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\verification-workflow.finalize.json",
+    "summaryReceipt": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\verification-workflow.finalize-summary.json",
+    "browserCheckReceipt": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\verification-workflow.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.0.1",
+    "availableVersion": "3.0.1",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-09T19:05:02.290Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 6570,
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "routesOverSuggestedBends": 3,
+      "routesOverSuggestedStretch": 2
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [],
+      "detours": [
+        {
+          "relationship": {
+            "id": "ocr-to-extract",
+            "from": "ocr_input",
+            "to": "data_extraction",
+            "label": "OCR image payload",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "bends": 3,
+          "stretch": 2.759
+        },
+        {
+          "relationship": {
+            "id": "risk-to-result",
+            "from": "risk_scoring",
+            "to": "result_generation",
+            "label": "Risk score",
+            "collectionIndex": 5,
+            "artifactIndex": 6
+          },
+          "bends": 3,
+          "stretch": 1
+        },
+        {
+          "relationship": {
+            "id": "scan-to-extract",
+            "from": "scan_input",
+            "to": "data_extraction",
+            "label": "Barcode payload",
+            "collectionIndex": 6,
+            "artifactIndex": 7
+          },
+          "bends": 3,
+          "stretch": 3.068
+        }
+      ],
+      "truncated": false
+    },
+    "hints": [
+      "ocr_input → data_extraction needs 3 bends: move node ocr_input or data_extraction so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "risk_scoring → result_generation needs 3 bends: move node risk_scoring or result_generation so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "scan_input → data_extraction needs 3 bends: move node scan_input or data_extraction so they share a row or column with matching centers, or sit diagonally with a clear corner."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}

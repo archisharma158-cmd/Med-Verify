@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "MedVerify - System Architecture",
+    "output": "docs/architecture/system-architecture.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "react_web",
+      "type": "frontend",
+      "label": "React Web App",
+      "sublabel": "[Implemented] Vite + React",
+      "tag": "Active Web UI",
+      "pos": [40, 150],
+      "size": [160, 65]
+    },
+    {
+      "id": "flutter_app",
+      "type": "frontend",
+      "label": "Flutter Mobile App",
+      "sublabel": "[Planned] iOS / Android Client",
+      "tag": "Planned Mobile UI",
+      "pos": [40, 290],
+      "size": [160, 65]
+    },
+    {
+      "id": "fastapi_app",
+      "type": "backend",
+      "label": "FastAPI Backend",
+      "sublabel": "[Implemented] Python REST API",
+      "tag": "Core API Engine",
+      "pos": [270, 220],
+      "size": [160, 80]
+    },
+    {
+      "id": "supabase_auth",
+      "type": "security",
+      "label": "Supabase Auth",
+      "sublabel": "[Implemented] JWT & User Mgmt",
+      "tag": "Authentication Guard",
+      "pos": [270, 50],
+      "size": [160, 65]
+    },
+    {
+      "id": "cdsco_alerts",
+      "type": "database",
+      "label": "CDSCO Alerts DB",
+      "sublabel": "[Implemented] NSQ / Spurious Notices",
+      "tag": "Regulatory Records",
+      "pos": [270, 390],
+      "size": [160, 65]
+    },
+    {
+      "id": "postgres_db",
+      "type": "database",
+      "label": "PostgreSQL Database",
+      "sublabel": "[Implemented] Supabase Storage",
+      "tag": "Relational Persistence",
+      "pos": [580, 50],
+      "size": [170, 65]
+    },
+    {
+      "id": "ocr_space",
+      "type": "external",
+      "label": "OCR.space API",
+      "sublabel": "[Implemented] Packaging Text Extraction",
+      "tag": "Vision OCR API",
+      "pos": [580, 160],
+      "size": [170, 60]
+    },
+    {
+      "id": "sarvam_ai",
+      "type": "external",
+      "label": "Sarvam AI API",
+      "sublabel": "[Implemented] Hindi Voice STT / TTS",
+      "tag": "Voice AI API",
+      "pos": [580, 240],
+      "size": [170, 60]
+    },
+    {
+      "id": "gemini_ai",
+      "type": "external",
+      "label": "Google Gemini API",
+      "sublabel": "[Implemented] LLM Explanations & Chat",
+      "tag": "AI Explanation Engine",
+      "pos": [580, 320],
+      "size": [170, 60]
+    },
+    {
+      "id": "openfda_api",
+      "type": "external",
+      "label": "openFDA API",
+      "sublabel": "[Implemented] Drug Data Lookup",
+      "tag": "Supplementary Data",
+      "pos": [580, 400],
+      "size": [170, 60]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Client Layer (React Active / Flutter Planned)",
+      "wraps": ["react_web", "flutter_app"]
+    },
+    {
+      "kind": "security-group",
+      "label": "MedVerify Core Service Boundary",
+      "wraps": ["fastapi_app", "supabase_auth", "cdsco_alerts"]
+    },
+    {
+      "kind": "region",
+      "label": "Cloud Data Infrastructure",
+      "wraps": ["postgres_db"]
+    },
+    {
+      "kind": "region",
+      "label": "External AI & Regulatory Services",
+      "wraps": ["ocr_space", "sarvam_ai", "gemini_ai", "openfda_api"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "web-to-api",
+      "from": "react_web",
+      "to": "fastapi_app",
+      "label": "REST / HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "id": "flutter-to-api",
+      "from": "flutter_app",
+      "to": "fastapi_app",
+      "label": "REST / HTTPS [Planned]",
+      "variant": "dashed"
+    },
+    {
+      "id": "api-to-auth",
+      "from": "fastapi_app",
+      "to": "supabase_auth",
+      "label": "Verify JWT",
+      "variant": "security"
+    },
+    {
+      "id": "api-to-cdsco",
+      "from": "fastapi_app",
+      "to": "cdsco_alerts",
+      "label": "NSQ Query"
+    },
+    {
+      "id": "api-to-db",
+      "from": "fastapi_app",
+      "to": "postgres_db",
+      "label": "SQLAlchemy ORM"
+    },
+    {
+      "id": "api-to-ocr",
+      "from": "fastapi_app",
+      "to": "ocr_space",
+      "label": "OCR Text Extraction"
+    },
+    {
+      "id": "api-to-sarvam",
+      "from": "fastapi_app",
+      "to": "sarvam_ai",
+      "label": "Voice Input / Output"
+    },
+    {
+      "id": "api-to-gemini",
+      "from": "fastapi_app",
+      "to": "gemini_ai",
+      "label": "AI Explanations"
+    },
+    {
+      "id": "api-to-openfda",
+      "from": "fastapi_app",
+      "to": "openfda_api",
+      "label": "Drug Information"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Implementation Status",
+      "items": [
+        "Fully Implemented: FastAPI Backend, Supabase Auth, PostgreSQL DB, OCR.space, Sarvam AI, Google Gemini, openFDA, CDSCO Alerts DB, React Web App",
+        "Planned Feature: Flutter Mobile Client (iOS & Android)"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Medical-Tech Architecture Principles",
+      "items": [
+        "Rural Accessibility: Multi-lingual (Hindi/English) voice and camera OCR processing",
+        "Regulatory Integrity: Automatic matching against imported CDSCO NSQ & spurious drug records",
+        "Rule-Based Risk Scoring: Transparent screening heuristic with swappable ML model pipeline"
+      ]
+    }
+  ]
+}

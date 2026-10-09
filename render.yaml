@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: medverify-backend
+    env: python
+    region: singapore
+    plan: starter
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
+      - key: ENVIRONMENT
+        value: production
+      - key: ALLOWED_ORIGINS
+        value: "*"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: SARVAM_API_KEY
+        sync: false
+      - key: OCR_SPACE_API_KEY
+        sync: false
+      - key: OPENFDA_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false

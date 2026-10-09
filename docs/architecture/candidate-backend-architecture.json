@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "MedVerify - Backend Architecture",
+    "output": "docs/architecture/backend-architecture.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "api_router",
+      "type": "backend",
+      "label": "API Routes Gateway",
+      "sublabel": "FastAPI APIRouter (/api/v1)",
+      "tag": "Endpoints Suite",
+      "pos": [40, 260],
+      "size": [170, 80]
+    },
+    {
+      "id": "auth_module",
+      "type": "security",
+      "label": "Auth & Security",
+      "sublabel": "JWT / Passwords / Roles",
+      "tag": "Authentication",
+      "pos": [270, 50],
+      "size": [170, 65]
+    },
+    {
+      "id": "verification_engine",
+      "type": "backend",
+      "label": "Verification Engine",
+      "sublabel": "verification_service.py",
+      "tag": "Core Verification",
+      "pos": [270, 160],
+      "size": [180, 75]
+    },
+    {
+      "id": "history_module",
+      "type": "backend",
+      "label": "Scan History Service",
+      "sublabel": "history.py & ScanHistory",
+      "tag": "Audit Trail",
+      "pos": [270, 270],
+      "size": [170, 65]
+    },
+    {
+      "id": "reports_module",
+      "type": "backend",
+      "label": "Suspicious Reports",
+      "sublabel": "report_service.py",
+      "tag": "Reporting Module",
+      "pos": [270, 370],
+      "size": [170, 65]
+    },
+    {
+      "id": "admin_module",
+      "type": "security",
+      "label": "Admin Module",
+      "sublabel": "admin.py & Alert Importer",
+      "tag": "Moderation & CDSCO",
+      "pos": [270, 470],
+      "size": [170, 65]
+    },
+    {
+      "id": "risk_engine",
+      "type": "backend",
+      "label": "Risk Scoring Engine",
+      "sublabel": "risk_service.py (0-100 Score)",
+      "tag": "Heuristic / ML Ready",
+      "pos": [600, 160],
+      "size": [180, 75]
+    },
+    {
+      "id": "db_models",
+      "type": "database",
+      "label": "Database Models",
+      "sublabel": "models.py (SQLAlchemy 2.0)",
+      "tag": "ORM Schema",
+      "pos": [600, 330],
+      "size": [190, 80]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "FastAPI HTTP Routing Layer",
+      "wraps": ["api_router"]
+    },
+    {
+      "kind": "region",
+      "label": "Backend Domain Services",
+      "wraps": ["verification_engine", "history_module", "reports_module", "risk_engine"]
+    },
+    {
+      "kind": "security-group",
+      "label": "Authentication & Governance",
+      "wraps": ["auth_module", "admin_module"]
+    },
+    {
+      "kind": "region",
+      "label": "SQLAlchemy Models & Storage",
+      "wraps": ["db_models"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "router-to-auth",
+      "from": "api_router",
+      "to": "auth_module",
+      "label": "Validate Token",
+      "variant": "security"
+    },
+    {
+      "id": "router-to-verify",
+      "from": "api_router",
+      "to": "verification_engine",
+      "label": "Verify Payload",
+      "variant": "emphasis"
+    },
+    {
+      "id": "router-to-history",
+      "from": "api_router",
+      "to": "history_module",
+      "label": "Query History"
+    },
+    {
+      "id": "router-to-reports",
+      "from": "api_router",
+      "to": "reports_module",
+      "label": "Submit Report"
+    },
+    {
+      "id": "router-to-admin",
+      "from": "api_router",
+      "to": "admin_module",
+      "label": "Admin Actions",
+      "variant": "security"
+    },
+    {
+      "id": "verify-to-risk",
+      "from": "verification_engine",
+      "to": "risk_engine",
+      "label": "Risk Analysis",
+      "variant": "emphasis"
+    },
+    {
+      "id": "verify-to-models",
+      "from": "verification_engine",
+      "to": "db_models",
+      "label": "Query Catalog"
+    },
+    {
+      "id": "history-to-models",
+      "from": "history_module",
+      "to": "db_models",
+      "label": "Save History"
+    },
+    {
+      "id": "reports-to-models",
+      "from": "reports_module",
+      "to": "db_models",
+      "label": "Save Report"
+    },
+    {
+      "id": "admin-to-models",
+      "from": "admin_module",
+      "to": "db_models",
+      "label": "Import Alerts"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Backend Modules",
+      "items": [
+        "API Routes: /api/verify, /api/barcode, /api/ocr, /api/medicines, /api/alerts, /api/packaging, /api/chat, /api/voice, /api/reports, /api/history, /api/admin",
+        "Authentication: Supabase JWT validation and user profile management",
+        "Verification Engine: Integrates batch lookup, OCR, barcode decoding, openFDA data, and CDSCO notices"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Data Models & Risk Scoring",
+      "items": [
+        "Risk Scoring Engine: Rule-based score (0-25 Low, 26-60 Medium, 61-100 High) designed for future ML model drop-in",
+        "Database Models: User, Medicine, MedicineBatch, RegulatoryAlert, ScanHistory, SuspiciousReport, ReferencePackaging, AuditEvent"
+      ]
+    }
+  ]
+}
