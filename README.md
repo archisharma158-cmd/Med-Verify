@@ -1,31 +1,44 @@
 <div align="center">
 
-<img src="docs/readme-assets/medify-logo.png" alt="MEDIFY — Smart Medicine Verification System" width="420" />
+<img src="docs/readme-assets/hero-wave-top.gif" alt="Medify Animated Green Wave Banner" width="100%" />
+
+<br />
+
+<img src="docs/readme-assets/medify-logo.png" alt="MEDIFY — Smart Medicine Verification System" width="380" />
 
 # MEDIFY
 ### Smart Medicine Verification & Health Safety Awareness
 
-**Safer Medicines. Informed Decisions. Accessible Healthcare.**
-
-<img src="docs/readme-assets/header-typing.svg" alt="MEDIFY Animated Tagline" width="700" />
+*Safer Medicines. Informed Decisions. Accessible Healthcare.*
 
 <br />
 
-[![Live Showcase Site](https://img.shields.io/badge/Live_Showcase-Medify_Site-00D9AA?style=for-the-badge&logo=googlechrome&logoColor=black)](https://archisharma158-cmd.github.io/Med-Verify/)
-[![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
-[![Flutter](https://img.shields.io/badge/Flutter-Planned-02569B?style=for-the-badge&logo=flutter&logoColor=white)](#-technology-stack)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://supabase.com)
-[![Google Gemini](https://img.shields.io/badge/Google_Gemini-AI_Chat-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
-[![Sarvam AI](https://img.shields.io/badge/Sarvam_AI-Hindi_Voice-00A86B?style=for-the-badge&logo=openai&logoColor=white)](#-ai-and-voice-assistant)
-[![License](https://img.shields.io/badge/License-MIT-00D9AA?style=for-the-badge)](LICENSE)
+<img src="docs/readme-assets/header-typing.svg" alt="MEDIFY Animated Tagline" width="650" />
+
+<br /><br />
+
+[![Live Showcase Site](https://img.shields.io/badge/🌐_Live_Showcase-Medify_Site-00D9AA?style=for-the-badge&logo=googlechrome&logoColor=black)](https://archisharma158-cmd.github.io/Med-Verify/)
+[![Interactive Architecture](https://img.shields.io/badge/📐_Interactive-Architecture_Hub-00A86B?style=for-the-badge&logo=diagramsdotnet&logoColor=white)](#-system-architecture)
+[![Documentation](https://img.shields.io/badge/📖_View-Documentation-006B45?style=for-the-badge&logo=github&logoColor=white)](#-about-medify)
+
+<br />
+
+[![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![Flutter](https://img.shields.io/badge/Flutter-Planned-02569B?style=flat-square&logo=flutter&logoColor=white)](#-technology-stack)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://supabase.com)
+[![Google Gemini](https://img.shields.io/badge/Google_Gemini-AI_Chat-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev)
+[![Sarvam AI](https://img.shields.io/badge/Sarvam_AI-Hindi_Voice-00A86B?style=flat-square&logo=openai&logoColor=white)](#-ai-and-voice-assistant)
+[![License](https://img.shields.io/badge/License-MIT-00D9AA?style=flat-square)](LICENSE)
 
 <br />
 
 [🌐 Live Showcase Site](https://archisharma158-cmd.github.io/Med-Verify/) · [📖 System Architecture](#-system-architecture) · [⚙️ Backend Architecture](#-backend-architecture) · [🔄 Verification Workflow](#-medicine-verification-workflow) · [✨ Features](#-key-features) · [🚀 Quick Start](#-getting-started) · [🔌 API Docs](#-api-documentation)
 
----
+<br />
+
+<img src="docs/readme-assets/hero-wave-bottom.gif" alt="Medify Flowing Bottom Wave Ribbon" width="100%" />
 
 </div>
 
