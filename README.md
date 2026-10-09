@@ -166,9 +166,11 @@ flowchart LR
 
 Medify utilizes a decoupled, high-performance architecture connecting multi-modal clients to a centralized FastAPI service boundary, PostgreSQL database, and specialized external AI APIs.
 
-[![Medify System Architecture](docs/readme-assets/system-architecture-preview.png)](docs/architecture/system-architecture.html)
+<a href="https://archisharma158-cmd.github.io/Med-Verify/architecture/system-architecture.html" target="_blank">
+  <img src="docs/readme-assets/system-architecture-preview.png" alt="Medify System Architecture" width="100%" />
+</a>
 
-> 🔗 **Interactive View:** Click the diagram above or open [`docs/architecture/system-architecture.html`](docs/architecture/system-architecture.html) to launch the full interactive Archify canvas with zoom, pan, category filtering, and trace animation.
+> 🔗 **Interactive View:** Click the preview above or open the [Interactive System Architecture Diagram](https://archisharma158-cmd.github.io/Med-Verify/architecture/system-architecture.html) to launch the full interactive Archify canvas with zoom, pan, category filtering, and trace animation.
 
 ### Architectural Breakdown
 - **Client Tier:** Web interface built with React + Vite (`src/` on `frontend` branch) and planned Flutter mobile application.
@@ -182,9 +184,11 @@ Medify utilizes a decoupled, high-performance architecture connecting multi-moda
 
 The backend is organized into specialized domain services, enforcing single-responsibility principles and strict input data schemas.
 
-[![Medify Backend Architecture](docs/readme-assets/backend-architecture-preview.png)](docs/architecture/backend-architecture.html)
+<a href="https://archisharma158-cmd.github.io/Med-Verify/architecture/backend-architecture.html" target="_blank">
+  <img src="docs/readme-assets/backend-architecture-preview.png" alt="Medify Backend Architecture" width="100%" />
+</a>
 
-> 🔗 **Interactive View:** Click the diagram above or open [`docs/architecture/backend-architecture.html`](docs/architecture/backend-architecture.html) to inspect domain boundaries, database models, and service interfaces.
+> 🔗 **Interactive View:** Click the preview above or open the [Interactive Backend Architecture Diagram](https://archisharma158-cmd.github.io/Med-Verify/architecture/backend-architecture.html) to inspect domain boundaries, database models, and service interfaces.
 
 ### Core Subsystems
 1. **APIRouter Gateway (`app/api/`):** Exposes 13 REST endpoint modules for authentication, verification, barcodes, OCR, medicines, alerts, voice, chat, reports, history, and administration.
@@ -199,9 +203,11 @@ The backend is organized into specialized domain services, enforcing single-resp
 
 The end-to-end verification pipeline transforms multi-modal inputs into structured safety recommendations in under two seconds.
 
-[![Medify Verification Workflow](docs/readme-assets/verification-workflow-preview.png)](docs/architecture/verification-workflow.html)
+<a href="https://archisharma158-cmd.github.io/Med-Verify/architecture/verification-workflow.html" target="_blank">
+  <img src="docs/readme-assets/verification-workflow-preview.png" alt="Medify Verification Workflow" width="100%" />
+</a>
 
-> 🔗 **Interactive View:** Click the diagram above or open [`docs/architecture/verification-workflow.html`](docs/architecture/verification-workflow.html) to trace the step-by-step signal flow.
+> 🔗 **Interactive View:** Click the preview above or open the [Interactive Verification Workflow Diagram](https://archisharma158-cmd.github.io/Med-Verify/architecture/verification-workflow.html) to trace the step-by-step signal flow.
 
 ### Workflow Execution Stages
 
