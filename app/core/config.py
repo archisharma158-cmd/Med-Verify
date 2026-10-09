@@ -1,5 +1,5 @@
-"""
-MedVerify – Smart Medicine Verification System
+﻿"""
+MedVerify â€“ Smart Medicine Verification System
 Core configuration module using Pydantic Settings.
 """
 from __future__ import annotations
@@ -22,7 +22,7 @@ class Settings(BaseSettings):
         case_sensitive=True,
     )
 
-    # ── Application ──
+    # â”€â”€ Application â”€â”€
     APP_NAME: str = "MedVerify"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
@@ -38,7 +38,7 @@ class Settings(BaseSettings):
     )
     PORT: int = Field(default=8000, description="Server port (Render sets this)")
 
-    # ── Supabase ──
+    # â”€â”€ Supabase â”€â”€
     SUPABASE_URL: str
     SUPABASE_SECRET_KEY: str
     SUPABASE_JWT_SECRET: Optional[str] = Field(
@@ -46,30 +46,30 @@ class Settings(BaseSettings):
         description="JWT secret for verifying Supabase access tokens",
     )
 
-    # ── External API Keys ──
+    # â”€â”€ External API Keys â”€â”€
     SARVAM_API_KEY: Optional[str] = None
     OCR_SPACE_API_KEY: Optional[str] = None
     OPENFDA_API_KEY: Optional[str] = None
     GEMINI_API_KEY: Optional[str] = None
 
-    # ── Database ──
+    # â”€â”€ Database â”€â”€
     DATABASE_URL: Optional[str] = Field(
         default=None,
         description="Direct PostgreSQL connection string (overrides Supabase-derived URL)",
     )
 
-    # ── Upload Limits ──
+    # â”€â”€ Upload Limits â”€â”€
     MAX_UPLOAD_SIZE_MB: int = 10
     MAX_AUDIO_SIZE_MB: int = 5
 
-    # ── Rate Limits ──
+    # â”€â”€ Rate Limits â”€â”€
     RATE_LIMIT_DEFAULT: str = "60/minute"
     RATE_LIMIT_GUEST: str = "20/minute"
     RATE_LIMIT_VERIFY: str = "30/minute"
 
-    # ── Risk Scoring ──
-    RISK_MODEL_PATH: Optional[str] = None
-    RISK_MODEL_VERSION: str = "rules-v1"
+    # â”€â”€ Risk Scoring â”€â”€
+    RISK_MODEL_PATH: Optional[str] = "ml/artifacts/medicine_risk_model.pkl"
+    RISK_MODEL_VERSION: str = "ml-v1"
 
     @property
     def cors_origins(self) -> list[str]:
@@ -120,3 +120,4 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     """Cached singleton for application settings."""
     return Settings()
+

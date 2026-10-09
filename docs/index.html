@@ -3,24 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MEDIFY — Technical Architecture & Documentation Hub</title>
-  <meta name="description" content="Interactive Archify architecture and workflow diagrams for Medify Smart Medicine Verification System." />
+  <title>MEDIFY — Smart Medicine Verification System</title>
+  <meta name="description" content="AI-assisted medicine screening & health safety awareness platform. Verify expiry dates, CDSCO regulatory alerts, and packaging authenticity." />
   <link rel="icon" type="image/png" href="readme-assets/medify-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+
   <style>
     :root {
       --bg-midnight: #081826;
-      --bg-card: #0f2942;
-      --bg-card-hover: #153758;
+      --bg-darker: #040D14;
+      --bg-card: rgba(15, 41, 66, 0.65);
+      --bg-card-hover: rgba(21, 55, 88, 0.85);
       --emerald: #00A86B;
       --emerald-dark: #006B45;
       --teal: #00D9AA;
       --mint: #E6FFF3;
-      --text-white: #FFFFFF;
+      --text-main: #F8FAFC;
       --text-muted: #94A3B8;
-      --border-color: rgba(0, 217, 170, 0.2);
+      --border-glow: rgba(0, 217, 170, 0.25);
+      --border-hover: rgba(0, 217, 170, 0.6);
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-heading: 'Space Grotesk', sans-serif;
     }
 
     * {
@@ -29,322 +34,836 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: var(--font-main);
       background-color: var(--bg-midnight);
-      color: var(--text-white);
+      color: var(--text-main);
       line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(0, 168, 107, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 65%, rgba(0, 217, 170, 0.1) 0%, transparent 50%);
     }
 
-    header {
-      background: linear-gradient(180deg, rgba(0, 168, 107, 0.15) 0%, rgba(8, 24, 38, 0) 100%);
-      padding: 3rem 1.5rem 2rem;
-      text-align: center;
-      border-bottom: 1px solid var(--border-color);
+    /* Ambient Background Grid */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    .logo-img {
-      max-width: 320px;
-      height: auto;
-      margin-bottom: 1rem;
-      filter: drop-shadow(0 4px 20px rgba(0, 217, 170, 0.3));
-    }
-
-    h1 {
-      font-size: 2.25rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, #FFFFFF 0%, var(--teal) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .subtitle {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      max-width: 650px;
-      margin: 0 auto 1.5rem;
-    }
-
-    .badges {
-      display: flex;
-      justify-content: center;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-top: 1rem;
-    }
-
-    .badge {
-      background: rgba(0, 217, 170, 0.1);
-      border: 1px solid var(--border-color);
-      color: var(--teal);
-      padding: 0.35rem 0.85rem;
-      border-radius: 9999px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    main {
-      flex: 1;
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 3rem 1.5rem;
-    }
-
-    .section-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
+    /* Top Navigation Bar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      background: rgba(8, 24, 38, 0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-glow);
+      z-index: 100;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+
+    .nav-brand img {
+      height: 36px;
+      width: auto;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--teal);
+    }
+
+    .nav-cta {
+      padding: 0.5rem 1.2rem;
+      background: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 100%);
+      color: #040D14 !important;
+      font-weight: 700 !important;
+      border-radius: 9999px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 217, 170, 0.4);
+    }
+
+    /* HERO SECTION */
+    .hero-container {
+      position: relative;
+      padding-top: 130px;
+      padding-bottom: 140px;
+      text-align: center;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .hero-logo {
+      max-width: 440px;
+      width: 100%;
+      height: auto;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 10px 30px rgba(0, 217, 170, 0.35));
+      animation: floatLogo 6s ease-in-out infinite;
+    }
+
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
       gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: rgba(0, 217, 170, 0.1);
+      border: 1px solid var(--border-glow);
+      border-radius: 9999px;
+      color: var(--teal);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hero-badge span {
+      width: 8px;
+      height: 8px;
+      background-color: var(--teal);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--teal);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #FFFFFF 30%, var(--teal) 70%, var(--emerald) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-tagline {
+      font-size: 1.5rem;
+      color: var(--mint);
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 0.95rem 2rem;
+      background: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 100%);
+      color: #040D14;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 6px 25px rgba(0, 168, 107, 0.4);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 35px rgba(0, 217, 170, 0.6);
+      filter: brightness(1.08);
+    }
+
+    .btn-secondary {
+      padding: 0.95rem 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glow);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 1rem;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      background: rgba(0, 217, 170, 0.15);
+      border-color: var(--teal);
       color: var(--mint);
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 2rem;
-      margin-bottom: 3rem;
+    /* HERO BOTTOM WAVE ANIMATION */
+    .hero-wave-svg {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 90px;
+      z-index: 2;
     }
 
-    .card {
+    .wave-path-1 {
+      fill: var(--bg-darker);
+      opacity: 0.6;
+      animation: waveMove1 12s linear infinite alternate;
+    }
+
+    .wave-path-2 {
+      fill: var(--bg-darker);
+      opacity: 1;
+      animation: waveMove2 8s linear infinite alternate;
+    }
+
+    @keyframes waveMove1 {
+      0% { d: path('M0,32 Q360,65 720,32 T1440,32 L1440,100 L0,100 Z'); }
+      100% { d: path('M0,50 Q360,15 720,50 T1440,50 L1440,100 L0,100 Z'); }
+    }
+
+    @keyframes waveMove2 {
+      0% { d: path('M0,45 Q360,20 720,45 T1440,45 L1440,100 L0,100 Z'); }
+      100% { d: path('M0,25 Q360,60 720,25 T1440,25 L1440,100 L0,100 Z'); }
+    }
+
+    /* SECTION CONTAINERS */
+    section {
+      position: relative;
+      padding: 5rem 1.5rem;
+      z-index: 2;
+    }
+
+    .dark-section {
+      background-color: var(--bg-darker);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-header .tagline {
+      color: var(--teal);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0.75rem auto 0;
+    }
+
+    /* FEATURE HIGHLIGHTS GRID */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .feature-card {
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border-glow);
       border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(12px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--emerald), var(--teal));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      box-shadow: 0 15px 40px rgba(0, 217, 170, 0.2);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(0, 217, 170, 0.12);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border-glow);
+      color: var(--teal);
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .feature-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .feature-badge {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(0, 168, 107, 0.2);
+      color: var(--mint);
+    }
+
+    /* ARCHITECTURE SHOWCASE SECTION */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .arch-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 20px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.35s ease;
+      backdrop-filter: blur(12px);
     }
 
-    .card:hover {
-      transform: translateY(-6px);
+    .arch-card:hover {
+      transform: translateY(-8px);
       border-color: var(--teal);
-      box-shadow: 0 12px 40px rgba(0, 217, 170, 0.25);
-      background: var(--bg-card-hover);
+      box-shadow: 0 15px 45px rgba(0, 217, 170, 0.25);
     }
 
-    .card-preview {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      object-position: top;
-      border-bottom: 1px solid var(--border-color);
+    .arch-img-wrapper {
+      position: relative;
+      height: 230px;
+      overflow: hidden;
       background: #040D14;
     }
 
-    .card-body {
-      padding: 1.5rem;
+    .arch-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      transition: transform 0.5s ease;
+    }
+
+    .arch-card:hover .arch-img-wrapper img {
+      transform: scale(1.05);
+    }
+
+    .arch-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 60%, rgba(8, 24, 38, 0.9) 100%);
+    }
+
+    .arch-body {
+      padding: 1.75rem;
       display: flex;
       flex-direction: column;
       flex: 1;
     }
 
-    .card-title {
+    .arch-title {
       font-size: 1.35rem;
       font-weight: 700;
-      color: var(--text-white);
       margin-bottom: 0.5rem;
+      color: var(--text-main);
     }
 
-    .card-desc {
+    .arch-desc {
       font-size: 0.95rem;
       color: var(--text-muted);
       margin-bottom: 1.5rem;
       flex: 1;
     }
 
-    .card-tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-    }
-
-    .tag {
-      font-size: 0.75rem;
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--mint);
-      padding: 0.25rem 0.6rem;
-      border-radius: 6px;
-      font-weight: 500;
-    }
-
-    .btn {
+    .arch-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
       width: 100%;
       padding: 0.85rem 1.25rem;
-      background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
-      color: var(--text-white);
-      font-weight: 600;
-      text-decoration: none;
-      border-radius: 10px;
-      transition: all 0.2s ease;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background: linear-gradient(135deg, var(--teal) 0%, var(--emerald) 100%);
-      box-shadow: 0 4px 15px rgba(0, 217, 170, 0.4);
-      color: #040D14;
-    }
-
-    .info-box {
-      background: rgba(0, 168, 107, 0.08);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-top: 2rem;
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-    }
-
-    .info-icon {
-      font-size: 1.5rem;
-      line-height: 1;
-    }
-
-    .info-content h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.35rem;
+      background: rgba(0, 217, 170, 0.12);
+      border: 1px solid var(--border-glow);
       color: var(--teal);
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 12px;
+      transition: all 0.25s ease;
     }
 
-    .info-content p {
-      font-size: 0.95rem;
+    .arch-btn:hover {
+      background: linear-gradient(135deg, var(--emerald) 0%, var(--teal) 100%);
+      color: #040D14;
+      border-color: transparent;
+      box-shadow: 0 4px 20px rgba(0, 217, 170, 0.4);
+    }
+
+    /* HIGHLIGHT STATS / SLOGAN BANNER */
+    .slogan-banner {
+      background: linear-gradient(135deg, rgba(0, 168, 107, 0.15) 0%, rgba(0, 217, 170, 0.08) 100%);
+      border: 1px solid var(--border-glow);
+      border-radius: 24px;
+      padding: 3.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin-top: 4rem;
+    }
+
+    .slogan-banner h3 {
+      font-family: var(--font-heading);
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--mint);
+      margin-bottom: 1rem;
+    }
+
+    .slogan-banner p {
+      font-size: 1.1rem;
       color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 2rem;
+    }
+
+    /* FOOTER WAVE & FOOTER */
+    .footer-wrapper {
+      position: relative;
+      background-color: var(--bg-darker);
+      margin-top: 4rem;
+      z-index: 2;
+    }
+
+    .footer-wave-svg {
+      position: absolute;
+      top: -70px;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      z-index: 1;
     }
 
     footer {
-      border-top: 1px solid var(--border-color);
-      padding: 2rem 1.5rem;
+      position: relative;
+      padding: 4rem 1.5rem 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
+      z-index: 2;
+    }
+
+    .footer-logo {
+      height: 50px;
+      width: auto;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
       color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    footer a {
-      color: var(--teal);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 500;
+      transition: color 0.2s ease;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    .footer-links a:hover {
+      color: var(--teal);
+    }
+
+    .footer-copy {
+      color: rgba(148, 163, 184, 0.6);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+
+    /* SCROLL ANIMATION CLASS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE MEDIA QUERIES */
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2.5rem; }
+      .hero-tagline { font-size: 1.2rem; }
+      .hero-logo { max-width: 320px; }
+      .nav-links { display: none; }
+      .section-header h2 { font-size: 1.85rem; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <img src="readme-assets/medify-logo.png" alt="MEDIFY Logo" class="logo-img" />
-    <h1>Technical Architecture & Diagram Hub</h1>
-    <p class="subtitle">
-      Explore interactive system topology, backend domain boundaries, and medicine screening workflow diagrams powered by Archify.
-    </p>
-    <div class="badges">
-      <span class="badge">FastAPI Backend</span>
-      <span class="badge">React &amp; Flutter Client</span>
-      <span class="badge">Supabase PostgreSQL</span>
-      <span class="badge">Sarvam AI &amp; Gemini</span>
-      <span class="badge">CDSCO Safety Alerts</span>
+  <!-- Ambient Grid Overlay -->
+  <div class="grid-overlay"></div>
+
+  <!-- Top Navigation Bar -->
+  <nav>
+    <a href="#" class="nav-brand">
+      <img src="readme-assets/medify-logo.png" alt="Medify Logo" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="https://github.com/archisharma158-cmd/Med-Verify#readme" target="_blank">Documentation</a></li>
+      <li><a href="https://github.com/archisharma158-cmd/Med-Verify" target="_blank" class="nav-cta">GitHub Repo ↗</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero-container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span></span> AI-Powered Health Safety Platform
+      </div>
+
+      <img src="readme-assets/medify-logo.png" alt="MEDIFY — Smart Medicine Verification System" class="hero-logo" />
+
+      <h1 class="hero-title">MEDIFY</h1>
+      <div class="hero-tagline">Safe Medicines. Trusted Health.</div>
+
+      <p class="hero-desc">
+        Empowering rural and semi-urban communities with instant AI-assisted screening for medicine expiration, CDSCO regulatory alerts, packaging verification, and Hindi voice assistance.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#architecture" class="btn-primary">
+          <span>📐</span> Explore Architecture
+        </a>
+        <a href="https://github.com/archisharma158-cmd/Med-Verify#readme" target="_blank" class="btn-secondary">
+          <span>📖</span> View README on GitHub
+        </a>
+      </div>
     </div>
+
+    <!-- Animated Wave Shape (Bottom of Hero) -->
+    <svg class="hero-wave-svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path class="wave-path-1" d="M0,32 Q360,65 720,32 T1440,32 L1440,100 L0,100 Z"></path>
+      <path class="wave-path-2" d="M0,45 Q360,20 720,45 T1440,45 L1440,100 L0,100 Z"></path>
+    </svg>
   </header>
 
-  <main>
-    <div class="section-title">
-      <span>📐</span> Interactive Architecture Diagrams
-    </div>
+  <!-- FEATURE HIGHLIGHTS SECTION -->
+  <section id="features" class="dark-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="tagline">Capabilities &amp; Innovations</span>
+        <h2>Smart Screening Features</h2>
+        <p>A multi-modal intelligence pipeline designed for accessibility, transparency, and consumer protection.</p>
+      </div>
 
-    <div class="grid">
-      <!-- Card 1: System Architecture -->
-      <div class="card">
-        <img src="readme-assets/system-architecture-preview.png" alt="System Architecture Preview" class="card-preview" />
-        <div class="card-body">
-          <h2 class="card-title">1. System Architecture</h2>
-          <p class="card-desc">
-            High-level platform topology mapping React/Flutter clients, FastAPI REST API, Supabase Auth, PostgreSQL DB, and external AI integrations.
-          </p>
-          <div class="card-tags">
-            <span class="tag">System Topology</span>
-            <span class="tag">AI Services</span>
-            <span class="tag">Cloud DB</span>
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card reveal">
+          <div class="feature-icon">📱</div>
+          <h3 class="feature-title">QR &amp; Barcode Scanning</h3>
+          <p class="feature-desc">Decodes 2D GS1 DataMatrix codes and standard retail barcodes to extract GTIN, batch numbers, and production identifiers instantly.</p>
+          <span class="feature-badge">🟢 Implemented</span>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card reveal">
+          <div class="feature-icon">📷</div>
+          <h3 class="feature-title">Packaging OCR Recognition</h3>
+          <p class="feature-desc">High-precision text extraction powered by OCR.space API reads expiry dates, manufacturing details, and drug brand names from camera photos.</p>
+          <span class="feature-badge">🟢 Implemented</span>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card reveal">
+          <div class="feature-icon">🏛️</div>
+          <h3 class="feature-title">CDSCO Regulatory Alert Match</h3>
+          <p class="feature-desc">Cross-references scanned medicines against imported CDSCO (Central Drugs Standard Control Organisation) Not-of-Standard-Quality safety notices.</p>
+          <span class="feature-badge">🟢 Implemented</span>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card reveal">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Rule-Based Risk Scoring</h3>
+          <p class="feature-desc">Calculates a transparent 0–100 concern score categorized into Low (0-25), Medium (26-60), and High (61-100) risk levels with actionable advice.</p>
+          <span class="feature-badge">🟢 Implemented</span>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card reveal">
+          <div class="feature-icon">🗣️</div>
+          <h3 class="feature-title">Sarvam AI Hindi Voice Assistant</h3>
+          <p class="feature-desc">Integrates Sarvam AI Speech-to-Text and Text-to-Speech to deliver voice-based interactive search and audio results for rural accessibility.</p>
+          <span class="feature-badge">🟢 Implemented</span>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card reveal">
+          <div class="feature-icon">🤖</div>
+          <h3 class="feature-title">Google Gemini Explanations</h3>
+          <p class="feature-desc">Grounded LLM explanations convert technical pharmaceutical information into simple, clear bilingual summaries in English and Hindi.</p>
+          <span class="feature-badge">🟢 Implemented</span>
+        </div>
+
+        <!-- Feature 7 -->
+        <div class="feature-card reveal">
+          <div class="feature-icon">🚩</div>
+          <h3 class="feature-title">Suspicious Product Reporting</h3>
+          <p class="feature-desc">Enables users and healthcare workers to flag suspect packaging with photos, persisting reports to an administrative review dashboard.</p>
+          <span class="feature-badge">🟢 Implemented</span>
+        </div>
+
+        <!-- Feature 8 -->
+        <div class="feature-card reveal">
+          <div class="feature-icon">🔮</div>
+          <h3 class="feature-title">Computer-Vision Anomaly ML</h3>
+          <p class="feature-desc">Planned deep-learning vision model to identify packaging print anomalies, seal tampering, and counterfeit design variances.</p>
+          <span class="feature-badge" style="background: rgba(2, 86, 155, 0.2); color: #38BDF8;">🔵 Planned Roadmap</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE SECTION -->
+  <section id="architecture">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="tagline">System Engineering</span>
+        <h2>Interactive System Architecture</h2>
+        <p>Generated with Archify. Explore fully interactive vector canvases with zoom, pan, trace animation, and component focus.</p>
+      </div>
+
+      <div class="arch-grid">
+        <!-- Diagram 1 -->
+        <div class="arch-card reveal">
+          <div class="arch-img-wrapper">
+            <img src="readme-assets/system-architecture-preview.png" alt="System Architecture Preview" />
+            <div class="arch-overlay"></div>
           </div>
-          <a href="architecture/system-architecture.html" target="_blank" class="btn">
-            Launch Interactive Diagram ↗
-          </a>
+          <div class="arch-body">
+            <h3 class="arch-title">1. System Architecture</h3>
+            <p class="arch-desc">
+              High-level topology linking React &amp; Flutter clients to FastAPI backend, Supabase PostgreSQL, and external AI APIs (OCR.space, Sarvam AI, Gemini, openFDA).
+            </p>
+            <a href="architecture/system-architecture.html" target="_blank" class="arch-btn">
+              <span>🚀</span> Launch Canvas ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Diagram 2 -->
+        <div class="arch-card reveal">
+          <div class="arch-img-wrapper">
+            <img src="readme-assets/backend-architecture-preview.png" alt="Backend Architecture Preview" />
+            <div class="arch-overlay"></div>
+          </div>
+          <div class="arch-body">
+            <h3 class="arch-title">2. Backend Architecture</h3>
+            <p class="arch-desc">
+              FastAPI APIRouter gateway, JWT authentication guards, Verification &amp; Risk Scoring engines, history logging, and SQLAlchemy 2.0 ORM schemas.
+            </p>
+            <a href="architecture/backend-architecture.html" target="_blank" class="arch-btn">
+              <span>🚀</span> Launch Canvas ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Diagram 3 -->
+        <div class="arch-card reveal">
+          <div class="arch-img-wrapper">
+            <img src="readme-assets/verification-workflow-preview.png" alt="Verification Workflow Preview" />
+            <div class="arch-overlay"></div>
+          </div>
+          <div class="arch-body">
+            <h3 class="arch-title">3. Verification Workflow</h3>
+            <p class="arch-desc">
+              End-to-end medicine screening signal flow from QR/OCR intake, text extraction, CDSCO safety checks, risk score calculation, and voice audio output.
+            </p>
+            <a href="architecture/verification-workflow.html" target="_blank" class="arch-btn">
+              <span>🚀</span> Launch Canvas ↗
+            </a>
+          </div>
         </div>
       </div>
 
-      <!-- Card 2: Backend Architecture -->
-      <div class="card">
-        <img src="readme-assets/backend-architecture-preview.png" alt="Backend Architecture Preview" class="card-preview" />
-        <div class="card-body">
-          <h2 class="card-title">2. Backend Architecture</h2>
-          <p class="card-desc">
-            Detailed API routing gateway, domain service layer, rule-based risk scoring engine, scan history, reports, and SQLAlchemy ORM models.
-          </p>
-          <div class="card-tags">
-            <span class="tag">FastAPI Routers</span>
-            <span class="tag">Risk Engine</span>
-            <span class="tag">ORM Models</span>
-          </div>
-          <a href="architecture/backend-architecture.html" target="_blank" class="btn">
-            Launch Interactive Diagram ↗
-          </a>
-        </div>
-      </div>
-
-      <!-- Card 3: Verification Workflow -->
-      <div class="card">
-        <img src="readme-assets/verification-workflow-preview.png" alt="Verification Workflow Preview" class="card-preview" />
-        <div class="card-body">
-          <h2 class="card-title">3. Verification Workflow</h2>
-          <p class="card-desc">
-            End-to-end medicine screening pipeline from multi-modal QR/OCR intake to CDSCO alert checks, risk scoring, and Hindi voice synthesis.
-          </p>
-          <div class="card-tags">
-            <span class="tag">Multi-Modal Intake</span>
-            <span class="tag">CDSCO Check</span>
-            <span class="tag">Hindi Voice AI</span>
-          </div>
-          <a href="architecture/verification-workflow.html" target="_blank" class="btn">
-            Launch Interactive Diagram ↗
-          </a>
-        </div>
+      <!-- Slogan Banner -->
+      <div class="slogan-banner reveal">
+        <h3>💙 Making medicine safety awareness accessible to everyone.</h3>
+        <p>Combining AI intelligence, multi-lingual voice accessibility, and open regulatory data to protect public health.</p>
+        <a href="https://github.com/archisharma158-cmd/Med-Verify" target="_blank" class="btn-primary">
+          <span>⭐</span> Star on GitHub
+        </a>
       </div>
     </div>
+  </section>
 
-    <div class="info-box">
-      <div class="info-icon">✨</div>
-      <div class="info-content">
-        <h3>Interactive Diagram Features</h3>
-        <p>
-          All Archify diagrams support pan &amp; zoom navigation, trace motion animations, dark/light theme toggle, component search, focus mode, and high-resolution vector export (SVG / PNG).
-        </p>
+  <!-- FOOTER WRAPPER -->
+  <div class="footer-wrapper">
+    <!-- Footer Wave -->
+    <svg class="footer-wave-svg" viewBox="0 0 1440 70" preserveAspectRatio="none">
+      <path fill="#081826" d="M0,32 Q360,0 720,32 T1440,32 L1440,70 L0,70 Z"></path>
+    </svg>
+
+    <footer>
+      <img src="readme-assets/medify-logo.png" alt="Medify Logo" class="footer-logo" />
+      
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#architecture">Architecture</a>
+        <a href="https://github.com/archisharma158-cmd/Med-Verify#readme" target="_blank">Documentation</a>
+        <a href="https://github.com/archisharma158-cmd/Med-Verify/blob/main/LICENSE" target="_blank">MIT License</a>
       </div>
-    </div>
-  </main>
 
-  <footer>
-    <p>
-      MEDIFY — Smart Medicine Verification System &nbsp;|&nbsp; 
-      <a href="https://github.com/archisharma158-cmd/Med-Verify" target="_blank">View GitHub Repository ↗</a>
-    </p>
-  </footer>
+      <p class="footer-copy">
+        &copy; 2026 MEDIFY · Safe Medicines. Trusted Health. Built for national innovation hackathons.
+      </p>
+    </footer>
+  </div>
+
+  <!-- Scroll Reveal Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const reveals = document.querySelectorAll('.reveal');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, {
+        threshold: 0.12
+      });
+
+      reveals.forEach(el => observer.observe(el));
+    });
+  </script>
 
 </body>
 </html>

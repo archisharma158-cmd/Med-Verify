@@ -1,17 +1,35 @@
-"""Unit tests for the Risk Scoring Engine."""
+"""Unit tests for the Risk Scoring Engine (ML Model & Rule-Based Fallback)."""
 from __future__ import annotations
 
+import os
 import pytest
 
-from app.services.risk_service import RuleBasedRiskEngine, get_risk_engine
+from app.services.risk_service import MLRiskEngine, RuleBasedRiskEngine, get_risk_engine
 
 
-def test_rule_based_engine_singleton():
-    """Verify risk engine initialization and interface."""
-    engine = get_risk_engine()
+def test_ml_risk_engine_default():
+    """Verify ML risk engine is loaded by default when artifact exists."""
+    engine = get_risk_engine(force_refresh=True)
+    assert isinstance(engine, MLRiskEngine)
+    assert engine.method == "ml_model"
+    assert engine.model_version == "ml-v1"
+
+
+def test_rule_based_engine_fallback():
+    """Verify rule-based risk engine initialization and interface for fallback."""
+    engine = get_risk_engine(force_rule_based=True)
     assert isinstance(engine, RuleBasedRiskEngine)
     assert engine.method == "rule_based"
     assert engine.model_version == "rules-v1"
+
+
+def test_ml_risk_engine_invalid_path_fallback():
+    """Verify engine gracefully falls back to rule-based if ML model path is missing."""
+    engine = MLRiskEngine.__new__(MLRiskEngine)
+    engine._model_path = "non_existent_model_path.pkl"
+    engine._model_version = "test-v1"
+    with pytest.raises(FileNotFoundError):
+        engine._load_model()
 
 
 def test_low_risk_medicine():
@@ -103,9 +121,7 @@ def test_insufficient_data_screening_disclaimer():
     prediction = engine.predict(features)
     explanation = engine.explain(features, prediction)
 
-    # Uncertainty should add points and flag missing data
     assert "data_uncertainty" in prediction["contributing_factors"]
-    # Explanations should contain Hindi and English text
     assert "explanation" in explanation
     assert len(explanation["explanation"]["en"]) > 0
     assert len(explanation["explanation"]["hi"]) > 0

@@ -1,30 +1,45 @@
 <div align="center">
 
-<img src="docs/readme-assets/medify-logo.png" alt="MEDIFY — Smart Medicine Verification System" width="420" />
+  <img
+    src="https://capsule-render.vercel.app/api?type=waving&amp;color=0:8FFFD1,40:22DDA0,75:008F68,100:063F36&amp;height=230&amp;section=header&amp;text=MEDIFY&amp;fontSize=62&amp;fontColor=FFFFFF&amp;fontAlignY=38&amp;animation=fadeIn"
+    width="100%"
+    alt="Medify Header Banner"
+  />
 
-# MEDIFY
-### Smart Medicine Verification & Health Safety Awareness
+  <br />
 
-**Safer Medicines. Informed Decisions. Accessible Healthcare.**
+  <img
+    src="docs/readme-assets/medify-logo.png"
+    alt="Medify Logo"
+    width="340"
+  />
 
-<img src="docs/readme-assets/header-typing.svg" alt="MEDIFY Animated Tagline" width="700" />
+  <br />
+
+  <img
+    src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&amp;weight=600&amp;size=19&amp;duration=2500&amp;pause=800&amp;color=00C878&amp;center=true&amp;vCenter=true&amp;width=700&amp;lines=Scanning+medicine+information...;Checking+expiry+dates...;Matching+regulatory+alerts...;Evaluating+medicine+risk...;Making+Healthcare+Accessible..."
+    alt="Medify Animated Typing Text"
+  />
+
+</div>
+[![Live Showcase Site](https://img.shields.io/badge/🌐_Live_Showcase-Medify_Site-00D9AA?style=for-the-badge&logo=googlechrome&logoColor=black)](https://archisharma158-cmd.github.io/Med-Verify/)
+[![Interactive Architecture](https://img.shields.io/badge/📐_Interactive-Architecture_Hub-00A86B?style=for-the-badge&logo=diagramsdotnet&logoColor=white)](#-system-architecture)
+[![Documentation](https://img.shields.io/badge/📖_View-Documentation-006B45?style=for-the-badge&logo=github&logoColor=white)](#-about-medify)
 
 <br />
 
-[![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
-[![Flutter](https://img.shields.io/badge/Flutter-Planned-02569B?style=for-the-badge&logo=flutter&logoColor=white)](#-technology-stack)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://supabase.com)
-[![Google Gemini](https://img.shields.io/badge/Google_Gemini-AI_Chat-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
-[![Sarvam AI](https://img.shields.io/badge/Sarvam_AI-Hindi_Voice-00A86B?style=for-the-badge&logo=openai&logoColor=white)](#-ai-and-voice-assistant)
-[![License](https://img.shields.io/badge/License-MIT-00D9AA?style=for-the-badge)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![Flutter](https://img.shields.io/badge/Flutter-Planned-02569B?style=flat-square&logo=flutter&logoColor=white)](#-technology-stack)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://supabase.com)
+[![Google Gemini](https://img.shields.io/badge/Google_Gemini-AI_Chat-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev)
+[![Sarvam AI](https://img.shields.io/badge/Sarvam_AI-Hindi_Voice-00A86B?style=flat-square&logo=openai&logoColor=white)](#-ai-and-voice-assistant)
+[![License](https://img.shields.io/badge/License-MIT-00D9AA?style=flat-square)](LICENSE)
 
 <br />
 
-[📖 System Architecture](#-system-architecture) · [⚙️ Backend Architecture](#-backend-architecture) · [🔄 Verification Workflow](#-medicine-verification-workflow) · [✨ Features](#-key-features) · [🚀 Quick Start](#-getting-started) · [🔌 API Docs](#-api-documentation)
-
----
+[🌐 Live Showcase Site](https://archisharma158-cmd.github.io/Med-Verify/) · [📖 System Architecture](#-system-architecture) · [⚙️ Backend Architecture](#-backend-architecture) · [🔄 Verification Workflow](#-medicine-verification-workflow) · [✨ Features](#-key-features) · [🚀 Quick Start](#-getting-started) · [🔌 API Docs](#-api-documentation) · [🤝 Meet the Team](#-team-and-contributors)
 
 </div>
 
@@ -546,13 +561,18 @@ pytest -v
 
 ## 🤝 Team and Contributors
 
-Medify was conceptualized and built for national-level innovation hackathons to improve healthcare accessibility.
+Medify was conceptualized and built for national-level innovation hackathons to empower communities through accessible medicine verification and health safety awareness.
 
 <div align="center">
 
-| Contributor | Role | GitHub Profile |
-|---|---|---|
-| **Archi Sharma** | Lead Developer & Architect | [@archisharma158-cmd](https://github.com/archisharma158-cmd) |
+| Contributor | Position / Key Contributions | Profile / Contact |
+|:---|:---|:---:|
+| **Sonu Sharma** | **Team Lead** • ML Model Training • PPT Preparation | [sonusharma15112007@gmail.com](mailto:sonusharma15112007@gmail.com) |
+| **Archi Sharma** | **Backend Development** • System Integration • Deployment • README Documentation • Repository Maintenance | [@archisharma158-cmd](https://github.com/archisharma158-cmd) |
+| **Parth Goyal** | **Frontend Development** • Language Conversion | [goyalparth61@gmail.com](mailto:goyalparth61@gmail.com) |
+| **Aanchal Pandey** | **Research** • PPT Preparation | [aanchi450@gmail.com](mailto:aanchi450@gmail.com) |
+| **Aishwarya Bhatt** | **Research** | [bhattaishwarya65@gmail.com](mailto:bhattaishwarya65@gmail.com) |
+| **Dipanshu Jasrotiya** | **Research** | [dipanshujasrotia@gmail.com](mailto:dipanshujasrotia@gmail.com) |
 
 <br />
 
@@ -587,10 +607,16 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 <div align="center">
 
-### 💙 Medify — Safe Medicines • Trusted Health
+<a href="https://readme-typing-svg.demolab.com">
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=18&duration=2500&pause=800&color=00C878&center=true&vCenter=true&width=700&lines=Safer+Medicines.+Informed+Decisions.;Technology+for+Accessible+Healthcare.;Empowering+Communities+Through+Awareness.;Medify+%E2%80%94+Making+Medicine+Safety+Information+Accessible." alt="Medify Footer Typing Tagline" />
+</a>
 
-**Making medicine safety information accessible to everyone.**
+<br /><br />
 
 [⬆ Back to Top](#medify)
+
+<br /><br />
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:080F12,45:06473B,70:00A86B,100:77FFD1&height=160&section=footer" width="100%" alt="Medify Footer Banner" />
 
 </div>

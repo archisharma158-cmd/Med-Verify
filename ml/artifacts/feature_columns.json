@@ -1,0 +1,20 @@
+[
+  "is_expired",
+  "is_near_expiry",
+  "expiry_unknown",
+  "manufacturer_confirmed",
+  "manufacturer_name_only",
+  "manufacturer_mismatch",
+  "manufacturer_no_data",
+  "has_strong_alert",
+  "has_partial_alert",
+  "alert_count",
+  "duplicate_anomaly",
+  "duplicate_minor",
+  "duplicate_score",
+  "packaging_mismatch",
+  "packaging_damage",
+  "missing_medicine_name",
+  "missing_batch",
+  "missing_expiry"
+]
