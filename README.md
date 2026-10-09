@@ -1,19 +1,16 @@
 <div align="center">
 
-<img src="docs/readme-assets/hero-wave-top.gif" alt="Medify Animated Green Wave Banner" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:8FFFD1,40:22DDA0,75:008F68,100:063F36&height=230&section=header&text=MEDIFY&fontSize=62&fontColor=FFFFFF&fontAlignY=38&desc=Smart%20Medicine%20Verification%20%26%20Health%20Safety%20Awareness&descSize=18&descAlignY=58&descAlign=50&animation=fadeIn" width="100%" alt="Medify Header Banner" />
 
-<br />
+<br /><br />
 
-<img src="docs/readme-assets/medify-logo.png" alt="MEDIFY — Smart Medicine Verification System" width="380" />
+<img src="docs/readme-assets/medify-logo.png" alt="MEDIFY — Smart Medicine Verification System" width="340" />
 
-# MEDIFY
-### Smart Medicine Verification & Health Safety Awareness
+<br /><br />
 
-*Safer Medicines. Informed Decisions. Accessible Healthcare.*
-
-<br />
-
-<img src="docs/readme-assets/header-typing.svg" alt="MEDIFY Animated Tagline" width="650" />
+<a href="https://readme-typing-svg.demolab.com">
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=19&duration=2500&pause=800&color=00C878&center=true&vCenter=true&width=700&lines=Scanning+medicine+information...;Extracting+packaging+details...;Checking+expiry+dates...;Matching+regulatory+safety+alerts...;Evaluating+medicine+risk+signals...;Generating+accessible+explanations...;MEDIFY+%E2%80%A2+SAFETY+AWARENESS" alt="Medify Animated Typing Text" />
+</a>
 
 <br /><br />
 
@@ -34,11 +31,7 @@
 
 <br />
 
-[🌐 Live Showcase Site](https://archisharma158-cmd.github.io/Med-Verify/) · [📖 System Architecture](#-system-architecture) · [⚙️ Backend Architecture](#-backend-architecture) · [🔄 Verification Workflow](#-medicine-verification-workflow) · [✨ Features](#-key-features) · [🚀 Quick Start](#-getting-started) · [🔌 API Docs](#-api-documentation)
-
-<br />
-
-<img src="docs/readme-assets/hero-wave-bottom.gif" alt="Medify Flowing Bottom Wave Ribbon" width="100%" />
+[🌐 Live Showcase Site](https://archisharma158-cmd.github.io/Med-Verify/) · [📖 System Architecture](#-system-architecture) · [⚙️ Backend Architecture](#-backend-architecture) · [🔄 Verification Workflow](#-medicine-verification-workflow) · [✨ Features](#-key-features) · [🚀 Quick Start](#-getting-started) · [🔌 API Docs](#-api-documentation) · [🤝 Meet the Team](#-team-and-contributors)
 
 </div>
 
@@ -560,13 +553,18 @@ pytest -v
 
 ## 🤝 Team and Contributors
 
-Medify was conceptualized and built for national-level innovation hackathons to improve healthcare accessibility.
+Medify was conceptualized and built for national-level innovation hackathons to empower communities through accessible medicine verification and health safety awareness.
 
 <div align="center">
 
-| Contributor | Role | GitHub Profile |
-|---|---|---|
-| **Archi Sharma** | Lead Developer & Architect | [@archisharma158-cmd](https://github.com/archisharma158-cmd) |
+| Contributor | Position / Key Contributions | Profile / Contact |
+|:---|:---|:---:|
+| **Sonu Sharma** | **Team Lead** • ML Model Training • PPT Preparation | — |
+| **Archi Sharma** | **Backend Development** • System Integration • Deployment • README Documentation • Repository Maintenance | [@archisharma158-cmd](https://github.com/archisharma158-cmd) |
+| **Parth Goyal** | **Frontend Development** • Language Conversion | — |
+| **Aanchal Pandey** | **Research** • PPT Preparation | — |
+| **Aishwarya Bhatt** | **Research** | — |
+| **Dipanshu Jasrotiya** | **Research** | — |
 
 <br />
 
@@ -601,10 +599,16 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 <div align="center">
 
-### 💙 Medify — Safe Medicines • Trusted Health
+<a href="https://readme-typing-svg.demolab.com">
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=18&duration=2500&pause=800&color=00C878&center=true&vCenter=true&width=700&lines=Safer+Medicines.+Informed+Decisions.;Technology+for+Accessible+Healthcare.;Empowering+Communities+Through+Awareness.;Medify+%E2%80%94+Making+Medicine+Safety+Information+Accessible." alt="Medify Footer Typing Tagline" />
+</a>
 
-**Making medicine safety information accessible to everyone.**
+<br /><br />
 
 [⬆ Back to Top](#medify)
+
+<br /><br />
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:080F12,45:06473B,70:00A86B,100:77FFD1&height=160&section=footer" width="100%" alt="Medify Footer Banner" />
 
 </div>
