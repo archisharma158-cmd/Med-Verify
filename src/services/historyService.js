@@ -130,6 +130,21 @@ export function saveScanRecord(result) {
 export function clearScanHistory() {
   try {
     localStorage.removeItem(STORAGE_KEY);
+    window.dispatchEvent(new CustomEvent("medify:history-updated"));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Remove a single scan record by ID.
+ */
+export function removeScanRecord(id) {
+  try {
+    const history = getScanHistory().filter((item) => item.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    window.dispatchEvent(new CustomEvent("medify:history-updated"));
     return true;
   } catch {
     return false;

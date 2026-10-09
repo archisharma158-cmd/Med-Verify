@@ -10,14 +10,16 @@ import {
   AlertCircle,
   FileCheck,
   Search,
-  Filter
+  Filter,
+  FileText
 } from "lucide-react";
 import { getScanHistory, clearScanHistory, exportScanHistoryCsv } from "../../services/historyService";
 
 export default function ScanHistoryModal({
   isOpen,
   onClose,
-  onSelectScan
+  onSelectScan,
+  onGenerateReport
 }) {
   const [historyList, setHistoryList] = useState([]);
   const [filter, setFilter] = useState("all");
@@ -209,17 +211,32 @@ export default function ScanHistoryModal({
                         </span>
                       </div>
 
-                      <button
-                        type="button"
-                        className="mv-btn-view-scan"
-                        onClick={() => {
-                          onSelectScan(item);
-                          onClose();
-                        }}
-                      >
-                        <span>Inspect Record</span>
-                        <ExternalLink size={13} />
-                      </button>
+                      <div className="mv-hmodal-actions-pair">
+                        {onGenerateReport && (
+                          <button
+                            type="button"
+                            className="mv-btn-history-report"
+                            onClick={() => {
+                              onGenerateReport(item);
+                            }}
+                            title="Generate Official Dossier Report"
+                          >
+                            <FileText size={13} />
+                            <span>Report</span>
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          className="mv-btn-view-scan"
+                          onClick={() => {
+                            onSelectScan(item);
+                            onClose();
+                          }}
+                        >
+                          <span>Inspect Record</span>
+                          <ExternalLink size={13} />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

@@ -5280,13 +5280,1182 @@
   .mv-safety-section,
   .mv-regulatory-section,
   .mv-footer-section,
-  .mv-results-actions {
+  .mv-results-actions,
+  .hide-on-print,
+  .mv-risk-meter-section,
+  .mv-history-section {
     display: none !important;
   }
 
-  .mv-results-section {
-    display: block !important;
+  body, html {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  .mv-modal-backdrop {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .mv-report-modal-dialog {
+    box-shadow: none !important;
+    border: none !important;
+    max-width: 100% !important;
     padding: 0 !important;
     background: #ffffff !important;
   }
+
+  .mv-printable-dossier {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 20px !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
 }
+
+/* ==========================================================================
+   MULTI-LANGUAGE DROPDOWN ENHANCEMENT
+   ========================================================================== */
+.mv-lang-menu-scrollable {
+  max-height: 380px;
+  overflow-y: auto;
+  min-width: 210px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(16, 185, 129, 0.4) rgba(15, 23, 42, 0.6);
+}
+
+.mv-lang-menu-header {
+  padding: 8px 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-weight: 700;
+}
+
+.mv-lang-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  text-align: left;
+}
+
+.mv-lang-native {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.mv-lang-en-name {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.mv-lang-current-code {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   RISK METER SECTION (SPEEDOMETER & SIMULATOR)
+   ========================================================================== */
+.mv-risk-meter-section {
+  padding: 80px 0;
+  background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.08) 0%, rgba(10, 15, 29, 0.98) 70%);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mv-risk-active-scan-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: var(--radius-md);
+  margin-bottom: 30px;
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mv-active-scan-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+.mv-risk-meter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 32px;
+  max-width: 1060px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+@media (max-width: 868px) {
+  .mv-risk-meter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mv-meter-display-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+}
+
+.mv-meter-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.mv-risk-pill {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mv-risk-badge-low {
+  background: rgba(16, 185, 129, 0.18);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.mv-risk-badge-med {
+  background: rgba(245, 158, 11, 0.18);
+  color: #F59E0B;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.mv-risk-badge-high {
+  background: rgba(239, 68, 68, 0.18);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  animation: mv-pulse 1.8s infinite;
+}
+
+.mv-score-pill-value {
+  font-size: 18px;
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+}
+
+.mv-speedometer-wrapper {
+  position: relative;
+  text-align: center;
+  margin: 10px 0 20px 0;
+}
+
+.mv-speedometer-svg {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  overflow: visible;
+}
+
+.mv-speedometer-needle-group {
+  transform-origin: 150px 150px;
+  transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mv-meter-score-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -15px;
+}
+
+.mv-big-number {
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1;
+  font-family: var(--font-mono, monospace);
+  text-shadow: 0 0 20px currentColor;
+}
+
+.mv-big-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.mv-verdict-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  margin-top: 16px;
+}
+
+.mv-verdict-low {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.mv-verdict-medium {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.mv-verdict-high {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.mv-verdict-text strong {
+  display: block;
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.mv-verdict-text p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.mv-meter-verify-cta-btn {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--forest-500) 0%, var(--forest-700) 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mv-meter-verify-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+}
+
+/* Simulator Control Card */
+.mv-simulator-control-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+}
+
+.mv-sim-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.mv-sim-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mv-sim-title-group h3 {
+  font-size: 18px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.mv-sim-reset-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mv-sim-reset-btn:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.mv-sim-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.mv-simulator-toggles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mv-sim-toggle-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.mv-sim-toggle-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.mv-sim-toggle-item.is-active {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.mv-sim-toggle-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.mv-sim-toggle-label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mv-sim-factor-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.mv-sim-factor-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.mv-sim-pts-pill {
+  font-size: 12px;
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+}
+
+.mv-sim-info-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ==========================================================================
+   SCAN HISTORY SECTION (HOMEPAGE AUDIT TRAIL)
+   ========================================================================== */
+.mv-history-section {
+  padding: 80px 0;
+  background: var(--bg-surface);
+}
+
+.mv-history-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 768px) {
+  .mv-history-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.mv-metric-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  text-align: center;
+}
+
+.mv-metric-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: #ffffff;
+  font-family: var(--font-mono, monospace);
+  line-height: 1;
+}
+
+.mv-metric-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.mv-history-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.mv-history-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+}
+
+.mv-history-search-input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.mv-history-search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.mv-history-filter-tabs {
+  display: flex;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mv-filter-tab {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mv-filter-tab:hover {
+  color: #ffffff;
+}
+
+.mv-filter-tab.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.mv-filter-tab.mv-tab-low.active {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+}
+
+.mv-filter-tab.mv-tab-med.active {
+  background: rgba(245, 158, 11, 0.2);
+  color: #F59E0B;
+}
+
+.mv-filter-tab.mv-tab-high.active {
+  background: rgba(239, 68, 68, 0.2);
+  color: #EF4444;
+}
+
+.mv-history-actions-row {
+  display: flex;
+  gap: 8px;
+}
+
+.mv-history-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.mv-history-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.mv-history-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.mv-history-card.mv-card-risk-low {
+  border-left: 4px solid #10B981;
+}
+
+.mv-history-card.mv-card-risk-med {
+  border-left: 4px solid #F59E0B;
+}
+
+.mv-history-card.mv-card-risk-high {
+  border-left: 4px solid #EF4444;
+}
+
+.mv-hcard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.mv-hcard-title {
+  font-size: 16px;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  font-weight: 700;
+}
+
+.mv-hcard-mfr {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.mv-hcard-score-pill {
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.mv-score-low {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+}
+
+.mv-score-med {
+  background: rgba(245, 158, 11, 0.15);
+  color: #F59E0B;
+}
+
+.mv-score-high {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+}
+
+.mv-hscore-num {
+  font-size: 15px;
+}
+
+.mv-hscore-denom {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.mv-hcard-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  margin-bottom: 14px;
+  font-size: 12px;
+}
+
+.mv-detail-label {
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+.mv-detail-val {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.mv-hcard-cdsco-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #EF4444;
+  background: rgba(239, 68, 68, 0.12);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+}
+
+.mv-hcard-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mv-haction-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.mv-haction-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.mv-haction-reverify:hover {
+  color: #10B981;
+  border-color: #10B981;
+}
+
+.mv-haction-report:hover {
+  color: #06B6D4;
+  border-color: #06B6D4;
+}
+
+.mv-haction-defect {
+  color: #EF4444;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.mv-haction-delete {
+  margin-left: auto;
+  color: var(--text-muted);
+  padding: 6px 8px;
+}
+
+.mv-haction-delete:hover {
+  color: #EF4444;
+}
+
+/* Empty History Card */
+.mv-history-empty-card {
+  text-align: center;
+  padding: 48px 24px;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-xl);
+}
+
+.mv-empty-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+}
+
+.mv-history-empty-card h3 {
+  font-size: 18px;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+}
+
+.mv-history-empty-card p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  max-width: 500px;
+  margin: 0 auto 20px auto;
+}
+
+.mv-sample-scans-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.mv-sample-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.mv-sample-chip:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mv-sample-chip.mv-chip-recall {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* ==========================================================================
+   OFFICIAL VERIFICATION REPORT DOSSIER MODAL
+   ========================================================================== */
+.mv-report-modal-dialog {
+  width: 100%;
+  max-width: 820px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  animation: mv-scale-in 0.25s ease-out;
+}
+
+.mv-report-modal-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: rgba(30, 41, 59, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.mv-toolbar-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.mv-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mv-printable-dossier {
+  padding: 32px;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+}
+
+.mv-dossier-header {
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+}
+
+.mv-dossier-brand-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.mv-dossier-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mv-dossier-logo {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+}
+
+.mv-dossier-org-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #064e3b;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.mv-dossier-org-sub {
+  font-size: 11px;
+  color: #475569;
+  margin: 2px 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.mv-dossier-qr-seal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.mv-dossier-qr-box {
+  padding: 4px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+}
+
+.mv-qr-caption {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.mv-dossier-meta-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+  font-size: 11px;
+}
+
+.mv-dmeta-label {
+  color: #64748b;
+  font-weight: 600;
+  display: block;
+}
+
+.mv-dmeta-val {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Dossier Verdict Banner */
+.mv-dossier-verdict-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.mv-dossier-verdict-banner.is-safe {
+  background: #ecfdf5;
+  border: 2px solid #059669;
+  color: #064e3b;
+}
+
+.mv-dossier-verdict-banner.is-caution {
+  background: #fffbeb;
+  border: 2px solid #d97706;
+  color: #78350f;
+}
+
+.mv-dossier-verdict-banner.is-danger {
+  background: #fef2f2;
+  border: 2px solid #dc2626;
+  color: #7f1d1d;
+}
+
+.mv-verdict-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mv-verdict-headline {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+  letter-spacing: 0.02em;
+}
+
+.mv-verdict-subtext {
+  font-size: 12px;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.mv-verdict-score-stamp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border: 2px solid currentColor;
+  border-radius: 6px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.mv-stamp-score {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1;
+  font-family: monospace;
+}
+
+.mv-stamp-max {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Dossier Sections */
+.mv-dossier-section {
+  margin-bottom: 22px;
+}
+
+.mv-dossier-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0f172a;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 6px;
+  margin: 0 0 12px 0;
+}
+
+.mv-section-num {
+  font-family: monospace;
+  color: #059669;
+}
+
+.mv-dossier-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.mv-dossier-table th,
+.mv-dossier-table td {
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.mv-dossier-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  width: 25%;
+}
+
+.mv-dossier-table td {
+  color: #0f172a;
+}
+
+.mv-audit-checks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mv-audit-check-card {
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #f8fafc;
+}
+
+.mv-audit-check-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.mv-check-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.mv-check-badge-pass {
+  font-size: 10px;
+  font-weight: 800;
+  color: #059669;
+  background: #d1fae5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.mv-check-badge-warn {
+  font-size: 10px;
+  font-weight: 800;
+  color: #d97706;
+  background: #fef3c7;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.mv-check-badge-fail {
+  font-size: 10px;
+  font-weight: 800;
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.mv-check-desc {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.mv-dossier-advisory-box {
+  padding: 12px 18px;
+  background: #f8fafc;
+  border-left: 4px solid #059669;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.mv-dossier-advisory-box ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.mv-dossier-advisory-box li {
+  margin-bottom: 4px;
+}
+
+.mv-dossier-footer {
+  margin-top: 26px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 11px;
+}
+
+.mv-dossier-helplines {
+  display: flex;
+  gap: 16px;
+}
+
+.mv-helpline-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #475569;
+}
+
+.mv-dossier-watermark {
+  text-align: right;
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+.mv-dossier-watermark span {
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.mv-dossier-watermark p {
+  margin: 2px 0 0 0;
+}
+
+.mv-btn-report-gen {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: #ffffff !important;
+}
+
+.mv-hmodal-actions-pair {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mv-btn-history-report {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(6, 182, 212, 0.15);
+  color: #06B6D4;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mv-btn-history-report:hover {
+  background: rgba(6, 182, 212, 0.25);
+}
+

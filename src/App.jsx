@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+import { LanguageProvider } from "./context/LanguageContext";
 import Navbar from "./components/layout/Navbar";
 import Hero from "./components/home/Hero";
 import BenefitsSection from "./components/home/BenefitsSection";
 import MedicineScanner from "./components/scanner/MedicineScanner";
 import VerificationResults from "./components/verification/VerificationResults";
+import RiskMeterSection from "./components/risk/RiskMeterSection";
+import ScanHistorySection from "./components/history/ScanHistorySection";
 import HowItWorksSection from "./components/home/HowItWorksSection";
 import SafetySection from "./components/home/SafetySection";
 import RegulatoryRegistrySection from "./components/home/RegulatoryRegistrySection";
@@ -13,12 +16,13 @@ import ReportSuspiciousModal from "./components/reporting/ReportSuspiciousModal"
 import ScanHistoryModal from "./components/history/ScanHistoryModal";
 import AdminDashboardModal from "./components/admin/AdminDashboardModal";
 import CdscoAlertsModal from "./components/alerts/CdscoAlertsModal";
+import VerificationReportModal from "./components/reporting/VerificationReportModal";
 import MediBot from "./components/chatbot/MediBot";
 import { evaluateMedicine } from "./services/medicineService";
 import { getScanHistory } from "./services/historyService";
 import "./App.css";
 
-export default function App() {
+function AppContent() {
   const [activeTab, setActiveTab] = useState("scan");
   const [verificationResult, setVerificationResult] = useState(null);
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -26,6 +30,8 @@ export default function App() {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAlertsOpen, setIsAlertsOpen] = useState(false);
+  const [isReportDossierOpen, setIsReportDossierOpen] = useState(false);
+  const [reportDossierData, setReportDossierData] = useState(null);
   const [reportInitialData, setReportInitialData] = useState(null);
   const [historyCount, setHistoryCount] = useState(0);
 
@@ -65,13 +71,19 @@ export default function App() {
     }
   };
 
+  // Open Official Printable Verification Dossier
+  const handleOpenReportDossier = (data) => {
+    setReportDossierData(data);
+    setIsReportDossierOpen(true);
+  };
+
   // Trigger report modal from a specific verification result
   const handleOpenReportFromScan = (result) => {
     setReportInitialData({
-      medicineName: result?.extractedData?.medicineName,
-      batchNumber: result?.extractedData?.batchNumber,
-      manufacturer: result?.extractedData?.manufacturer,
-      cdscoAlert: result?.cdscoAlert,
+      medicineName: result?.extractedData?.medicineName || result?.medicineName,
+      batchNumber: result?.extractedData?.batchNumber || result?.batchNumber,
+      manufacturer: result?.extractedData?.manufacturer || result?.manufacturer,
+      cdscoAlert: result?.cdscoAlert || result?.cdscoAlertMatch,
       duplicateAnalysis: result?.duplicateAnalysis,
       id: result?.id
     });
@@ -131,9 +143,6 @@ export default function App() {
         {/* Hero Section */}
         <Hero onStartVerification={handleSelectTab} />
 
-        {/* How It Works Process Pipeline */}
-        <HowItWorksSection onGoToScanner={handleSelectTab} />
-
         {/* The Medicine Scanner Component */}
         <MedicineScanner
           activeTab={activeTab}
@@ -148,8 +157,26 @@ export default function App() {
             onReset={handleResetVerification}
             onReportSuspicious={handleOpenReportFromScan}
             onAskAiToExplain={handleAskAiToExplain}
+            onGenerateReport={handleOpenReportDossier}
           />
         )}
+
+        {/* Interactive Pharmaceutical Risk Meter (Feature Requested) */}
+        <RiskMeterSection
+          activeVerificationResult={verificationResult}
+          onGoToScanner={() => handleSelectTab("scan")}
+        />
+
+        {/* Dedicated Medicine Scan History Section (Feature Requested) */}
+        <ScanHistorySection
+          onSelectScan={handleSelectHistoryItem}
+          onGenerateReport={handleOpenReportDossier}
+          onReportSuspicious={handleOpenReportFromScan}
+          onSampleScanTrigger={handleVerificationReady}
+        />
+
+        {/* How It Works Process Pipeline */}
+        <HowItWorksSection onGoToScanner={handleSelectTab} />
 
         {/* Practical Benefits Overview */}
         <BenefitsSection />
@@ -182,6 +209,7 @@ export default function App() {
         isOpen={isHistoryOpen}
         onClose={() => setIsHistoryOpen(false)}
         onSelectScan={handleSelectHistoryItem}
+        onGenerateReport={handleOpenReportDossier}
       />
 
       {/* Safety Oversight & Admin Dashboard Modal (Feature 12) */}
@@ -197,8 +225,23 @@ export default function App() {
         onTestBatchSelect={handleTestBatchFromAlerts}
       />
 
+      {/* Official Verification Report Dossier Modal (Feature Requested) */}
+      <VerificationReportModal
+        isOpen={isReportDossierOpen}
+        onClose={() => setIsReportDossierOpen(false)}
+        scanData={reportDossierData}
+      />
+
       {/* Fixed Bottom-Right MediBot Chat Assistant (Features 8 & 9) */}
       <MediBot />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }

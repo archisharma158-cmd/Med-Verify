@@ -16,19 +16,23 @@ import {
   ChevronUp,
   Info,
   Activity,
-  History
+  History,
+  FileText
 } from "lucide-react";
 import StatusBadge from "../common/StatusBadge";
 import DisclaimerAlert from "../common/DisclaimerAlert";
 import PackagingChecklist from "./PackagingChecklist";
 import { formatVerificationReport } from "../../services/medicineService";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function VerificationResults({
   result,
   onReset,
   onReportSuspicious,
-  onAskAiToExplain
+  onAskAiToExplain,
+  onGenerateReport
 }) {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [showFactorBreakdown, setShowFactorBreakdown] = useState(false);
 
@@ -111,6 +115,18 @@ export default function VerificationResults({
           </div>
 
           <div className="mv-results-actions">
+            {onGenerateReport && (
+              <button
+                type="button"
+                className="mv-btn-primary mv-btn-report-gen"
+                onClick={() => onGenerateReport(result)}
+                title="Generate official printable verification dossier"
+              >
+                <FileText size={16} />
+                <span>{t("btnGenerateReport", "Generate Report")}</span>
+              </button>
+            )}
+
             {onAskAiToExplain && (
               <button
                 type="button"
@@ -119,7 +135,7 @@ export default function VerificationResults({
                 title="Explain this result with AI assistant in Hindi or English"
               >
                 <Bot size={16} />
-                <span>Explain With AI</span>
+                <span>{t("btnExplainAi", "Explain With AI")}</span>
               </button>
             )}
 
@@ -131,7 +147,7 @@ export default function VerificationResults({
                 title="Report this suspect medicine to safety logs"
               >
                 <ShieldAlert size={16} />
-                <span>Report Defect</span>
+                <span>{t("btnReportSuspicious", "Report Defect")}</span>
               </button>
             )}
 
@@ -142,7 +158,7 @@ export default function VerificationResults({
               title="Copy formatted summary"
             >
               {copied ? <Check size={16} /> : <Copy size={16} />}
-              <span>{copied ? "Copied!" : "Copy Report"}</span>
+              <span>{copied ? "Copied!" : t("btnCopyReport", "Copy Report")}</span>
             </button>
 
             <button
@@ -152,7 +168,7 @@ export default function VerificationResults({
               title="Print inspection record"
             >
               <Printer size={16} />
-              <span>Print / Export</span>
+              <span>{t("btnPrintReport", "Print / Export")}</span>
             </button>
 
             <button
@@ -161,7 +177,7 @@ export default function VerificationResults({
               onClick={onReset}
             >
               <RotateCcw size={16} />
-              <span>Scan Another</span>
+              <span>{t("btnScanAnother", "Scan Another")}</span>
             </button>
           </div>
         </div>

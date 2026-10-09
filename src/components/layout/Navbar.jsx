@@ -10,8 +10,10 @@ import {
   ShieldAlert,
   LayoutDashboard,
   AlertTriangle,
-  QrCode
+  QrCode,
+  Gauge
 } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function Navbar({
   onOpenContact,
@@ -20,14 +22,12 @@ export default function Navbar({
   onOpenReport,
   onOpenAlerts,
   onOpenAdmin,
-  historyCount = 0,
-  currentLanguage = "en",
-  onLanguageChange
+  historyCount = 0
 }) {
+  const { language, setLanguage, languages, t, currentLanguageMeta } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [activeNav, setActiveNav] = useState("home");
-  const [lang, setLang] = useState(currentLanguage);
 
   const closeMenu = () => setMobileMenuOpen(false);
 
@@ -47,11 +47,8 @@ export default function Navbar({
   };
 
   const handleSelectLang = (newLang) => {
-    setLang(newLang);
+    setLanguage(newLang);
     setLangMenuOpen(false);
-    if (onLanguageChange) {
-      onLanguageChange(newLang);
-    }
   };
 
   return (
@@ -78,7 +75,7 @@ export default function Navbar({
             className={activeNav === "home" ? "is-active" : ""}
             onClick={(e) => handleNavClick(e, "home", "home")}
           >
-            Home
+            {t("navHome", "Home")}
             {activeNav === "home" && <span className="mv-nav-indicator" />}
           </a>
           <a
@@ -86,15 +83,31 @@ export default function Navbar({
             className={activeNav === "scanner" ? "is-active" : ""}
             onClick={(e) => handleNavClick(e, "scanner", "scanner", "scan")}
           >
-            Verify Medicine
+            {t("navVerify", "Verify Medicine")}
             {activeNav === "scanner" && <span className="mv-nav-indicator" />}
+          </a>
+          <a
+            href="#risk-meter"
+            className={activeNav === "risk-meter" ? "is-active" : ""}
+            onClick={(e) => handleNavClick(e, "risk-meter", "risk-meter")}
+          >
+            {t("navRiskMeter", "Risk Meter")}
+            {activeNav === "risk-meter" && <span className="mv-nav-indicator" />}
+          </a>
+          <a
+            href="#history"
+            className={activeNav === "history" ? "is-active" : ""}
+            onClick={(e) => handleNavClick(e, "history", "history")}
+          >
+            {t("navHistory", "Scan History")}
+            {activeNav === "history" && <span className="mv-nav-indicator" />}
           </a>
           <a
             href="#how-it-works"
             className={activeNav === "how-it-works" ? "is-active" : ""}
             onClick={(e) => handleNavClick(e, "how-it-works", "how-it-works")}
           >
-            How It Works
+            {t("navHowItWorks", "How It Works")}
             {activeNav === "how-it-works" && <span className="mv-nav-indicator" />}
           </a>
           <button
@@ -104,7 +117,7 @@ export default function Navbar({
             title="Browse official CDSCO recalls & alerts"
           >
             <ShieldAlert size={14} className="text-emerald" />
-            <span>CDSCO Alerts</span>
+            <span>{t("navCdscoAlerts", "CDSCO Alerts")}</span>
           </button>
           <button
             type="button"
@@ -113,7 +126,7 @@ export default function Navbar({
             title="Open safety oversight & admin dashboard"
           >
             <LayoutDashboard size={14} className="text-cyan" />
-            <span>Admin Portal</span>
+            <span>{t("navAdmin", "Admin Portal")}</span>
           </button>
         </nav>
 
@@ -125,7 +138,7 @@ export default function Navbar({
               type="button"
               className="mv-nav-icon-btn"
               onClick={onOpenHistory}
-              title="View Scan History"
+              title="View Scan History Drawer"
               aria-label="Scan History"
             >
               <History size={17} />
@@ -144,11 +157,11 @@ export default function Navbar({
               title="Report suspicious medicine or defect"
             >
               <AlertTriangle size={14} />
-              <span>Report Fake</span>
+              <span>{t("navReportFake", "Report Fake")}</span>
             </button>
           )}
 
-          {/* Language Selector */}
+          {/* Multi-Language Selector Dropdown (Supports 11 Indian Languages) */}
           <div className="mv-lang-dropdown-wrapper">
             <button
               type="button"
@@ -158,28 +171,29 @@ export default function Navbar({
               aria-label="Select language"
             >
               <Globe size={15} />
-              <span>{lang.toUpperCase()}</span>
+              <span className="mv-lang-current-code">{currentLanguageMeta?.nativeName || language.toUpperCase()}</span>
               <ChevronDown size={14} className={`mv-chevron ${langMenuOpen ? "open" : ""}`} />
             </button>
 
             {langMenuOpen && (
-              <div className="mv-lang-menu">
-                <button
-                  type="button"
-                  className={`mv-lang-option ${lang === "en" ? "active" : ""}`}
-                  onClick={() => handleSelectLang("en")}
-                >
-                  <span>English (EN)</span>
-                  {lang === "en" && <Check size={14} />}
-                </button>
-                <button
-                  type="button"
-                  className={`mv-lang-option ${lang === "hi" ? "active" : ""}`}
-                  onClick={() => handleSelectLang("hi")}
-                >
-                  <span>हिंदी (HI)</span>
-                  {lang === "hi" && <Check size={14} />}
-                </button>
+              <div className="mv-lang-menu mv-lang-menu-scrollable">
+                <div className="mv-lang-menu-header">
+                  <span>Select Indian Language</span>
+                </div>
+                {languages.map((l) => (
+                  <button
+                    key={l.code}
+                    type="button"
+                    className={`mv-lang-option ${language === l.code ? "active" : ""}`}
+                    onClick={() => handleSelectLang(l.code)}
+                  >
+                    <span className="mv-lang-option-text">
+                      <span className="mv-lang-native">{l.nativeName}</span>
+                      <span className="mv-lang-en-name">({l.name})</span>
+                    </span>
+                    {language === l.code && <Check size={14} className="text-emerald" />}
+                  </button>
+                ))}
               </div>
             )}
           </div>
@@ -206,19 +220,33 @@ export default function Navbar({
                 href="#home"
                 onClick={(e) => handleNavClick(e, "home", "home")}
               >
-                Home
+                {t("navHome", "Home")}
               </a>
               <a
                 href="#scanner"
                 onClick={(e) => handleNavClick(e, "scanner", "scanner", "scan")}
               >
-                Verify Medicine
+                {t("navVerify", "Verify Medicine")}
+              </a>
+              <a
+                href="#risk-meter"
+                onClick={(e) => handleNavClick(e, "risk-meter", "risk-meter")}
+              >
+                <Gauge size={16} className="text-emerald inline-icon" />
+                <span>{t("navRiskMeter", "Risk Meter")}</span>
+              </a>
+              <a
+                href="#history"
+                onClick={(e) => handleNavClick(e, "history", "history")}
+              >
+                <History size={16} className="text-amber inline-icon" />
+                <span>{t("navHistory", "Scan History")}</span>
               </a>
               <a
                 href="#how-it-works"
                 onClick={(e) => handleNavClick(e, "how-it-works", "how-it-works")}
               >
-                How It Works
+                {t("navHowItWorks", "How It Works")}
               </a>
               <button
                 type="button"
@@ -229,7 +257,7 @@ export default function Navbar({
                 }}
               >
                 <ShieldAlert size={16} className="text-emerald" />
-                <span>CDSCO Quality Alerts</span>
+                <span>{t("navCdscoAlerts", "CDSCO Quality Alerts")}</span>
               </button>
               <button
                 type="button"
@@ -240,7 +268,7 @@ export default function Navbar({
                 }}
               >
                 <History size={16} className="text-amber" />
-                <span>Scan History ({historyCount})</span>
+                <span>{t("navHistory", "Scan History Drawer")} ({historyCount})</span>
               </button>
               <button
                 type="button"
@@ -251,7 +279,7 @@ export default function Navbar({
                 }}
               >
                 <AlertTriangle size={16} className="text-crimson" />
-                <span>Report Suspicious Medicine</span>
+                <span>{t("navReportFake", "Report Suspicious Medicine")}</span>
               </button>
               <button
                 type="button"
@@ -262,7 +290,7 @@ export default function Navbar({
                 }}
               >
                 <LayoutDashboard size={16} className="text-cyan" />
-                <span>Admin & Safety Dashboard</span>
+                <span>{t("navAdmin", "Admin & Safety Dashboard")}</span>
               </button>
               <button
                 type="button"

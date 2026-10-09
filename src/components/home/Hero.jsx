@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { QrCode, Camera, Keyboard, ArrowRight, Shield, ShieldCheck, Home, History, FileText, User } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
 
 export default function Hero({ onStartVerification }) {
+  const { t } = useLanguage();
   const [phoneTab, setPhoneTab] = useState("scan");
 
   const handleCardClick = (tab) => {
@@ -40,18 +42,18 @@ export default function Hero({ onStartVerification }) {
           {/* Tag Pill */}
           <div className="mv-hero-badge">
             <span className="mv-badge-plus">+</span>
-            <span className="mv-badge-text">SMART MEDICINE VERIFICATION</span>
+            <span className="mv-badge-text">{t("heroBadge", "SMART MEDICINE VERIFICATION")}</span>
           </div>
 
           {/* Main Headline */}
           <h1 className="mv-hero-heading">
-            Check Your Medicine.<br />
-            <span className="mv-heading-glow">Stay Safe.</span>
+            {t("heroHeading1", "Check Your Medicine.")}<br />
+            <span className="mv-heading-glow">{t("heroHeading2", "Stay Safe.")}</span>
           </h1>
 
           {/* Subtitle */}
           <p className="mv-hero-subheading">
-            Scan the QR code, barcode or take a photo to verify your medicine, check expiry date and get instant safety alerts.
+            {t("heroSubheading", "Scan the QR code, barcode or take a photo to verify your medicine, check expiry date and get instant safety alerts.")}
           </p>
 
           {/* 3 Action Cards Row */}
@@ -66,8 +68,8 @@ export default function Hero({ onStartVerification }) {
                 <QrCode size={24} />
               </div>
               <div className="mv-card-info">
-                <h2 className="mv-card-title">Scan QR / Barcode</h2>
-                <p className="mv-card-sub">Point your camera at the code</p>
+                <h2 className="mv-card-title">{t("cardScanTitle", "Scan QR / Barcode")}</h2>
+                <p className="mv-card-sub">{t("cardScanSub", "Point your camera at packaging code")}</p>
               </div>
               <div className="mv-card-arrow-btn">
                 <ArrowRight size={16} />
@@ -84,8 +86,8 @@ export default function Hero({ onStartVerification }) {
                 <Camera size={24} />
               </div>
               <div className="mv-card-info">
-                <h2 className="mv-card-title">Take a Photo (OCR)</h2>
-                <p className="mv-card-sub">Capture the medicine packaging</p>
+                <h2 className="mv-card-title">{t("cardPhotoTitle", "Take a Photo (OCR)")}</h2>
+                <p className="mv-card-sub">{t("cardPhotoSub", "Capture medicine packaging")}</p>
               </div>
               <div className="mv-card-arrow-btn">
                 <ArrowRight size={16} />
@@ -102,8 +104,8 @@ export default function Hero({ onStartVerification }) {
                 <Keyboard size={24} />
               </div>
               <div className="mv-card-info">
-                <h2 className="mv-card-title">Enter Details Manually</h2>
-                <p className="mv-card-sub">Type name, batch or expiry date</p>
+                <h2 className="mv-card-title">{t("cardManualTitle", "Enter Details Manually")}</h2>
+                <p className="mv-card-sub">{t("cardManualSub", "Type brand & batch number")}</p>
               </div>
               <div className="mv-card-arrow-btn">
                 <ArrowRight size={16} />
