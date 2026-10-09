@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "3c068b90-c20e-4419-b130-3300378d13ce",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\candidate-verification-workflow.json",
+  "output": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\verification-workflow.html",
+  "specification": {
+    "sha256": "8059e78c9d04a34442bf7d8115f9fdd9fd41330432cc61455c342f53e69315c3",
+    "bytes": 5262
+  },
+  "artifact": {
+    "sha256": "d582770b44f3d266eaf0fed4d76e1e182932ccb14c82e8052a547011c3f6411d",
+    "bytes": 764122
+  }
+}
