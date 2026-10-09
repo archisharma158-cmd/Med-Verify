@@ -19,6 +19,11 @@ if sys.platform == "win32":
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+os.environ.setdefault('SUPABASE_URL', 'https://demo.supabase.co')
+os.environ.setdefault('SUPABASE_SECRET_KEY', 'demo_secret_key')
+os.environ.setdefault('SECRET_KEY', 'demo_secret_key_12345')
+os.environ.setdefault('ENVIRONMENT', 'development')
+
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.pool import StaticPool
