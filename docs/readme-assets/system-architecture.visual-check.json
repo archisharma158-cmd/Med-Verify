@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "visual-check",
+  "evidenceKind": "automated-browser",
+  "status": "fail",
+  "visualReview": "pending",
+  "provenance": "mismatch",
+  "deliveryReceiptId": "f48f8977-022b-4338-8dff-65a63bfd6037",
+  "artifact": {
+    "path": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\system-architecture.html",
+    "sha256": "c04a3761a359cd9c9070b9e5812b5cad4de2497469ee77d9d612fb6cb5ee62a5",
+    "bytes": 783839
+  },
+  "error": "The artifact bytes do not match their delivery provenance.",
+  "diagnostics": [
+    {
+      "code": "delivery/provenance-mismatch",
+      "severity": "error",
+      "message": "The artifact bytes do not match their delivery provenance.",
+      "subject": {
+        "artifact": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\system-architecture.html",
+        "provenance": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\architecture\\system-architecture.delivery.json"
+      },
+      "evidence": {
+        "expectedSha256": "e6b3402199b29c45261fbb3abf8ef9f3ed6149d744a92b18293090c78eb543c4",
+        "actualSha256": "c04a3761a359cd9c9070b9e5812b5cad4de2497469ee77d9d612fb6cb5ee62a5",
+        "expectedBytes": 770006,
+        "actualBytes": 783839
+      },
+      "supportedFixes": [
+        "restore the delivered artifact or rerun deliver to create a matching artifact and provenance pair"
+      ]
+    }
+  ],
+  "containment": {
+    "status": "fail",
+    "policy": "fit-or-reader-declared-readable-vertical-scroll",
+    "viewports": []
+  },
+  "captures": {
+    "status": "fail",
+    "screenshots": [],
+    "contactSheet": null
+  },
+  "sidecars": {
+    "directory": "C:\\Users\\DELL\\Desktop\\coer hackathon\\Med-Verify\\docs\\readme-assets",
+    "receipt": "system-architecture.visual-check.json",
+    "contactSheet": "system-architecture.visual-check.html",
+    "files": []
+  }
+}
