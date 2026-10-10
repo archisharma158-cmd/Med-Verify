@@ -186,7 +186,11 @@ export async function sendChatMessageToBackend(message, language = "en", scanCon
       });
       if (res.ok) {
         const data = await res.json();
-        return data.reply || data.response;
+        return {
+          reply: data.reply || data.response,
+          provider: data.provider || "none",
+          sources: data.sources || []
+        };
       }
     } catch (err) {
       console.warn("Backend chat call failed:", err);

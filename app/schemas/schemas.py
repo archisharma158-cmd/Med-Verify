@@ -298,6 +298,7 @@ class ChatResponse(BaseModel):
     reply: str
     language: str
     sources: list[str] = []
+    provider: Optional[str] = "none"
 
 
 class VoiceTranscribeResponse(BaseModel):

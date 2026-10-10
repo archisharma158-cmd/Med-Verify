@@ -41,6 +41,15 @@ HINDI_SYSTEM_PROMPT = """आप MedVerify सहायक हैं, दवा�
 6. हमेशा फार्मासिस्ट या डॉक्टर से मिलने की सलाह दें।
 7. सरल हिंदी में जवाब दें।"""
 
+FALLBACK_CANDIDATE_MODELS = [
+    "gemini-3.8-flash",
+    "gemini-3.5-flash",
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-flash-latest",
+]
+
 
 async def chat_with_context(
     message: str,
@@ -52,58 +61,164 @@ async def chat_with_context(
     Returns: {"reply": str, "language": str, "sources": list[str]}
     """
     settings = get_settings()
+
+    # 1. Check API Key presence
     if not settings.check_service_available("gemini"):
-        # Fallback response when Gemini is unavailable
-        return _fallback_response(message, language, scan_context)
-
-    try:
-        from google import genai
-
-        client = genai.Client(api_key=settings.GEMINI_API_KEY)
-
-        # Build context
-        system = HINDI_SYSTEM_PROMPT if language == "hi" else SYSTEM_PROMPT
-        context_text = ""
-        sources: list[str] = []
-
-        if scan_context:
-            context_text = f"\n\nUser's latest scan result:\n{json.dumps(scan_context, indent=2, ensure_ascii=False, default=str)}"
-            sources.append("scan_result")
-
-        prompt = f"{system}\n{context_text}\n\nUser message ({language}): {message}"
-
-        # Call Gemini
-        response = client.models.generate_content(
-            model="gemini-3.8-flash",
-            contents=prompt,
-            config={
-                "max_output_tokens": 500,
-                "temperature": 0.3,
-            },
+        logger.warning(
+            "gemini_api_key_missing",
+            diagnostics="GEMINI_API_KEY environment variable is missing or empty",
+        )
+        return _fallback_response(
+            message, language, scan_context, error_reason="MISSING_API_KEY"
         )
 
-        reply = response.text if response.text else "I couldn't generate a response. Please try again."
-
-        logger.info("gemini_chat_completed", language=language)
-
-        return {
-            "reply": reply,
-            "language": language,
-            "sources": sources,
-        }
-
+    # 2. Check SDK installation
+    try:
+        from google import genai
+        from google.genai import errors
     except ImportError:
-        logger.error("gemini_sdk_not_installed")
-        return _fallback_response(message, language, scan_context)
+        logger.error(
+            "gemini_sdk_not_installed",
+            diagnostics="google-genai library is not installed in Python environment",
+        )
+        return _fallback_response(
+            message, language, scan_context, error_reason="SDK_NOT_INSTALLED"
+        )
+
+    # Build prompt and context
+    system = HINDI_SYSTEM_PROMPT if language == "hi" else SYSTEM_PROMPT
+    context_text = ""
+    sources: list[str] = ["gemini_ai"]
+
+    if scan_context:
+        context_text = (
+            f"\n\nUser's latest scan result:\n"
+            f"{json.dumps(scan_context, indent=2, ensure_ascii=False, default=str)}"
+        )
+        sources.append("scan_result")
+
+    prompt = f"{system}\n{context_text}\n\nUser message ({language}): {message}"
+
+    try:
+        client = genai.Client(api_key=settings.GEMINI_API_KEY)
     except Exception as e:
-        logger.error("gemini_chat_error", error=str(e))
-        return _fallback_response(message, language, scan_context)
+        logger.error("gemini_client_init_failed", error=str(e))
+        return _fallback_response(
+            message, language, scan_context, error_reason="CLIENT_INIT_FAILED"
+        )
+
+    # Candidate models to try (configured model first, then fallbacks)
+    models_to_try = [settings.GEMINI_MODEL]
+    for model_candidate in FALLBACK_CANDIDATE_MODELS:
+        if model_candidate not in models_to_try:
+            models_to_try.append(model_candidate)
+
+    last_error_reason = "UNKNOWN"
+    for model in models_to_try:
+        try:
+            response = client.models.generate_content(
+                model=model,
+                contents=prompt,
+                config={
+                    "max_output_tokens": 500,
+                    "temperature": 0.3,
+                },
+            )
+
+            reply = (
+                response.text
+                if response.text
+                else (
+                    "मुझे प्रतिक्रिया उत्पन्न करने में असमर्थता हुई। कृपया पुनः प्रयास करें।"
+                    if language == "hi"
+                    else "I couldn't generate a response. Please try again."
+                )
+            )
+
+            logger.info(
+                "gemini_chat_completed",
+                model=model,
+                language=language,
+                has_scan_context=bool(scan_context),
+            )
+
+            return {
+                "reply": reply,
+                "language": language,
+                "sources": sources,
+                "provider": "gemini",
+            }
+
+        except errors.APIError as e:
+            code = getattr(e, "code", None)
+            err_msg = getattr(e, "message", str(e))
+
+            if code in (401, 403) or "API_KEY_INVALID" in err_msg or "API key not valid" in err_msg:
+                logger.error(
+                    "gemini_auth_failed",
+                    status_code=code,
+                    diagnostics="Invalid or unauthorized Gemini API key",
+                )
+                return _fallback_response(
+                    message, language, scan_context, error_reason="INVALID_API_KEY"
+                )
+            elif code == 429 or "RESOURCE_EXHAUSTED" in err_msg or "quota" in err_msg.lower():
+                logger.error(
+                    "gemini_quota_exceeded",
+                    status_code=code,
+                    diagnostics="Gemini API rate limit or quota exceeded",
+                )
+                return _fallback_response(
+                    message, language, scan_context, error_reason="QUOTA_EXCEEDED"
+                )
+            elif code == 404 or "not found" in err_msg.lower() or "no longer available" in err_msg.lower():
+                logger.warning(
+                    "gemini_model_unavailable",
+                    model=model,
+                    status_code=code,
+                    diagnostics=f"Model {model} unavailable, trying next candidate",
+                )
+                last_error_reason = "MODEL_UNAVAILABLE"
+                continue
+            else:
+                logger.error(
+                    "gemini_api_error",
+                    model=model,
+                    status_code=code,
+                    error=err_msg,
+                )
+                last_error_reason = f"API_ERROR_{code}"
+                continue
+
+        except (OSError, ConnectionError) as e:
+            logger.error(
+                "gemini_network_error",
+                error_type=type(e).__name__,
+                diagnostics="Network failure connecting to Gemini API endpoint",
+            )
+            return _fallback_response(
+                message, language, scan_context, error_reason="NETWORK_FAILURE"
+            )
+        except Exception as e:
+            logger.error(
+                "gemini_chat_error",
+                model=model,
+                error_type=type(e).__name__,
+                error=str(e),
+            )
+            last_error_reason = type(e).__name__
+            continue
+
+    return _fallback_response(
+        message, language, scan_context, error_reason=last_error_reason
+    )
 
 
 def _fallback_response(
     message: str,
     language: str,
     scan_context: Optional[dict] = None,
+    error_reason: str = "SERVICE_UNAVAILABLE",
 ) -> dict:
     """Generate a basic response when Gemini is unavailable."""
     if language == "hi":
@@ -140,5 +255,6 @@ def _fallback_response(
     return {
         "reply": reply,
         "language": language,
-        "sources": ["fallback"],
+        "sources": [f"fallback:{error_reason.lower()}"],
+        "provider": "none",
     }

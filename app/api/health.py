@@ -31,6 +31,7 @@ async def health_check(db: AsyncSession = Depends(get_db)):
 
     # 2. External API configurations
     services["gemini_ai"] = "configured" if settings.check_service_available("gemini") else "unconfigured"
+    services["openai_ai"] = "configured" if settings.check_service_available("openai") else "unconfigured"
     services["sarvam_voice"] = "configured" if settings.check_service_available("sarvam") else "unconfigured"
     services["ocr_space"] = "configured" if settings.check_service_available("ocr") else "unconfigured"
     services["openfda"] = "configured" if settings.check_service_available("openfda") else "unconfigured"

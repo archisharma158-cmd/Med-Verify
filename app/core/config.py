@@ -1,4 +1,4 @@
-﻿"""
+"""
 MedVerify â€“ Smart Medicine Verification System
 Core configuration module using Pydantic Settings.
 """
@@ -33,7 +33,7 @@ class Settings(BaseSettings):
         description="Application-level secret for signing tokens",
     )
     ALLOWED_ORIGINS: str = Field(
-        default="http://localhost:3000,http://localhost:8080",
+        default="http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000,http://localhost:8080",
         description="Comma-separated list of allowed CORS origins",
     )
     PORT: int = Field(default=8000, description="Server port (Render sets this)")
@@ -51,23 +51,27 @@ class Settings(BaseSettings):
     OCR_SPACE_API_KEY: Optional[str] = None
     OPENFDA_API_KEY: Optional[str] = None
     GEMINI_API_KEY: Optional[str] = None
+    GEMINI_MODEL: str = Field(default="gemini-3.8-flash", description="Gemini AI model identifier")
+    OPENAI_API_KEY: Optional[str] = None
+    OPENAI_MODEL: str = Field(default="gpt-4o-mini", description="OpenAI model identifier")
+    AI_PRIMARY_PROVIDER: str = Field(default="gemini", description="Primary AI provider: gemini | openai")
 
-    # â”€â”€ Database â”€â”€
+    # ── Database ──
     DATABASE_URL: Optional[str] = Field(
         default=None,
         description="Direct PostgreSQL connection string (overrides Supabase-derived URL)",
     )
 
-    # â”€â”€ Upload Limits â”€â”€
+    # ── Upload Limits ──
     MAX_UPLOAD_SIZE_MB: int = 10
     MAX_AUDIO_SIZE_MB: int = 5
 
-    # â”€â”€ Rate Limits â”€â”€
+    # ── Rate Limits ──
     RATE_LIMIT_DEFAULT: str = "60/minute"
     RATE_LIMIT_GUEST: str = "20/minute"
     RATE_LIMIT_VERIFY: str = "30/minute"
 
-    # â”€â”€ Risk Scoring â”€â”€
+    # ── Risk Scoring ──
     RISK_MODEL_PATH: Optional[str] = "ml/artifacts/medicine_risk_model.pkl"
     RISK_MODEL_VERSION: str = "ml-v1"
 
@@ -111,6 +115,7 @@ class Settings(BaseSettings):
             "ocr": self.OCR_SPACE_API_KEY,
             "openfda": self.OPENFDA_API_KEY,
             "gemini": self.GEMINI_API_KEY,
+            "openai": self.OPENAI_API_KEY,
         }
         val = mapping.get(service)
         return val is not None and len(val.strip()) > 0

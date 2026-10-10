@@ -133,15 +133,16 @@ export default function MediBot() {
     const activeContext = contextOverride || scanContext;
 
     try {
-      // 1. Try FastAPI backend Gemini chat
-      const backendReply = await sendChatMessageToBackend(text, language, activeContext);
+      // 1. Try FastAPI backend AI chat (Gemini / OpenAI fallback)
+      const backendRes = await sendChatMessageToBackend(text, language, activeContext);
       let botReply;
 
-      if (backendReply) {
+      if (backendRes && backendRes.reply) {
         botReply = {
-          id: createMessageId("gemini"),
+          id: createMessageId(backendRes.provider || "ai"),
           sender: "bot",
-          text: backendReply,
+          text: backendRes.reply,
+          provider: backendRes.provider,
           timestamp: timeString
         };
       } else {

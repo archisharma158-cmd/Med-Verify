@@ -24,6 +24,12 @@ export default function ChatMessage({ message, onSpeak, isSpeakingThis }) {
           <div className="mv-chat-meta">
             <span className="mv-chat-time">{message.timestamp}</span>
 
+            {isBot && message.provider && message.provider !== "none" && (
+              <span className="mv-chat-provider-badge">
+                Powered by {message.provider === "openai" ? "OpenAI" : "Gemini"}
+              </span>
+            )}
+
             {isBot && onSpeak && (
               <button
                 type="button"
