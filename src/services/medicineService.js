@@ -16,6 +16,7 @@ import { DEMO_CATALOG } from "../constants/demoCatalog";
 import { SAFETY_DISCLAIMER } from "../constants/medicineKnowledge";
 import { checkCdscoAlertMatch } from "../constants/cdscoAlerts";
 import { checkDuplicateScan, saveScanRecord } from "./historyService";
+import { verifyMedicineWithBackend } from "./api";
 
 /**
  * Parses raw OCR text to extract candidate pharmaceutical fields.
@@ -612,4 +613,58 @@ ${SAFETY_DISCLAIMER}
 
 Always confirm suspect medicine with a licensed pharmacist or your national medicines regulator.
 ========================================`;
+}
+
+/**
+ * Asynchronous verification pipeline.
+ * Runs local evaluation instantly, and if the FastAPI backend is reachable,
+ * enriches the evaluation with backend regulatory match, ML model risk scoring,
+ * and dual-language AI explanations.
+ */
+export async function verifyMedicineAsync(payload) {
+  const localResult = evaluateMedicine(payload);
+
+  try {
+    const backendData = await verifyMedicineWithBackend(payload);
+    if (backendData) {
+      localResult.isLiveBackend = true;
+      localResult.backendData = backendData;
+
+      if (backendData.risk) {
+        localResult.riskAnalysis = {
+          ...localResult.riskAnalysis,
+          score: Math.round(backendData.risk.score),
+          category: backendData.risk.category,
+          method: backendData.risk.method,
+          modelVersion: backendData.risk.model_version
+        };
+      }
+
+      if (backendData.explanation) {
+        localResult.backendExplanation = backendData.explanation;
+        if (backendData.explanation.en) {
+          localResult.statusDescription = backendData.explanation.en;
+        }
+      }
+
+      if (backendData.scan_id) {
+        localResult.backendScanId = backendData.scan_id;
+      }
+
+      if (backendData.warnings && backendData.warnings.length > 0) {
+        localResult.backendWarnings = backendData.warnings;
+      }
+
+      // Re-save with enriched backend attributes
+      try {
+        saveScanRecord(localResult);
+      } catch (err) {
+        // ignore
+      }
+    }
+  } catch (err) {
+    console.warn("verifyMedicineAsync backend call encountered an error:", err);
+  }
+
+  return localResult;
 }

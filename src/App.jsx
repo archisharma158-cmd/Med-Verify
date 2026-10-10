@@ -18,7 +18,7 @@ import AdminDashboardModal from "./components/admin/AdminDashboardModal";
 import CdscoAlertsModal from "./components/alerts/CdscoAlertsModal";
 import VerificationReportModal from "./components/reporting/VerificationReportModal";
 import MediBot from "./components/chatbot/MediBot";
-import { evaluateMedicine } from "./services/medicineService";
+import { evaluateMedicine, verifyMedicineAsync } from "./services/medicineService";
 import { getScanHistory } from "./services/historyService";
 import "./App.css";
 
@@ -40,9 +40,9 @@ function AppContent() {
     setHistoryCount(getScanHistory().length);
   }, [verificationResult]);
 
-  const handleVerificationReady = (payload) => {
-    // Process through the medicine evaluation service (which also auto-saves to history)
-    const evaluated = evaluateMedicine(payload);
+  const handleVerificationReady = async (payload) => {
+    // Process through the medicine evaluation service with live backend support
+    const evaluated = await verifyMedicineAsync(payload);
     setVerificationResult(evaluated);
     setHistoryCount(getScanHistory().length);
 

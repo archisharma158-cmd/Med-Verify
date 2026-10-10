@@ -100,6 +100,12 @@ export default function VerificationResults({
                 />
               )}
 
+              {result.isLiveBackend && (
+                <span className="mv-badge mv-badge-success">
+                  <Activity size={12} /> FastAPI + ML Model Verified
+                </span>
+              )}
+
               <span className="mv-badge mv-badge-neutral">
                 Source: {extractedData.source.replace("_", " ").toUpperCase()}
               </span>
@@ -250,7 +256,11 @@ export default function VerificationResults({
                   <span className={`mv-risk-level-tag mv-tag-${riskAnalysis.category}`}>
                     <Activity size={14} /> {riskAnalysis.label.toUpperCase()}
                   </span>
-                  <span className="mv-risk-heuristic-pill">Rule-Based Screening Engine v1</span>
+                  <span className="mv-risk-heuristic-pill">
+                    {riskAnalysis.method === "ml_model"
+                      ? `Calibrated ML Risk Model (${riskAnalysis.modelVersion || "v1.0"})`
+                      : "Rule-Based Screening Engine v1"}
+                  </span>
                 </div>
                 <h3>{t("riskAssessmentTitle", "Screening Risk Assessment")}</h3>
                 <p>

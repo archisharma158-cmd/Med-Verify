@@ -169,3 +169,46 @@ export async function sendChatMessageToBackend(message, language = "en", scanCon
 
   return null;
 }
+
+/**
+ * Verify medicine using the FastAPI /api/verify endpoint.
+ * Connects to the local/remote backend and executes multi-factor verification + ML risk model.
+ */
+export async function verifyMedicineWithBackend(payload) {
+  const online = await checkBackendHealth();
+
+  if (online) {
+    try {
+      const inputMethod =
+        payload.source === "qr_scan"
+          ? "qr"
+          : payload.source === "ocr_photo"
+          ? "ocr"
+          : "manual";
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      const res = await fetch(`${API_BASE_URL}/api/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          medicine_name: payload.medicineName || null,
+          manufacturer: payload.manufacturer || null,
+          batch_number: payload.batchNumber || null,
+          expiry_date: payload.expiryDate || null,
+          input_method: inputMethod
+        })
+      });
+      clearTimeout(timeout);
+
+      if (res.ok) {
+        return await res.json();
+      }
+    } catch (err) {
+      console.warn("Backend /api/verify call failed, falling back to local:", err);
+    }
+  }
+
+  return null;
+}

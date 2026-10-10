@@ -32,15 +32,19 @@ def get_engine():
     if _engine is None:
         settings = get_settings()
         db_url = settings.get_database_url()
-        _engine = create_async_engine(
-            db_url,
-            echo=settings.DEBUG,
-            pool_size=5,
-            max_overflow=10,
-            pool_pre_ping=True,
-            pool_recycle=300,
-        )
-        logger.info("database_engine_created")
+        is_sqlite = "sqlite" in db_url.lower()
+
+        kwargs = {
+            "echo": settings.DEBUG,
+            "pool_pre_ping": True,
+        }
+        if not is_sqlite:
+            kwargs["pool_size"] = 5
+            kwargs["max_overflow"] = 10
+            kwargs["pool_recycle"] = 300
+
+        _engine = create_async_engine(db_url, **kwargs)
+        logger.info("database_engine_created", is_sqlite=is_sqlite)
     return _engine
 
 
