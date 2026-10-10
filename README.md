@@ -22,6 +22,7 @@
   />
 
 </div>
+link - https://med-verify-8yp3qwtd1-pro-spy.vercel.app/
 [![Live Showcase Site](https://img.shields.io/badge/🌐_Live_Showcase-Medify_Site-00D9AA?style=for-the-badge&logo=googlechrome&logoColor=black)](https://archisharma158-cmd.github.io/Med-Verify/)
 [![Interactive Architecture](https://img.shields.io/badge/📐_Interactive-Architecture_Hub-00A86B?style=for-the-badge&logo=diagramsdotnet&logoColor=white)](#-system-architecture)
 [![Documentation](https://img.shields.io/badge/📖_View-Documentation-006B45?style=for-the-badge&logo=github&logoColor=white)](#-about-medify)
