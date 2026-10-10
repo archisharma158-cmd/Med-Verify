@@ -51,7 +51,27 @@ export async function fetchRegulatoryAlerts({ query = "", batch = "" } = {}) {
       const res = await fetch(`${API_BASE_URL}/api/alerts?${params.toString()}`);
       if (res.ok) {
         const data = await res.json();
-        return data.items || [];
+        if (data.items && data.items.length > 0) {
+          return data.items.map((item) => ({
+            id: item.id || `CDSCO-${item.batch_number}`,
+            productName: item.product_name,
+            genericName: item.generic_name || item.product_name,
+            batchNumber: item.batch_number,
+            manufacturer: item.manufacturer,
+            alertType: item.alert_type?.includes("Spurious")
+              ? "SPURIOUS"
+              : item.alert_type?.includes("NSQ")
+              ? "NSQ"
+              : item.alert_type || "NSQ",
+            alertLevel: item.alert_type?.includes("Spurious") ? "CRITICAL" : "HIGH",
+            reportedIssue: item.reported_issue,
+            issuingAuthority: item.regulatory_source || "CDSCO",
+            dateIssued: item.publication_date || new Date().toISOString().split("T")[0],
+            status: "ACTIVE_RECALL",
+            recommendedAction: "Quarantine stock immediately. Do not consume. Return to authorized pharmacy.",
+            sourceUrl: item.source_url || "https://cdsco.gov.in"
+          }));
+        }
       }
     } catch (err) {
       console.warn("Backend alerts call failed, falling back to local:", err);
@@ -109,6 +129,8 @@ export async function fetchAdminDashboardStats() {
   };
 }
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 /**
  * Submit suspicious report to backend `/api/reports` or fallback locally.
  */
@@ -117,17 +139,18 @@ export async function submitSuspiciousReportToBackend(payload) {
 
   if (online) {
     try {
+      const isUUID = payload.scanId && UUID_REGEX.test(payload.scanId);
       const res = await fetch(`${API_BASE_URL}/api/reports`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          medicine_name: payload.medicineName,
-          manufacturer: payload.manufacturer,
-          batch_number: payload.batchNumber,
-          reason: payload.reason,
-          description: payload.description,
-          contact_info: payload.contactInfo,
-          scan_id: payload.scanId
+          medicine_name: payload.medicineName || null,
+          manufacturer: payload.manufacturer || null,
+          batch_number: payload.batchNumber || null,
+          reason: payload.reason || "suspicious_packaging",
+          description: payload.description || null,
+          contact_info: payload.contactInfo || null,
+          scan_id: isUUID ? payload.scanId : null
         })
       });
       if (res.ok) {
@@ -149,13 +172,16 @@ export async function sendChatMessageToBackend(message, language = "en", scanCon
 
   if (online) {
     try {
+      const targetScanId = scanContext?.backendScanId || scanContext?.scan_id || scanContext?.id;
+      const isUUID = targetScanId && UUID_REGEX.test(targetScanId);
+
       const res = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message,
-          language,
-          context: scanContext ? JSON.stringify(scanContext) : null
+          language: language === "hi" ? "hi" : "en",
+          scan_id: isUUID ? targetScanId : null
         })
       });
       if (res.ok) {

@@ -1,10 +1,11 @@
 services:
+  # ── Render Backend Web Service (FastAPI + Python) ──
   - type: web
-    name: medverify-backend
+    name: medify-backend
     env: python
     region: singapore
-    plan: starter
-    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    plan: free
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt && python -m app.database.seed"
     startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
     healthCheckPath: /health
     autoDeploy: true
@@ -15,6 +16,10 @@ services:
         value: production
       - key: ALLOWED_ORIGINS
         value: "*"
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:///medverify.db
+      - key: SECRET_KEY
+        generateValue: true
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_SECRET_KEY
@@ -26,4 +31,24 @@ services:
       - key: OPENFDA_API_KEY
         sync: false
       - key: GEMINI_API_KEY
+        sync: false
+
+  # ── Render Frontend Static Site (React + Vite SPA) ──
+  - type: static
+    name: medify-frontend
+    region: singapore
+    plan: free
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: "./dist"
+    pullRequestPreviewsEnabled: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+    envVars:
+      - key: VITE_API_BASE_URL
         sync: false

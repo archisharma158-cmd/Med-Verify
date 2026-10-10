@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   X,
   ShieldAlert,
@@ -7,9 +7,11 @@ import {
   AlertTriangle,
   FileText,
   Filter,
-  CheckCircle2
+  CheckCircle2,
+  Activity
 } from "lucide-react";
 import { CDSCO_ALERTS_DATABASE } from "../../constants/cdscoAlerts";
+import { fetchRegulatoryAlerts } from "../../services/api";
 
 export default function CdscoAlertsModal({
   isOpen,
@@ -18,19 +20,34 @@ export default function CdscoAlertsModal({
 }) {
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("all");
+  const [alerts, setAlerts] = useState(CDSCO_ALERTS_DATABASE);
+  const [isLiveAlerts, setIsLiveAlerts] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchRegulatoryAlerts()
+        .then((data) => {
+          if (data && data.length > 0) {
+            setAlerts(data);
+            setIsLiveAlerts(true);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
-  const filtered = CDSCO_ALERTS_DATABASE.filter((alert) => {
+  const filtered = alerts.filter((alert) => {
     if (filterType !== "all" && alert.alertType !== filterType) return false;
     if (search.trim()) {
       const q = search.toLowerCase();
       return (
-        alert.productName.toLowerCase().includes(q) ||
-        alert.genericName.toLowerCase().includes(q) ||
-        alert.batchNumber.toLowerCase().includes(q) ||
-        alert.manufacturer.toLowerCase().includes(q) ||
-        alert.reportedIssue.toLowerCase().includes(q)
+        alert.productName?.toLowerCase().includes(q) ||
+        alert.genericName?.toLowerCase().includes(q) ||
+        alert.batchNumber?.toLowerCase().includes(q) ||
+        alert.manufacturer?.toLowerCase().includes(q) ||
+        alert.reportedIssue?.toLowerCase().includes(q)
       );
     }
     return true;
@@ -46,7 +63,14 @@ export default function CdscoAlertsModal({
             </div>
             <div>
               <h3 id="cdsco-modal-title">CDSCO National Drug Quality Alerts</h3>
-              <p className="mv-modal-subtitle">Official gazette notices for Not of Standard Quality (NSQ) & Spurious drugs</p>
+              <p className="mv-modal-subtitle">
+                Official gazette notices for Not of Standard Quality (NSQ) & Spurious drugs
+                {isLiveAlerts && (
+                  <span className="mv-badge mv-badge-success" style={{ marginLeft: "8px", verticalAlign: "middle", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                    <Activity size={11} /> Live Backend Sync
+                  </span>
+                )}
+              </p>
             </div>
           </div>
           <button
