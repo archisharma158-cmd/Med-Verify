@@ -42,11 +42,10 @@ HINDI_SYSTEM_PROMPT = """आप MedVerify सहायक हैं, दवा�
 7. सरल हिंदी में जवाब दें।"""
 
 FALLBACK_CANDIDATE_MODELS = [
-    "gemini-3.8-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.1-flash-lite",
     "gemini-3.5-flash",
-    "gemini-2.5-flash",
-    "gemini-2.0-flash",
-    "gemini-1.5-flash",
+    "gemini-3.8-flash",
     "gemini-flash-latest",
 ]
 
@@ -58,7 +57,7 @@ async def chat_with_context(
 ) -> dict:
     """Generate chatbot response using Gemini with scan context.
     
-    Returns: {"reply": str, "language": str, "sources": list[str]}
+    Returns: {"reply": str, "language": str, "sources": list[str], "provider": str}
     """
     settings = get_settings()
 
@@ -91,9 +90,20 @@ async def chat_with_context(
     sources: list[str] = ["gemini_ai"]
 
     if scan_context:
+        med_name = scan_context.get("medicine_name") or scan_context.get("extractedData", {}).get("medicineName") or "Not provided (Unknown)"
+        batch_no = scan_context.get("batch_number") or scan_context.get("extractedData", {}).get("batchNumber") or "Not provided (Unknown)"
+        expiry = scan_context.get("expiry_date") or scan_context.get("extractedData", {}).get("expiryDate") or "Not provided (Unknown)"
+        risk_cat = scan_context.get("risk_category") or scan_context.get("risk", {}).get("category") or "Unassessed"
+        status_val = scan_context.get("verification_status", "Unknown")
+
         context_text = (
-            f"\n\nUser's latest scan result:\n"
-            f"{json.dumps(scan_context, indent=2, ensure_ascii=False, default=str)}"
+            f"\n\nUser's latest verified scan context:\n"
+            f"- Medicine Name: {med_name}\n"
+            f"- Batch Number: {batch_no}\n"
+            f"- Expiry Date: {expiry}\n"
+            f"- Risk Assessment: {risk_cat}\n"
+            f"- Verification Status: {status_val}\n"
+            f"Raw payload: {json.dumps(scan_context, ensure_ascii=False, default=str)}"
         )
         sources.append("scan_result")
 
@@ -107,7 +117,7 @@ async def chat_with_context(
             message, language, scan_context, error_reason="CLIENT_INIT_FAILED"
         )
 
-    # Candidate models to try (configured model first, then fallbacks)
+    # Candidate models to try (configured model first, then candidate fallbacks)
     models_to_try = [settings.GEMINI_MODEL]
     for model_candidate in FALLBACK_CANDIDATE_MODELS:
         if model_candidate not in models_to_try:
@@ -163,20 +173,20 @@ async def chat_with_context(
                     message, language, scan_context, error_reason="INVALID_API_KEY"
                 )
             elif code == 429 or "RESOURCE_EXHAUSTED" in err_msg or "quota" in err_msg.lower():
-                logger.error(
-                    "gemini_quota_exceeded",
+                logger.warning(
+                    "gemini_model_quota_exceeded",
+                    model=model,
                     status_code=code,
-                    diagnostics="Gemini API rate limit or quota exceeded",
+                    diagnostics=f"Model {model} hit quota limit, trying next Gemini model candidate",
                 )
-                return _fallback_response(
-                    message, language, scan_context, error_reason="QUOTA_EXCEEDED"
-                )
+                last_error_reason = "QUOTA_EXCEEDED"
+                continue  # Failover to next candidate Gemini model!
             elif code == 404 or "not found" in err_msg.lower() or "no longer available" in err_msg.lower():
                 logger.warning(
                     "gemini_model_unavailable",
                     model=model,
                     status_code=code,
-                    diagnostics=f"Model {model} unavailable, trying next candidate",
+                    diagnostics=f"Model {model} unavailable, trying next Gemini model candidate",
                 )
                 last_error_reason = "MODEL_UNAVAILABLE"
                 continue

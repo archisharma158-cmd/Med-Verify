@@ -51,7 +51,7 @@ class Settings(BaseSettings):
     OCR_SPACE_API_KEY: Optional[str] = None
     OPENFDA_API_KEY: Optional[str] = None
     GEMINI_API_KEY: Optional[str] = None
-    GEMINI_MODEL: str = Field(default="gemini-3.8-flash", description="Gemini AI model identifier")
+    GEMINI_MODEL: str = Field(default="gemini-3.5-flash-lite", description="Gemini AI model identifier")
     OPENAI_API_KEY: Optional[str] = None
     OPENAI_MODEL: str = Field(default="gpt-4o-mini", description="OpenAI model identifier")
     AI_PRIMARY_PROVIDER: str = Field(default="gemini", description="Primary AI provider: gemini | openai")
